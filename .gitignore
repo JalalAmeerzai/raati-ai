@@ -1,1 +1,11 @@
 .DS_Store
+node_modules/
+backend/venv/
+backend/__pycache__/
+backend/.env
+backend/data/images/*.png
+backend/data/images/*.jpg
+backend/data/images/*.pdf
+backend/data/images/*.jpeg
+backend/data/evaluations/*.json
+backend/data/results/

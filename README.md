@@ -13,11 +13,11 @@
 
 ## ✨ What It Does
 
-Students upload a **design sketch + description**, and a panel of **three independent AI judges** (powered by different LLM providers) evaluates the work across six creativity dimensions. The system then computes **inter-rater reliability** (ICC + ANOVA) and generates a detailed evaluation report — mirroring how the Consensual Assessment Technique works with human expert panels.
+Students upload a **design sketch + description**, and a panel of **nine independent AI judges** (3 domain-specific personas × 3 different LLM providers) evaluates the work across six creativity dimensions. The system then computes **inter-rater reliability** (ICC + ANOVA) and generates a detailed evaluation report — mirroring how the Consensual Assessment Technique works with human expert panels.
 
 ```
- Upload Sketch ──▶ Recruiter Agent ──▶ 3 AI Expert Judges ──▶ Synthesizer ──▶ Evaluation Report
-  (image + desc)     (GPT-4o-mini)      (GPT-5.2 / Grok / Claude)  (GPT-4o)     (scores + stats)
+ Upload Sketch ──▶ Recruiter Agent ──▶ 3x3 Expert Panel Matrix ──▶ Synthesizer ──▶ Evaluation Report
+  (image + desc)     (GPT-4o-mini)      (9 concurrent evals)        (GPT-4o)     (scores + stats)
 ```
 
 ---
@@ -28,19 +28,17 @@ Students upload a **design sketch + description**, and a panel of **three indepe
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture: The 3x3 Fan-Out
 
 ### Pipeline Overview
 
-1. **Recruiter Agent** — A GPT-4o-mini "Dean of Faculty" dynamically generates 3 domain-specific expert personas based on the design context
-2. **Expert Panel** — Three different LLM providers evaluate the design concurrently:
-   | Judge | Model | Provider |
-   |-------|-------|----------|
-   | Expert 1 | GPT-5.2 | OpenAI |
-   | Expert 2 | Grok-4-1-fast | xAI |
-   | Expert 3 | Claude 3.5 Sonnet | Anthropic |
-3. **Synthesizer** — GPT-4o merges all scores, generates unified instructor feedback, and computes ICC & ANOVA statistics
-4. **Storage** — Results saved to CSV with uploaded images stored on disk
+1. **Recruiter Agent** — A GPT-4o-mini "Dean of Faculty" dynamically generates 3 domain-specific expert personas based on the design context.
+2. **3x3 Expert Panel Matrix** — Each of the 3 personas is mapped across all 3 LLM clients, firing **9 asynchronous API requests in parallel**:
+   - Persona 1 → Evaluated by OpenAI, xAI, Claude
+   - Persona 2 → Evaluated by OpenAI, xAI, Claude
+   - Persona 3 → Evaluated by OpenAI, xAI, Claude
+3. **Synthesizer** — GPT-4o merges all scores, computes a unified consensus, writes instructor feedback, and runs ICC & ANOVA statistics.
+4. **Storage** — Full results are saved as serialized JSON to disk, while maintaining a CSV index for fast history lookups.
 
 ### Evaluation Rubric (0–5 scale × 6 dimensions)
 
@@ -61,7 +59,7 @@ Students upload a **design sketch + description**, and a panel of **three indepe
 |------|-------------|
 | **Login** | Simulated Haka (Finnish university SSO) login |
 | **Dashboard** | Drag-and-drop image upload + description input |
-| **Results** | Full evaluation report with radar chart, expert cards, statistical reliability badges |
+| **Results** | Full report: radar chart, 3x3 accordion grid for 9 LLM evaluations, stats |
 | **History** | Filterable table of all past submissions with color-coded score badges |
 | **Analytics** | Score trend line chart + summary statistics |
 
@@ -156,25 +154,26 @@ raati-ai/
 │   ├── reset_data.py               # Data reset utility
 │   ├── .env                        # API keys (not committed)
 │   ├── data/
-│   │   ├── results.csv             # Evaluation results
+│   │   ├── results.csv             # History table index
+│   │   ├── evaluations/            # Full JSON response storage
 │   │   └── images/                 # Uploaded sketches
 │   └── services/
-│       ├── creativity_judge.py     # Pipeline orchestrator
+│       ├── creativity_judge.py     # Pipeline orchestrator (3x3 Fan-out)
 │       ├── agents.py               # Recruiter agent (persona generation)
 │       ├── evaluators.py           # Multi-LLM evaluators (OpenAI, xAI, Claude)
 │       ├── synthesizer.py          # Score synthesis + ICC/ANOVA stats
-│       └── storage.py              # CSV + image persistence
+│       └── storage.py              # CSV/JSON read/write + image persistence
 ├── frontend/
 │   ├── src/
 │   │   ├── App.tsx                 # Router (5 routes)
 │   │   ├── pages/
 │   │   │   ├── Login.tsx           # Haka SSO simulation
 │   │   │   ├── Dashboard.tsx       # Upload interface
-│   │   │   ├── Results.tsx         # Full evaluation report
+│   │   │   ├── Results.tsx         # Full evaluation report (data-driven PDF)
 │   │   │   ├── History.tsx         # Past submissions table
 │   │   │   └── Analytics.tsx       # Score trends & stats
 │   │   └── components/
-│   │       ├── Layout.tsx          # Shared sidebar layout
+│   │       ├── Layout.tsx          # Shared sidebar layout & ThemeContext
 │   │       └── LLMIcons.tsx        # Provider brand icons
 │   ├── package.json
 │   ├── tailwind.config.js
@@ -193,12 +192,11 @@ raati-ai/
 | **LLM Providers** | OpenAI SDK · Anthropic SDK · xAI (OpenAI-compatible) |
 | **Statistics** | pandas · pingouin (ICC + ANOVA) |
 | **Frontend** | React 19 · TypeScript · Vite 7 |
-| **Styling** | TailwindCSS 4 |
+| **Styling** | TailwindCSS 4 (Dark mode ready) |
 | **Charts** | Recharts |
 | **Animations** | Framer Motion |
-| **PDF Export** | html2canvas + jsPDF |
+| **PDF Export** | jsPDF (Data-driven generation) |
 | **Icons** | Lucide React |
-| **HTTP Client** | Axios |
 
 ---
 
@@ -206,13 +204,12 @@ raati-ai/
 
 | Decision | Rationale |
 |----------|-----------|
-| 3 different LLM providers | Simulates multi-rater CAT; prevents single-model bias |
+| 3x3 Fan-Out Evaluation | 9 total evaluations (3 personas × 3 LLMs) provides massive variance coverage |
 | Dynamic persona generation | Tailors expertise to each assignment's domain |
 | Structured JSON output | Pydantic models ensure parseable, consistent data |
-| Low temperature (0.1) | Maximizes determinism for reproducible evaluations |
-| Concurrent evaluation | `asyncio.gather` runs all judges in parallel |
+| Concurrent evaluation | `asyncio.gather` fires all 9 requests simultaneously for speed |
 | ICC + ANOVA | Academically recognized inter-rater reliability measures |
-| CSV storage | Simple and sufficient for thesis-scale data |
+| JSON Storage | Entire synthesized result saved as separate JSON files for easy historic recall |
 
 ---
 

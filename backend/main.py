@@ -8,10 +8,10 @@ from pathlib import Path
 # Load environment variables
 load_dotenv()
 
-from services.storage import save_submission, get_history
+from services.storage import save_submission, get_history, get_result_by_id
 from services.creativity_judge import evaluate_design
 
-app = FastAPI(title="Creativity Assessment Tool")
+app = FastAPI(title="raati.ai — Creativity Assessment Tool")
 
 # Setup CORS
 app.add_middleware(
@@ -23,9 +23,6 @@ app.add_middleware(
 )
 
 # Mount static files for images
-# Go up one level from 'backend' to root, then 'backend/data/images'?
-# No, we are in backend/main.py. storage.py defines DATA_DIR relative to itself.
-# Let's ensure we point to the same directory.
 BASE_DIR = Path(__file__).resolve().parent
 IMAGES_DIR = BASE_DIR / "data" / "images"
 IMAGES_DIR.mkdir(parents=True, exist_ok=True)
@@ -34,7 +31,7 @@ app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
 
 @app.get("/")
 def read_root():
-    return {"message": "Creativity Assessment Tool API is running"}
+    return {"message": "raati.ai API is running"}
 
 from fastapi.concurrency import run_in_threadpool
 
@@ -44,47 +41,31 @@ async def evaluate_submission(
     description: str = Form(...)
 ):
     """
-    Receives an image and description, runs AI evaluation, and saves the result.
+    Receives an image and description, runs 3×3 AI evaluation, and saves the full result.
     """
-    # 1. Evaluate with LLM
+    # 1. Evaluate with LLM pipeline
     ai_result = await evaluate_design(image, description)
-    
-    # 2. Save result and image
+
+    # 2. Save full result (image + JSON + CSV index)
     await image.seek(0)
     saved_record = await run_in_threadpool(save_submission, image, description, ai_result)
-    
-    # Inject expert_panel + stats back into the response — not persisted to CSV.
-    import json as _json
-    
-    class _SafeEncoder(_json.JSONEncoder):
-        def default(self, obj):
-            if hasattr(obj, "model_dump"):
-                return obj.model_dump()
-            return super().default(obj)
-    
-    def _safe(val):
-        return _json.loads(_json.dumps(val, cls=_SafeEncoder, default=str))
-    
-    saved_record["expert_panel"] = _safe(ai_result.get("expert_panel", []))
-    saved_record["stats"] = _safe(ai_result.get("stats", {}))
-    
+
     return saved_record
 
 @app.get("/results/{result_id}")
 def get_result(result_id: str):
     """
-    Returns a single evaluation result by ID.
+    Returns a single full evaluation result by ID (including expert_panel + stats).
     """
-    history = get_history()
-    for item in history:
-        if item["id"] == result_id:
-            return item
-    raise HTTPException(status_code=404, detail="Result not found")
+    result = get_result_by_id(result_id)
+    if not result:
+        raise HTTPException(status_code=404, detail="Result not found")
+    return result
 
 @app.get("/history")
 def get_submission_history():
     """
-    Returns the list of past evaluations.
+    Returns the list of past evaluations (lightweight for listing).
     """
     return get_history()
 
@@ -95,31 +76,29 @@ def get_analytics():
     """
     history = get_history()
     valid_scores = []
-    
+
     for item in history:
         score_val = item.get("overall_score")
         if score_val:
             try:
                 valid_scores.append(float(score_val))
             except ValueError:
-                pass # Skip rows where 'overall_score' is a string or corrupted
-                
+                pass
+
     total_submissions = len(valid_scores)
-    
+
     if total_submissions == 0:
         return {
             "total_submissions": 0,
             "average_score": 0,
             "trend": []
         }
-        
+
     total_score = sum(valid_scores)
     average_score = round(total_score / total_submissions, 1)
-    
-    # Calculate trend (last 6 valid submissions)
-    # We want chronological order for the chart
+
     chronological = list(reversed(history))
-    
+
     trend = []
     valid_count = 0
     for item in chronological:
@@ -131,18 +110,16 @@ def get_analytics():
                 valid_count += 1
             except ValueError:
                 pass
-                
-    # keep only the last 6
+
     trend = trend[-6:]
-    
+
     return {
         "total_submissions": total_submissions,
         "average_score": average_score,
         "trend": trend,
-        "creative_standing": "Top 10%" # Mocked for now as we don't have other users
+        "creative_standing": "Top 10%"
     }
 
 if __name__ == "__main__":
     import uvicorn
-    # Do not watch 'data' dir to prevent restarts when saving submissions
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True, reload_excludes=["data/*"])

@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import uuid
 from pydantic import BaseModel, Field
 from openai import AsyncOpenAI
 from dotenv import load_dotenv
@@ -12,7 +13,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 client = AsyncOpenAI(api_key=api_key if api_key else "placeholder")
 
 class Persona(BaseModel):
-    assigned_model: str = Field(description="Must be 'OpenAI', 'xAI', or 'Claude'")
+    persona_id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8], description="Auto-generated short ID for stable grouping")
     name: str = Field(description="A realistic professional name")
     title: str = Field(description="A real-world, industry-standard job title")
     sub_text: str = Field(description="A short, punchy UI subtitle summarizing their focus (max 8 words)")
@@ -33,27 +34,22 @@ CRITICAL CONSTRAINTS:
 - The "sub_text" must be a concise, UI-friendly summary (max 8 words) describing what specific problem they are evaluating.
 - The "prompt" MUST be exactly three sentences following the strict template provided in the JSON schema below. Do not add any extra rules, conversational text, or formatting.
 
-For the assigned_model, you must distribute them as exactly one "OpenAI", one "xAI", and one "Claude".
-
 You MUST output your response in valid JSON format matching this exact schema:
 {
   "personas": [
     {
-      "assigned_model": "OpenAI",
       "name": "A realistic professional name",
       "title": "A dynamically generated, real-world job title",
       "sub_text": "A short, punchy UI subtitle summarizing their focus.",
       "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a [Insert Title Here], you will focus specifically on [Insert 1-2 specific technical details related to the assignment and their expertise]."
     },
     {
-      "assigned_model": "xAI",
       "name": "A realistic professional name",
       "title": "A dynamically generated, real-world job title",
       "sub_text": "A short, punchy UI subtitle summarizing their focus.",
       "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a [Insert Title Here], you will focus specifically on [Insert 1-2 specific technical details related to the assignment and their expertise]."
     },
     {
-      "assigned_model": "Claude",
       "name": "A realistic professional name",
       "title": "A dynamically generated, real-world job title",
       "sub_text": "A short, punchy UI subtitle summarizing their focus.",
@@ -66,6 +62,7 @@ You MUST output your response in valid JSON format matching this exact schema:
 async def generate_personas(assignment_text: str) -> dict:
     """
     Calls OpenAI gpt-4o-mini to act as the Recruiter Agent and generate 3 expert personas.
+    Personas are model-agnostic — each will be evaluated by ALL 3 LLMs.
     """
     try:
         response = await client.beta.chat.completions.parse(

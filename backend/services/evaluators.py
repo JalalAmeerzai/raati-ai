@@ -1,4 +1,5 @@
 import os
+import io
 import json
 import logging
 import asyncio
@@ -11,6 +12,35 @@ from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 load_dotenv()
+
+# Keys used to compute overall_score deterministically
+SCORE_KEYS = [
+    "creativity_score",
+    "originality_score",
+    "usefulness_relevance_score",
+    "clarity_score",
+    "level_of_detail_elaboration_score",
+    "feasibility_score",
+]
+
+def _compute_overall_score(result_json: dict) -> float:
+    """Compute overall_score as the mean of the 6 dimension scores."""
+    scores = [float(result_json[k]) for k in SCORE_KEYS if k in result_json]
+    if not scores:
+        return 0.0
+    return round(sum(scores) / len(scores), 2)
+
+def _detect_mime_type(image_bytes: bytes) -> str:
+    """Detect image MIME type from magic bytes."""
+    if image_bytes[:8] == b'\x89PNG\r\n\x1a\n':
+        return "image/png"
+    elif image_bytes[:2] == b'\xff\xd8':
+        return "image/jpeg"
+    elif image_bytes[:4] == b'RIFF' and image_bytes[8:12] == b'WEBP':
+        return "image/webp"
+    elif image_bytes[:6] in (b'GIF87a', b'GIF89a'):
+        return "image/gif"
+    return "image/jpeg"
 
 # Shared Output Schema for all evaluators
 class EvaluationResult(BaseModel):
@@ -26,7 +56,6 @@ class EvaluationResult(BaseModel):
     level_of_detail_elaboration_reasoning: str
     feasibility_score: int
     feasibility_reasoning: str
-    overall_score: int
     instructor_feedback: str
 
 FIXED_RUBRIC = """
@@ -46,6 +75,8 @@ Start your evaluation with a structured "Instructor Feedback" section containing
 
 Combine all the feedback into a single string.
 
+Do NOT include an "overall_score" field. It will be computed automatically.
+
 OUTPUT FORMAT (JSON ONLY):
 {
   "creativity_score": 0,
@@ -60,13 +91,12 @@ OUTPUT FORMAT (JSON ONLY):
   "level_of_detail_elaboration_reasoning": "string",
   "feasibility_score": 0,
   "feasibility_reasoning": "string",
-  "overall_score": 0,
   "instructor_feedback": "string"
 }
 """
 
-async def evaluate_with_openai(persona: dict, description: str, base64_image: str) -> dict:
-    """Evaluates the design using OpenAI's gpt-5.4."""
+async def evaluate_with_openai(persona: dict, description: str, base64_image: str, mime_type: str = "image/jpeg") -> dict:
+    """Evaluates the design using OpenAI."""
     try:
         api_key = os.getenv("OPENAI_API_KEY", "placeholder")
         client = AsyncOpenAI(api_key=api_key)
@@ -84,14 +114,14 @@ async def evaluate_with_openai(persona: dict, description: str, base64_image: st
                     "role": "user",
                     "content": [
                         {"type": "text", "text": f"Design Description: {description}"},
-                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                        {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{base64_image}"}}
                     ]
                 }
             ]
         )
         result_text = response.choices[0].message.content
         
-        # Fallback for gpt-5.4 empty string bug
+        # Fallback for empty response bug
         if not result_text or not result_text.strip():
             print("\n--- GPT-5.2 RETURNED EMPTY. FALLING BACK TO GPT-4o ---")
             response = await client.chat.completions.create(
@@ -105,7 +135,7 @@ async def evaluate_with_openai(persona: dict, description: str, base64_image: st
                         "role": "user",
                         "content": [
                             {"type": "text", "text": f"Design Description: {description}"},
-                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                            {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{base64_image}"}}
                         ]
                     }
                 ]
@@ -118,17 +148,20 @@ async def evaluate_with_openai(persona: dict, description: str, base64_image: st
             print("\n--- ERROR PARSING OPENAI RESPONSE ---")
             print(f"Raw Output: {result_text}")
             print(f"Parse Error: {parse_error}")
-            return {"assigned_model": "OpenAI", "persona": persona, "error": f"Parse error: {parse_error}, Raw text: {result_text}"}
+            return {"model_provider": "OpenAI", "persona": persona, "error": f"Parse error: {parse_error}, Raw text: {result_text}"}
+        
+        # Compute overall_score deterministically
+        result_json["overall_score"] = _compute_overall_score(result_json)
             
-        print("\n--- RESPONSE FROM OPENAI EVALUATOR ---")
+        print(f"\n--- RESPONSE FROM OPENAI [{persona.get('name', '?')}] ---")
         print(json.dumps(result_json, indent=2))
-        return {"assigned_model": "OpenAI", "persona": persona, "result": result_json}
+        return {"model_provider": "OpenAI", "persona": persona, "result": result_json}
     except Exception as e:
-        logger.error(f"OpenAI Fast Evaluator failed: {e}")
-        return {"assigned_model": "OpenAI", "persona": persona, "error": str(e)}
+        logger.error(f"OpenAI Evaluator failed: {e}")
+        return {"model_provider": "OpenAI", "persona": persona, "error": str(e)}
 
-async def evaluate_with_xai(persona: dict, description: str, base64_image: str) -> dict:
-    """Evaluates the design using xAI's grok-2-vision."""
+async def evaluate_with_xai(persona: dict, description: str, base64_image: str, mime_type: str = "image/jpeg") -> dict:
+    """Evaluates the design using xAI's Grok."""
     try:
         api_key = os.getenv("XAI_API_KEY", "placeholder")
         client = AsyncOpenAI(api_key=api_key, base_url="https://api.x.ai/v1")
@@ -146,7 +179,7 @@ async def evaluate_with_xai(persona: dict, description: str, base64_image: str) 
                     "role": "user",
                     "content": [
                         {"type": "text", "text": f"Design Description: {description}"},
-                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                        {"type": "image_url", "image_url": {"url": f"data:{mime_type};base64,{base64_image}"}}
                     ]
                 }
             ]
@@ -154,77 +187,40 @@ async def evaluate_with_xai(persona: dict, description: str, base64_image: str) 
         result_text = response.choices[0].message.content
         result_json = json.loads(result_text)
         
-        print("\n--- RESPONSE FROM XAI EVALUATOR ---")
+        # Compute overall_score deterministically
+        result_json["overall_score"] = _compute_overall_score(result_json)
+        
+        print(f"\n--- RESPONSE FROM XAI [{persona.get('name', '?')}] ---")
         print(json.dumps(result_json, indent=2))
-        return {"assigned_model": "xAI", "persona": persona, "result": result_json}
+        return {"model_provider": "xAI", "persona": persona, "result": result_json}
     except Exception as e:
-        logger.error(f"xAI Fast Evaluator failed: {e}")
+        logger.error(f"xAI Evaluator failed: {e}")
         print(f"Error calling xAI API: {e}")
-        return {"assigned_model": "xAI", "persona": persona, "error": str(e)}
+        return {"model_provider": "xAI", "persona": persona, "error": str(e)}
 
-async def evaluate_with_gemini(persona: dict, description: str, base64_image: str) -> dict:
-    """Evaluates the design using Gemini gemini-2.5-pro over HTTP API."""
-    try:
-        api_key = os.getenv("GEMINI_API_KEY", "placeholder")
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent?key={api_key}"
-        
-        system_prompt = f"{persona['prompt']}\n\n{FIXED_RUBRIC}"
-        
-        payload = {
-            "systemInstruction": {
-                "parts": [{"text": system_prompt}]
-            },
-            "contents": [{
-                "parts": [
-                    {"text": f"Design Description: {description}"},
-                    {"inlineData": {"mimeType": "image/jpeg", "data": base64_image}}
-                ]
-            }],
-            "generationConfig": {
-                "response_mime_type": "application/json",
-                "temperature": 0.1,
-                "maxOutputTokens": 800
-            }
-        }
-        
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, json=payload, timeout=60.0)
-            
-        if response.status_code == 200:
-            data = response.json()
-            try:
-                # Extract text
-                result_text = data['candidates'][0]['content']['parts'][0]['text']
-                result_json = json.loads(result_text)
-                
-                print("\n--- RESPONSE FROM GEMINI EVALUATOR ---")
-                print(json.dumps(result_json, indent=2))
-                return {"assigned_model": "Gemini", "persona": persona, "result": result_json}
-            except Exception as parse_e:
-                print(f"\n--- ERROR FROM GEMINI EVALUATOR ---")
-                print(f"Parse error: {parse_e}\nFull body: {data}")
-                return {"assigned_model": "Gemini", "persona": persona, "error": f"Parse error: {parse_e}, Full response: {data}"}
-        else:
-            print(f"\n--- ERROR FROM GEMINI EVALUATOR ---")
-            print(f"HTTP {response.status_code}: {response.text}")
-            return {"assigned_model": "Gemini", "persona": persona, "error": f"HTTP {response.status_code}: {response.text}"}
-    except Exception as e:
-        logger.error(f"Gemini Fast Evaluator failed: {e}")
-        print(f"\n--- ERROR FROM GEMINI EVALUATOR ---")
-        print(str(e))
-        return {"assigned_model": "Gemini", "persona": persona, "error": str(e)}
+async def evaluate_with_claude(persona: dict, description: str, image_bytes: bytes) -> dict:
+    """Evaluates the design using Claude with Files API for large images."""
+    api_key = os.getenv("CLAUDE_API_KEY", "placeholder")
+    client = _anthropic.AsyncAnthropic(api_key=api_key)
+    uploaded_file_id = None
 
-async def evaluate_with_claude(persona: dict, description: str, base64_image: str) -> dict:
-    """Evaluates the design using Anthropic's claude-3-5-sonnet with vision."""
     try:
-        api_key = os.getenv("CLAUDE_API_KEY", "placeholder")
-        client = _anthropic.AsyncAnthropic(api_key=api_key)
+        # Upload image via Files API to bypass 5MB base64 limit
+        mime_type = _detect_mime_type(image_bytes)
+        ext = mime_type.split("/")[-1]
+        uploaded_file = await client.beta.files.upload(
+            file=(f"design.{ext}", image_bytes, mime_type),
+            betas=["files-api-2025-04-14"],
+        )
+        uploaded_file_id = uploaded_file.id
+        print(f"Uploaded image to Claude Files API: {uploaded_file_id}")
 
         system_prompt = f"{persona['prompt']}\n\n{FIXED_RUBRIC}"
 
-        response = await client.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=800,
+        response = await client.beta.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=2000,
+            betas=["files-api-2025-04-14"],
             system=system_prompt,
             messages=[
                 {
@@ -233,9 +229,8 @@ async def evaluate_with_claude(persona: dict, description: str, base64_image: st
                         {
                             "type": "image",
                             "source": {
-                                "type": "base64",
-                                "media_type": "image/jpeg",
-                                "data": base64_image,
+                                "type": "file",
+                                "file_id": uploaded_file_id,
                             },
                         },
                         {"type": "text", "text": f"Design Description: {description}\n\nRespond with ONLY valid JSON matching the schema in your system prompt."}
@@ -252,33 +247,46 @@ async def evaluate_with_claude(persona: dict, description: str, base64_image: st
 
         result_json = json.loads(result_text)
 
-        print("\n--- RESPONSE FROM CLAUDE EVALUATOR ---")
+        # Compute overall_score deterministically
+        result_json["overall_score"] = _compute_overall_score(result_json)
+
+        print(f"\n--- RESPONSE FROM CLAUDE [{persona.get('name', '?')}] ---")
         print(json.dumps(result_json, indent=2))
-        return {"assigned_model": "Claude", "persona": persona, "result": result_json}
+        return {"model_provider": "Claude", "persona": persona, "result": result_json}
     except Exception as e:
-        logger.error(f"Claude Fast Evaluator failed: {e}")
+        logger.error(f"Claude Evaluator failed: {e}")
         print(f"\n--- ERROR FROM CLAUDE EVALUATOR ---")
         print(str(e))
-        return {"assigned_model": "Claude", "persona": persona, "error": str(e)}
+        return {"model_provider": "Claude", "persona": persona, "error": str(e)}
+    finally:
+        # Clean up uploaded file to avoid storage buildup
+        if uploaded_file_id:
+            try:
+                await client.beta.files.delete(
+                    uploaded_file_id,
+                    betas=["files-api-2025-04-14"],
+                )
+                print(f"Cleaned up Claude file: {uploaded_file_id}")
+            except Exception as cleanup_err:
+                logger.warning(f"Failed to clean up Claude file {uploaded_file_id}: {cleanup_err}")
 
-async def run_expert_panel(personas_list: list, description: str, base64_image: str) -> list:
+async def run_expert_panel(personas_list: list, description: str, base64_image: str, image_bytes: bytes) -> list:
     """
-    Takes the personas generated by the Recruiter and runs them concurrently against the assigned APIs.
+    3×3 Fan-Out: Each persona is evaluated by ALL 3 LLMs (OpenAI, xAI, Claude).
+    Fires 9 async tasks in parallel.
+    Returns a list of 9 results, each tagged with model_provider and persona info.
     """
+    mime_type = _detect_mime_type(image_bytes)
     tasks = []
     
     for persona in personas_list:
-        model = persona.get("assigned_model")
-        if model == "OpenAI":
-            tasks.append(evaluate_with_openai(persona, description, base64_image))
-        elif model == "xAI":
-            tasks.append(evaluate_with_xai(persona, description, base64_image))
-        elif model == "Claude":
-            tasks.append(evaluate_with_claude(persona, description, base64_image))
-        elif model == "Gemini":
-            print("Skipping Gemini as requested by user.")
-            # tasks.append(evaluate_with_gemini(persona, description, base64_image))
+        # Each persona gets evaluated by all 3 LLMs
+        tasks.append(evaluate_with_openai(persona, description, base64_image, mime_type))
+        tasks.append(evaluate_with_xai(persona, description, base64_image, mime_type))
+        tasks.append(evaluate_with_claude(persona, description, image_bytes))
     
-    # Run all evaluations simultaneously
+    print(f"\n--- FIRING {len(tasks)} PARALLEL EVALUATIONS (3 personas × 3 LLMs) ---")
+    
+    # Run all 9 evaluations simultaneously
     results = await asyncio.gather(*tasks)
-    return results
+    return list(results)

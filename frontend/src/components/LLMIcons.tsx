@@ -47,7 +47,7 @@ export const XAIIcon: React.FC<IconProps> = ({ size = 24, className = '', ...pro
     </svg>
 );
 export const ClaudeIcon: React.FC<IconProps> = ({ size = 24, className = '', ...props }) => (
-    // Anthropic / Claude brand mark
+    // Official Anthropic / Claude brand mark from simpleicons.org
     <svg
         width={size}
         height={size}
@@ -56,6 +56,6 @@ export const ClaudeIcon: React.FC<IconProps> = ({ size = 24, className = '', ...
         className={className}
         {...props}
     >
-        <path d="M17.3 3.9L13.4 14.5l5.9 5.6H19l-3.7-3.5 3.4-9.4-1.4-3.3zM6.7 3.9L3.3 7.2l3.4 9.4-3.7 3.5h.7l5.9-5.6L5.7 4.1l1-.2zm5.6 1.2l-3.8 10.4 3.8 3.6 3.8-3.6-3.8-10.4z" />
+        <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" />
     </svg>
 );

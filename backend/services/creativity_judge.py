@@ -40,6 +40,8 @@ Start your evaluation with a structured "Instructor Feedback" section containing
 
 Combine all the feedback into a single string.
 
+Do NOT include an "overall_score" field. It will be computed automatically.
+
 OUTPUT FORMAT (JSON ONLY):
 {
   "creativity_score": 0,
@@ -54,19 +56,18 @@ OUTPUT FORMAT (JSON ONLY):
   "level_of_detail_elaboration_reasoning": "string",
   "feasibility_score": 0,
   "feasibility_reasoning": "string",
-  "overall_score": 0,
   "instructor_feedback": "string"
 }
 """
 
 async def evaluate_design(image_file, description: str):
     """
-    Calls Recruiter Agent -> Expert Panel (OpenAI, Gemini, xAI concurrently).
+    Calls Recruiter Agent -> 3×3 Expert Panel (3 personas × 3 LLMs = 9 evaluations).
     """
     # 1. Read Image
     await image_file.seek(0)
-    content = await image_file.read()
-    base64_image = base64.b64encode(content).decode('utf-8')
+    image_bytes = await image_file.read()
+    base64_image = base64.b64encode(image_bytes).decode('utf-8')
 
     try:
         # 2. Recruiter Agent
@@ -77,7 +78,7 @@ async def evaluate_design(image_file, description: str):
 
         # 3. Fan-Out Expert Panel Evaluation
         print("Starting Fan-Out Expert Evaluation...")
-        expert_results = await run_expert_panel(personas, description, base64_image)
+        expert_results = await run_expert_panel(personas, description, base64_image, image_bytes)
         print("Fan-Out Evaluation finished successfully.")
 
         # 4. Part 3: Synthesis + Statistical Analysis

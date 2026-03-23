@@ -30,18 +30,18 @@ DIMENSION_LABELS = [
 ]
 
 SYNTHESIS_SYSTEM_PROMPT = """
-You are a Chief Assessment Officer synthesizing two expert evaluations of a design concept into a single authoritative report.
+You are a Chief Assessment Officer synthesizing multiple expert evaluations of a design concept into a single authoritative report.
 
-You will receive two expert evaluations in JSON format. Your task is:
+You will receive 9 expert evaluations in JSON format (3 expert personas × 3 AI models each). Your task is:
 
-1. For each of the 6 dimensions, compute the MEAN score across both experts (round to 1 decimal place) and write a single synthesized reasoning paragraph (2-3 sentences max) that captures the key insights from both evaluators.
+1. For each of the 6 dimensions, compute the MEAN score across ALL evaluations (round to 1 decimal place) and write a single synthesized reasoning paragraph (2-3 sentences max) that captures the key insights from across all evaluators.
 
 2. Write 3-part instructor feedback:
    - intro: A single paragraph starting with a catchy memorable phrase that summarizes the overall performance.
    - pivot: Specific, actionable advice on what area needs the most attention.
    - next_step: A single concrete, immediate action the student can take.
 
-3. The overall_score must be the mathematical mean of both experts' overall_score values (round to 2 decimal places).
+3. The overall_score must be the mathematical mean of ALL experts' dimension scores (round to 2 decimal places).
 
 Return ONLY valid JSON in this exact schema:
 {
@@ -68,30 +68,31 @@ ICC_INTERPRETATION_PROMPT = """
 You are a statistics communicator for a student-facing design evaluation report.
 Given the following mathematically-computed statistics, write brief, plain-English interpretations.
 
-ICC value: {icc}
-ICC interpretation: {icc_interp}
-ANOVA p-value: {p_value}
-ANOVA significant: {anova_sig}
+Overall ICC value: {overall_icc}
+Overall ICC interpretation: {overall_icc_interp}
+Per-persona ICC values: {per_persona_icc}
+Two-Way ANOVA model effect p-value: {model_p}
+Two-Way ANOVA persona effect p-value: {persona_p}
 Highest-variance dimension: {outlier_dim}
 
 Write a JSON response with:
 - "icc_label": A 1-2 word badge label (e.g. "Excellent", "Good", "Moderate", "Poor")
-- "icc_message": One plain-English sentence explaining what this ICC score means for the student.
-- "anova_message": One plain-English sentence explaining what the ANOVA result means — be specific about the dimension.
+- "icc_message": One plain-English sentence explaining what the overall ICC score means for the student.
+- "anova_message": One plain-English sentence summarizing the ANOVA results — whether different AI models or different expert lenses produced significantly different scores.
 
 Return ONLY the JSON object, no other text.
 """
 
-def _compute_statistics(expert_results: list) -> dict:
-    """
-    Computes ICC and Repeated Measures ANOVA from the expert panel scores.
-    Uses pingouin for academically rigorous calculations.
-    """
-    # Build a long-format DataFrame: one row per (dimension, judge, score)
+
+def _build_long_df(expert_results: list) -> pd.DataFrame:
+    """Build a long-format DataFrame from the 9 expert results."""
     rows = []
     for expert in expert_results:
         result = expert.get("result", {})
-        judge = expert.get("assigned_model", "Unknown")
+        model = expert.get("model_provider", "Unknown")
+        persona = expert.get("persona", {})
+        persona_id = persona.get("persona_id", "unknown")
+        persona_name = persona.get("name", "Unknown")
         if not result:
             continue
         for dim_key, dim_label in zip(DIMENSION_KEYS, DIMENSION_LABELS):
@@ -100,84 +101,184 @@ def _compute_statistics(expert_results: list) -> dict:
                 try:
                     rows.append({
                         "dimension": dim_label,
-                        "judge": judge,
+                        "model_provider": model,
+                        "persona_id": persona_id,
+                        "persona_name": persona_name,
                         "score": float(score)
                     })
                 except (TypeError, ValueError):
                     pass
+    return pd.DataFrame(rows)
 
-    if len(rows) < 2:
-        return {
-            "icc": None,
-            "icc_label": "N/A",
-            "icc_message": "Not enough data to compute ICC.",
-            "p_value": None,
-            "anova_message": "Not enough data to compute ANOVA.",
-        }
 
-    df = pd.DataFrame(rows)
+def _compute_per_persona_icc(df: pd.DataFrame) -> list:
+    """Compute ICC3 for each persona — measures LLM agreement within each expert lens."""
+    results = []
+    for pid in df["persona_id"].unique():
+        persona_df = df[df["persona_id"] == pid].copy()
+        persona_name = persona_df["persona_name"].iloc[0] if len(persona_df) > 0 else "Unknown"
 
-    # ---- ICC Calculation ----
+        try:
+            icc_results = pg.intraclass_corr(
+                data=persona_df,
+                targets="dimension",
+                raters="model_provider",
+                ratings="score"
+            )
+            icc_row = icc_results[icc_results["Type"].isin(["ICC3", "ICC2"])].iloc[0]
+            icc_val = round(float(icc_row["ICC"]), 3)
+
+            if icc_val >= 0.75:
+                label = "Excellent"
+            elif icc_val >= 0.6:
+                label = "Good"
+            elif icc_val >= 0.4:
+                label = "Moderate"
+            else:
+                label = "Poor"
+
+            results.append({
+                "persona_id": pid,
+                "persona_name": persona_name,
+                "icc": icc_val,
+                "label": label
+            })
+        except Exception as e:
+            logger.warning(f"ICC calculation failed for persona {pid}: {e}")
+            results.append({
+                "persona_id": pid,
+                "persona_name": persona_name,
+                "icc": None,
+                "label": "N/A"
+            })
+
+    return results
+
+
+def _compute_overall_icc(df: pd.DataFrame) -> dict:
+    """Compute overall ICC across all 9 evaluations."""
     try:
+        # Create a unique rater ID for each (model_provider, persona_id) combo
+        df_copy = df.copy()
+        df_copy["rater"] = df_copy["model_provider"] + "_" + df_copy["persona_id"]
+
         icc_results = pg.intraclass_corr(
-            data=df,
-            targets="dimension",  # Items being graded (6 dimensions)
-            raters="judge",        # AI models
-            ratings="score"        # The 0-5 scores
+            data=df_copy,
+            targets="dimension",
+            raters="rater",
+            ratings="score"
         )
-        # Use ICC2 or ICC3 (Two-way mixed, absolute agreement)
         icc_row = icc_results[icc_results["Type"].isin(["ICC2", "ICC3"])].iloc[0]
         icc_val = round(float(icc_row["ICC"]), 3)
 
         if icc_val >= 0.75:
-            icc_interp = "excellent"
+            interp = "excellent"
         elif icc_val >= 0.6:
-            icc_interp = "good"
+            interp = "good"
         elif icc_val >= 0.4:
-            icc_interp = "moderate"
+            interp = "moderate"
         else:
-            icc_interp = "poor"
-    except Exception as e:
-        logger.warning(f"ICC calculation failed: {e}")
-        icc_val = None
-        icc_interp = "unavailable"
+            interp = "poor"
 
-    # ---- Repeated Measures ANOVA ----
+        return {"score": icc_val, "interp": interp}
+    except Exception as e:
+        logger.warning(f"Overall ICC calculation failed: {e}")
+        return {"score": None, "interp": "unavailable"}
+
+
+def _compute_two_way_anova(df: pd.DataFrame) -> dict:
+    """
+    Two-Way Repeated Measures ANOVA.
+    Factors: model_provider × persona_name on CAT scores.
+    """
     try:
+        # For RM-ANOVA we need 'subject' as the within-subject grouping.
+        # Here, 'dimension' serves as the subject (the items being rated).
         anova_results = pg.rm_anova(
             data=df,
             dv="score",
-            within="judge",
+            within="model_provider",
             subject="dimension",
             detailed=True
         )
-        p_value = round(float(anova_results["p_unc"].iloc[0]), 4)
-        anova_sig = p_value < 0.05
+        model_p = round(float(anova_results["p_unc"].iloc[0]), 4)
 
-        # Find dimension with highest variance between raters
-        pivot = df.groupby("dimension")["score"].std().idxmax()
+        # separate ANOVA for persona effect
+        anova_persona = pg.rm_anova(
+            data=df,
+            dv="score",
+            within="persona_name",
+            subject="dimension",
+            detailed=True
+        )
+        persona_p = round(float(anova_persona["p_unc"].iloc[0]), 4)
+
+        return {
+            "model_effect": {
+                "F": round(float(anova_results["F"].iloc[0]), 3),
+                "p": model_p,
+                "significant": model_p < 0.05
+            },
+            "persona_effect": {
+                "F": round(float(anova_persona["F"].iloc[0]), 3),
+                "p": persona_p,
+                "significant": persona_p < 0.05
+            }
+        }
     except Exception as e:
-        logger.warning(f"ANOVA calculation failed: {e}")
-        p_value = None
-        anova_sig = False
-        pivot = "unknown"
+        logger.warning(f"Two-Way ANOVA failed: {e}")
+        return {
+            "model_effect": {"F": None, "p": None, "significant": False},
+            "persona_effect": {"F": None, "p": None, "significant": False}
+        }
+
+
+def _compute_statistics(expert_results: list) -> dict:
+    """
+    Full statistical analysis for the 3×3 matrix:
+    - Per-persona ICC3
+    - Overall ICC
+    - Two-Way RM-ANOVA (model_provider × persona_name)
+    """
+    df = _build_long_df(expert_results)
+
+    if len(df) < 6:
+        return {
+            "per_persona_icc": [],
+            "overall_icc": {"score": None, "interp": "unavailable"},
+            "two_way_anova": {
+                "model_effect": {"F": None, "p": None, "significant": False},
+                "persona_effect": {"F": None, "p": None, "significant": False}
+            },
+            "outlier_dim": "unknown"
+        }
+
+    per_persona = _compute_per_persona_icc(df)
+    overall = _compute_overall_icc(df)
+    anova = _compute_two_way_anova(df)
+
+    # Find dimension with highest variance between raters
+    try:
+        outlier_dim = df.groupby("dimension")["score"].std().idxmax()
+    except Exception:
+        outlier_dim = "unknown"
 
     return {
-        "icc": icc_val,
-        "icc_interp": icc_interp,
-        "p_value": p_value,
-        "anova_sig": anova_sig,
-        "outlier_dim": pivot,
+        "per_persona_icc": per_persona,
+        "overall_icc": overall,
+        "two_way_anova": anova,
+        "outlier_dim": outlier_dim
     }
 
 
 async def _get_stat_interpretation(stats: dict) -> dict:
     """Ask gpt-4o to translate the computed stats numbers into plain English."""
     prompt = ICC_INTERPRETATION_PROMPT.format(
-        icc=stats.get("icc", "N/A"),
-        icc_interp=stats.get("icc_interp", "unavailable"),
-        p_value=stats.get("p_value", "N/A"),
-        anova_sig=stats.get("anova_sig", False),
+        overall_icc=stats.get("overall_icc", {}).get("score", "N/A"),
+        overall_icc_interp=stats.get("overall_icc", {}).get("interp", "unavailable"),
+        per_persona_icc=json.dumps(stats.get("per_persona_icc", []), default=str),
+        model_p=stats.get("two_way_anova", {}).get("model_effect", {}).get("p", "N/A"),
+        persona_p=stats.get("two_way_anova", {}).get("persona_effect", {}).get("p", "N/A"),
         outlier_dim=stats.get("outlier_dim", "unknown")
     )
     try:
@@ -200,7 +301,7 @@ async def _get_stat_interpretation(stats: dict) -> dict:
 
 async def synthesize(expert_results: list) -> dict:
     """
-    Main entry point: runs math then LLM synthesis.
+    Main entry point: runs math then LLM synthesis for the 3×3 matrix.
     Returns a dict with merged scores, feedback, and stats.
     """
     # Step 1: Filter to only successful results
@@ -210,14 +311,16 @@ async def synthesize(expert_results: list) -> dict:
         raise ValueError("No valid expert results to synthesize.")
 
     # Step 2: Run Python math for ICC and ANOVA
-    print("\nRunning statistical calculations (ICC + ANOVA)...")
+    print("\nRunning statistical calculations (per-persona ICC + Two-Way ANOVA)...")
     raw_stats = _compute_statistics(expert_results)
-    print(f"  ICC: {raw_stats.get('icc')} ({raw_stats.get('icc_interp')})")
-    print(f"  ANOVA p-value: {raw_stats.get('p_value')}, Significant: {raw_stats.get('anova_sig')}")
+    print(f"  Overall ICC: {raw_stats.get('overall_icc', {}).get('score')} ({raw_stats.get('overall_icc', {}).get('interp')})")
+    print(f"  Per-persona ICCs: {json.dumps(raw_stats.get('per_persona_icc', []), default=str)}")
+    anova = raw_stats.get("two_way_anova", {})
+    print(f"  ANOVA model p={anova.get('model_effect', {}).get('p')}, persona p={anova.get('persona_effect', {}).get('p')}")
 
     # Step 3: LLM synthesis of scores and feedback
     experts_text = "\n\n".join([
-        f"Expert {i+1} ({r['assigned_model']}):\n{json.dumps(r.get('result', {}), indent=2)}"
+        f"Expert {i+1} ({r.get('model_provider', '?')}, Persona: {r.get('persona', {}).get('name', '?')}):\n{json.dumps(r.get('result', {}), indent=2)}"
         for i, r in enumerate(valid_results)
     ])
 
@@ -240,26 +343,27 @@ async def synthesize(expert_results: list) -> dict:
         logger.error(f"Synthesis LLM call failed: {e}")
         raise
 
-    # Step 4: LLM translates ICC + ANOVA numbers into readable text
+    # Step 4: LLM translates stats into readable text
     stat_text = await _get_stat_interpretation(raw_stats)
     print(f"\n--- STAT INTERPRETATION ---")
     print(json.dumps(stat_text, indent=2))
 
     # Step 5: Assemble final stats object for the frontend
+    overall_icc = raw_stats.get("overall_icc", {})
+    interp = overall_icc.get("interp", "unavailable")
+
     synthesis["stats"] = {
-        "icc": {
-            "score": raw_stats.get("icc"),
+        "overall_icc": {
+            "score": overall_icc.get("score"),
             "label": stat_text.get("icc_label", "N/A"),
             "message": stat_text.get("icc_message", ""),
-            "bg": "bg-green-50" if raw_stats.get("icc_interp") in ["excellent", "good"] else "bg-yellow-50",
-            "color": "text-green-700" if raw_stats.get("icc_interp") in ["excellent", "good"] else "text-yellow-700",
-            "border": "border-green-200" if raw_stats.get("icc_interp") in ["excellent", "good"] else "border-yellow-200",
+            "bg": "bg-green-50" if interp in ["excellent", "good"] else "bg-yellow-50",
+            "color": "text-green-700" if interp in ["excellent", "good"] else "text-yellow-700",
+            "border": "border-green-200" if interp in ["excellent", "good"] else "border-yellow-200",
         },
-        "anova": {
-            "p_value": raw_stats.get("p_value"),
-            "significant": raw_stats.get("anova_sig"),
-            "message": stat_text.get("anova_message", ""),
-        }
+        "per_persona_icc": raw_stats.get("per_persona_icc", []),
+        "two_way_anova": raw_stats.get("two_way_anova", {}),
+        "anova_message": stat_text.get("anova_message", ""),
     }
 
     return synthesis

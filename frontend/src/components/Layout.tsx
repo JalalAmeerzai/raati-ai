@@ -1,87 +1,107 @@
-import React from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, PieChart, Users, Settings, Bell } from 'lucide-react';
+import { LayoutDashboard, PieChart, Users, Settings, Bell, Menu, Moon, Sun } from 'lucide-react';
 
-interface LayoutProps {
-    children: React.ReactNode;
-    title: string;
-}
+/* ───── Theme Context ───── */
+interface ThemeCtx { dark: boolean; toggle: () => void; collapsed: boolean; toggleSidebar: () => void }
+const ThemeContext = createContext<ThemeCtx>({ dark: false, toggle: () => {}, collapsed: false, toggleSidebar: () => {} });
+export const useTheme = () => useContext(ThemeContext);
+
+interface LayoutProps { children: React.ReactNode; title: string }
 
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
+    const [dark, setDark] = useState(false);
+    const [collapsed, setCollapsed] = useState(false);
+    const toggle = () => setDark(d => !d);
+    const toggleSidebar = () => setCollapsed(c => !c);
+
+    const bg     = dark ? 'bg-[#0f1117]' : 'bg-gray-50';
+    const cardBg = dark ? 'bg-[#181b23]' : 'bg-white';
+    const text   = dark ? 'text-gray-100' : 'text-gray-900';
+    const border = dark ? 'border-gray-700/50' : 'border-gray-200';
+    const subtext = dark ? 'text-gray-400' : 'text-gray-600';
+
     return (
-        <div className="flex h-screen bg-gray-50 text-gray-900">
-            {/* Sidebar */}
-            <aside className="w-64 bg-[#1a237e] text-white flex flex-col">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold tracking-tight">C.ai</h1>
-                </div>
+        <ThemeContext.Provider value={{ dark, toggle, collapsed, toggleSidebar }}>
+            <div className={`flex h-screen ${bg} ${text} transition-colors duration-300`}>
 
-                <nav className="flex-1 px-4 space-y-1">
-                    <NavLink
-                        to="/dashboard"
-                        className={({ isActive }) =>
-                            `flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`
-                        }
-                    >
-                        <LayoutDashboard size={20} />
-                        <span>Dashboard</span>
-                    </NavLink>
-
-                    <NavLink
-                        to="/history"
-                        className={({ isActive }) =>
-                            `flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`
-                        }
-                    >
-                        <Users size={20} />
-                        <span>Submissions</span>
-                    </NavLink>
-
-                    <NavLink
-                        to="/analytics"
-                        className={({ isActive }) =>
-                            `flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`
-                        }
-                    >
-                        <PieChart size={20} />
-                        <span>Analytics</span>
-                    </NavLink>
-                </nav>
-
-                <div className="p-4">
-                    <button className="flex items-center space-x-3 text-gray-400 hover:text-white transition-colors w-full px-4 py-2">
-                        <Settings size={20} />
-                        <span>Settings</span>
-                    </button>
-                </div>
-            </aside>
-
-            {/* Main Content */}
-            <main className="flex-1 flex flex-col overflow-hidden text-gray-900 bg-white">
-                {/* Header */}
-                <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
-                    <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
-
-                    <div className="flex items-center space-x-6">
-                        <button className="text-gray-400 hover:text-gray-600 relative">
-                            <Bell size={20} />
-                            <span className="absolute top-0 right-0 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500"></span>
+                {/* ─── Sidebar ─── */}
+                <aside className={`${collapsed ? 'w-16' : 'w-64'} ${dark ? 'bg-[#12141c]' : 'bg-[#1a237e]'} text-white flex flex-col transition-all duration-300 flex-shrink-0`}>
+                    {/* Top: Logo + Collapse toggle */}
+                    <div className={`flex items-center ${collapsed ? 'justify-center py-4 px-2' : 'justify-between px-5 py-4'}`}>
+                        {!collapsed && <h1 className="text-xl font-bold tracking-tight">raati.ai</h1>}
+                        <button
+                            onClick={toggleSidebar}
+                            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                            className="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                        >
+                            <Menu size={18} />
                         </button>
-                        <div className="flex items-center space-x-3">
-                            <div className="h-8 w-8 rounded-full bg-gray-200 overflow-hidden">
-                                <img src="https://ui-avatars.com/api/?name=Jalal+Ghaffar&background=0D8ABC&color=fff" alt="Profile" />
-                            </div>
-                            <span className="text-sm font-medium text-gray-700">Jalal Ghaffar</span>
-                        </div>
                     </div>
-                </header>
 
-                {/* Page Content */}
-                <div className="flex-1 overflow-auto p-8 bg-gray-50">
-                    {children}
-                </div>
-            </main>
-        </div>
+                    {/* Nav */}
+                    <nav className={`flex-1 ${collapsed ? 'px-2' : 'px-4'} space-y-1 mt-2`}>
+                        {[
+                            { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+                            { to: '/history', icon: Users, label: 'Submissions' },
+                            { to: '/analytics', icon: PieChart, label: 'Analytics' },
+                        ].map(({ to, icon: Icon, label }) => (
+                            <NavLink
+                                key={to}
+                                to={to}
+                                title={collapsed ? label : undefined}
+                                className={({ isActive }) =>
+                                    `flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} px-3 py-3 rounded-lg transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`
+                                }
+                            >
+                                <Icon size={20} />
+                                {!collapsed && <span>{label}</span>}
+                            </NavLink>
+                        ))}
+                    </nav>
+
+                    {/* Bottom: Settings */}
+                    <div className={`${collapsed ? 'px-2' : 'px-4'} pb-4`}>
+                        <button className={`flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} text-gray-400 hover:text-white transition-colors w-full px-3 py-2 rounded-lg hover:bg-white/5`}>
+                            <Settings size={20} />
+                            {!collapsed && <span className="text-sm">Settings</span>}
+                        </button>
+                    </div>
+                </aside>
+
+                {/* ─── Main Content ─── */}
+                <main className="flex-1 flex flex-col overflow-hidden transition-colors duration-300">
+                    {/* Header */}
+                    <header className={`h-14 ${cardBg} ${border} border-b flex items-center justify-between px-6 transition-colors duration-300`}>
+                        <h2 className={`text-lg font-semibold ${dark ? 'text-gray-100' : 'text-gray-800'}`}>{title}</h2>
+                        <div className="flex items-center space-x-4">
+                            <button
+                                onClick={toggle}
+                                className={`p-1.5 rounded-lg transition-colors ${dark ? 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                                title={dark ? 'Light mode' : 'Dark mode'}
+                            >
+                                {dark ? <Sun size={18} /> : <Moon size={18} />}
+                            </button>
+                            <button className={`relative ${dark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'}`}>
+                                <Bell size={18} />
+                                <span className="absolute -top-0.5 -right-0.5 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500" />
+                            </button>
+                            <div className="flex items-center space-x-2">
+                                <div className="h-7 w-7 rounded-full bg-gray-200 overflow-hidden">
+                                    <img src="https://ui-avatars.com/api/?name=Jalal+Ghaffar&background=0D8ABC&color=fff" alt="Profile" />
+                                </div>
+                                <span className={`text-sm font-medium ${subtext} hidden sm:block`}>Jalal Ghaffar</span>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Page Content */}
+                    <div className={`flex-1 overflow-auto p-6 ${bg} transition-colors duration-300`}>
+                        {children}
+                    </div>
+                </main>
+            </div>
+        </ThemeContext.Provider>
     );
 };
 
