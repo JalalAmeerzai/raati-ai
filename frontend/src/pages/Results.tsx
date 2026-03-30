@@ -32,29 +32,35 @@ interface ResultData {
     stats?: {
         overall_icc: { score: number | null; label: string; message: string; bg: string; color: string; border: string };
         per_persona_icc: PerPersonaICC[];
-        two_way_anova: { model_effect: { F: number | null; p: number | null; significant: boolean }; persona_effect: { F: number | null; p: number | null; significant: boolean } };
-        anova_message: string;
+        kendalls_w?: { W: number | null };
+        variance_analysis?: { per_dimension: Record<string, number>; average_variance: number };
+        variance_message: string;
     };
 }
 
 /* ───────────────────── SMALL COMPONENTS ───────────────────── */
 
-const MiniScoreBar: React.FC<{ label: string; score: number; reasoning?: string; dark?: boolean }> = ({ label, score, reasoning, dark }) => {
+const MiniScoreBar: React.FC<{ label: string; score: number; reasoning?: string; dark?: boolean; invertTooltip?: boolean }> = ({ label, score, reasoning, dark, invertTooltip }) => {
     const [showTip, setShowTip] = useState(false);
     const pct = (score / 5) * 100;
     let color = "bg-blue-500";
     if (score >= 4.5) color = "bg-emerald-500"; else if (score <= 3.0) color = "bg-red-500"; else if (score < 4.0) color = "bg-amber-500";
     return (
-        <div className="relative isolate flex items-center justify-between text-[10px] mb-1.5 last:mb-0" onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
+        <div className="relative flex items-center justify-between text-[10px] mb-1.5 last:mb-0 hover:z-[100]" onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
             <span className={`font-medium truncate w-16 ${dark ? 'text-gray-400' : 'text-gray-500'}`}>{label}</span>
             <div className={`flex-1 mx-2 h-1.5 rounded-full overflow-hidden ${dark ? 'bg-gray-700' : 'bg-gray-100'}`}>
                 <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
             </div>
             <span className={`font-bold w-5 text-right ${dark ? 'text-gray-300' : 'text-gray-700'}`}>{score.toFixed(1)}</span>
             {reasoning && showTip && (
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-52 p-2.5 bg-gray-800 text-white text-[10px] leading-relaxed rounded-lg shadow-xl z-[200] pointer-events-none">
-                    <div className="font-bold text-blue-300 mb-1">{label}</div>{reasoning}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800" />
+                <div className={`absolute left-1/2 -translate-x-1/2 w-52 p-3 text-[10px] leading-relaxed rounded-lg shadow-2xl border z-[300] pointer-events-none opacity-100 ${dark ? 'bg-white text-gray-800 border-gray-200' : 'bg-gray-900 text-gray-100 border-gray-800'} ${invertTooltip ? 'top-full mt-2' : 'bottom-full mb-2'}`}>
+                    <div className={`font-bold mb-1 ${dark ? 'text-blue-600' : 'text-blue-400'}`}>{label}</div>
+                    <div className="font-medium">{reasoning}</div>
+                    
+                    {/* Outer border triangle */}
+                    <div className={`absolute left-1/2 -translate-x-1/2 border-[5px] border-transparent ${invertTooltip ? `bottom-full ${dark ? 'border-b-gray-200' : 'border-b-gray-800'}` : `top-full ${dark ? 'border-t-gray-200' : 'border-t-gray-800'}`}`} />
+                    {/* Inner fill triangle */}
+                    <div className={`absolute left-1/2 -translate-x-1/2 border-4 border-transparent ${invertTooltip ? `bottom-full ${dark ? 'border-b-white' : 'border-b-gray-900'}` : `top-full ${dark ? 'border-t-white' : 'border-t-gray-900'}`}`} />
                 </div>
             )}
         </div>
@@ -69,22 +75,27 @@ const LLMIcon: React.FC<{ provider: string; size?: number }> = ({ provider, size
 const llmGradient = (p: string) => p === 'xAI' ? "from-red-500 to-rose-600" : p === 'Claude' ? "from-orange-400 to-amber-500" : "from-emerald-400 to-teal-500";
 
 /* ─── DimBar ─── */
-const DimBar: React.FC<{ label: string; score: number; reasoning: string; dark: boolean }> = ({ label, score, reasoning, dark }) => {
+const DimBar: React.FC<{ label: string; score: number; reasoning: string; dark: boolean; invertTooltip?: boolean }> = ({ label, score, reasoning, dark, invertTooltip }) => {
     const [showTip, setShowTip] = useState(false);
     const pct = (score / 5) * 100;
     let color = "bg-blue-500";
     if (score >= 4.5) color = "bg-emerald-500"; else if (score <= 3.0) color = "bg-red-500"; else if (score < 4.0) color = "bg-amber-500";
     return (
-        <div className="relative isolate flex items-center gap-2 py-1 cursor-help" onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
+        <div className="relative flex items-center gap-2 py-1 cursor-help hover:z-[100]" onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)}>
             <span className={`text-[10px] font-semibold w-14 truncate ${dark ? 'text-gray-400' : 'text-gray-600'}`}>{label}</span>
             <div className={`flex-1 h-2 rounded-full overflow-hidden ${dark ? 'bg-gray-700' : 'bg-gray-100'}`}>
                 <div className={`h-full rounded-full ${color} transition-all`} style={{ width: `${pct}%` }} />
             </div>
             <span className={`text-[11px] font-bold w-5 text-right ${dark ? 'text-gray-300' : 'text-gray-700'}`}>{score}</span>
             {showTip && (
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-2.5 bg-gray-800 text-white text-[10px] leading-relaxed rounded-lg shadow-xl z-[200] pointer-events-none">
-                    <div className="font-bold text-blue-300 mb-1">{label} — {score}/5</div>{reasoning}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800" />
+                <div className={`absolute left-1/2 -translate-x-1/2 w-56 p-3 text-[10px] leading-relaxed rounded-lg shadow-2xl border z-[300] pointer-events-none opacity-100 ${dark ? 'bg-white text-gray-800 border-gray-200' : 'bg-gray-900 text-gray-100 border-gray-800'} ${invertTooltip ? 'top-full mt-2' : 'bottom-full mb-2'}`}>
+                    <div className={`font-bold mb-1 ${dark ? 'text-blue-600' : 'text-blue-400'}`}>{label} — {score}/5</div>
+                    <div className="font-medium">{reasoning}</div>
+                    
+                    {/* Outer border triangle */}
+                    <div className={`absolute left-1/2 -translate-x-1/2 border-[5px] border-transparent ${invertTooltip ? `bottom-full ${dark ? 'border-b-gray-200' : 'border-b-gray-800'}` : `top-full ${dark ? 'border-t-gray-200' : 'border-t-gray-800'}`}`} />
+                    {/* Inner fill triangle */}
+                    <div className={`absolute left-1/2 -translate-x-1/2 border-4 border-transparent ${invertTooltip ? `bottom-full ${dark ? 'border-b-white' : 'border-b-gray-900'}` : `top-full ${dark ? 'border-t-white' : 'border-t-gray-900'}`}`} />
                 </div>
             )}
         </div>
@@ -97,9 +108,9 @@ const LLMCard: React.FC<{ agent: AgentResult; dark: boolean }> = ({ agent, dark 
     const grad = llmGradient(agent.model_provider);
     const cardBg = dark ? 'bg-[#1e2130] border-gray-700/50' : 'bg-white border-gray-200';
     return (
-        <div className={`${cardBg} border rounded-xl shadow-sm hover:shadow-md transition-shadow group/card relative overflow-hidden`}>
-            {/* Gradient bar — inside overflow-hidden so it respects border-radius */}
-            <div className={`h-1 bg-gradient-to-r ${grad} opacity-80 group-hover/card:opacity-100 transition-opacity`} />
+        <div className={`${cardBg} border rounded-xl shadow-sm hover:shadow-md transition-shadow group/card relative`}>
+            {/* Gradient bar — rounded top to respect card radius */}
+            <div className={`h-1 rounded-t-xl bg-gradient-to-r ${grad} opacity-80 group-hover/card:opacity-100 transition-opacity`} />
             <div className="p-4">
                 <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-1.5">
@@ -116,9 +127,9 @@ const LLMCard: React.FC<{ agent: AgentResult; dark: boolean }> = ({ agent, dark 
                 ) : (
                     <>
                         <div className="mb-3 space-y-0.5">
-                            <MiniScoreBar label="Creativity" score={r.creativity_score || 0} reasoning={r.creativity_reasoning} dark={dark} />
-                            <MiniScoreBar label="Originality" score={r.originality_score || 0} reasoning={r.originality_reasoning} dark={dark} />
-                            <MiniScoreBar label="Usefulness" score={r.usefulness_relevance_score || 0} reasoning={r.usefulness_relevance_reasoning} dark={dark} />
+                            <MiniScoreBar label="Creativity" score={r.creativity_score || 0} reasoning={r.creativity_reasoning} dark={dark} invertTooltip />
+                            <MiniScoreBar label="Originality" score={r.originality_score || 0} reasoning={r.originality_reasoning} dark={dark} invertTooltip />
+                            <MiniScoreBar label="Usefulness" score={r.usefulness_relevance_score || 0} reasoning={r.usefulness_relevance_reasoning} dark={dark} invertTooltip />
                             <MiniScoreBar label="Clarity" score={r.clarity_score || 0} reasoning={r.clarity_reasoning} dark={dark} />
                             <MiniScoreBar label="Detail" score={r.level_of_detail_elaboration_score || 0} reasoning={r.level_of_detail_elaboration_reasoning} dark={dark} />
                             <MiniScoreBar label="Feasibility" score={r.feasibility_score || 0} reasoning={r.feasibility_reasoning} dark={dark} />
@@ -189,154 +200,430 @@ const Results: React.FC = () => {
      * PDF — builds a multi-page document directly from data using jsPDF.
      * No DOM capture needed, completely avoids oklch/oklab CSS issues.
      */
-    const handleDownloadPDF = () => {
+    const handleDownloadPDF = async () => {
         if (!data) return;
         setPdfLoading(true);
 
         try {
             const pdf = new jsPDF('p', 'mm', 'a4');
             const W = pdf.internal.pageSize.getWidth();
+            const H = pdf.internal.pageSize.getHeight();
             const margin = 15;
             const contentW = W - margin * 2;
             let y = margin;
 
             const checkPage = (needed: number) => {
-                if (y + needed > pdf.internal.pageSize.getHeight() - margin) {
+                if (y + needed > H - 14) {
                     pdf.addPage();
                     y = margin;
                 }
             };
 
-            const addLine = (text: string, size: number, style: 'normal' | 'bold' = 'normal', color: [number, number, number] = [31, 41, 55]) => {
+            const addLine = (text: string, size: number, style: 'normal' | 'bold' = 'normal', color: [number, number, number] = [31, 41, 55], maxW?: number) => {
                 pdf.setFontSize(size);
                 pdf.setFont('helvetica', style);
                 pdf.setTextColor(...color);
-                const lines = pdf.splitTextToSize(text, contentW);
+                const w = maxW ?? contentW;
+                const lines = pdf.splitTextToSize(text, w);
                 checkPage(lines.length * size * 0.5);
                 pdf.text(lines, margin, y);
                 y += lines.length * size * 0.45 + 2;
             };
 
             const addSep = () => {
+                y += 2;
                 checkPage(4);
-                pdf.setDrawColor(229, 231, 235);
+                pdf.setDrawColor(215, 218, 228);
+                pdf.setLineWidth(0.2);
                 pdf.line(margin, y, W - margin, y);
+                y += 5;
+            };
+
+            /* ── Section heading with accent bar ── */
+            const addSection = (title: string) => {
+                y += 3;
+                checkPage(12);
+                pdf.setFillColor(26, 35, 126);
+                pdf.rect(margin, y, 2, 6, 'F');
+                pdf.setFontSize(12);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(26, 35, 126);
+                pdf.text(title, margin + 5, y + 5);
+                y += 11;
+            };
+
+            /* ── Table with visible column headers + alternating rows ── */
+            const drawTable = (headers: string[], rows: string[][], colWidths: number[]) => {
+                const rowH = 8;
+                const fs = 7;
+                const accentClr: [number, number, number] = [26, 35, 126];
+                const hdrBg: [number, number, number] = [232, 234, 248];
+                const hdrBorder: [number, number, number] = [180, 185, 210];
+                const cellBorder: [number, number, number] = [220, 222, 232];
+                const txtClr: [number, number, number] = [55, 65, 81];
+                const altBg: [number, number, number] = [248, 249, 253];
+
+                checkPage(rowH * 2 + 6);
+
+                // Header row
+                pdf.setDrawColor(...hdrBorder);
+                let xPos = margin;
+                for (let c = 0; c < headers.length; c++) {
+                    pdf.setFillColor(...hdrBg);
+                    pdf.rect(xPos, y, colWidths[c], rowH, 'FD');
+                    pdf.setFontSize(fs);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setTextColor(...accentClr);
+                    const hText = pdf.splitTextToSize(headers[c], colWidths[c] - 3);
+                    pdf.text(hText[0] || headers[c], xPos + 1.5, y + rowH - 2.5);
+                    xPos += colWidths[c];
+                }
+                y += rowH;
+
+                // Data rows
+                for (let ri = 0; ri < rows.length; ri++) {
+                    const row = rows[ri];
+                    checkPage(rowH + 2);
+                    xPos = margin;
+                    for (let c = 0; c < row.length; c++) {
+                        pdf.setDrawColor(...cellBorder);
+                        if (ri % 2 === 1) {
+                            pdf.setFillColor(...altBg);
+                            pdf.rect(xPos, y, colWidths[c], rowH, 'FD');
+                        } else {
+                            pdf.rect(xPos, y, colWidths[c], rowH);
+                        }
+                        pdf.setFontSize(fs);
+                        pdf.setFont('helvetica', c === 0 ? 'bold' : 'normal');
+                        pdf.setTextColor(...txtClr);
+                        const cellText = pdf.splitTextToSize(row[c] || '', colWidths[c] - 3);
+                        pdf.text(cellText[0] || '', xPos + 1.5, y + rowH - 2.5);
+                        xPos += colWidths[c];
+                    }
+                    y += rowH;
+                }
                 y += 4;
             };
 
-            // ── Header ──
-            addLine('raati.ai — Evaluation Report', 18, 'bold', [26, 35, 126]);
-            addLine(`Report ID: ${data.id}`, 8, 'normal', [107, 114, 128]);
-            y += 4;
-            addSep();
+            /* ── Badge pill ── */
+            const addBadge = (label: string, value: string, badge: string, clr: [number, number, number]) => {
+                checkPage(8);
+                pdf.setFontSize(8);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(75, 85, 99);
+                pdf.text(label, margin, y);
+                pdf.setTextColor(31, 41, 55);
+                pdf.text(value, margin + 58, y);
+                pdf.setFillColor(...clr);
+                const bx = margin + 75;
+                pdf.roundedRect(bx, y - 3, 20, 4.5, 1, 1, 'F');
+                pdf.setFontSize(6);
+                pdf.setTextColor(255, 255, 255);
+                pdf.text(badge, bx + 10, y - 0.5, { align: 'center' });
+                y += 7;
+            };
 
-            // ── Overall Score ──
-            addLine(`Overall Composite Score: ${data.overall_score}/5`, 14, 'bold');
-            y += 2;
+            // ════════════════════════ HEADER BAR ════════════════════════
+            pdf.setFillColor(26, 35, 126);
+            pdf.rect(0, 0, W, 18, 'F');
+            pdf.setFontSize(16);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setTextColor(255, 255, 255);
+            pdf.text('raati.ai — Evaluation Report', margin, 12);
+            pdf.setFontSize(8);
+            pdf.setTextColor(200, 205, 230);
+            pdf.text(`ID: ${data.id}`, W - margin, 12, { align: 'right' });
+            y = 24;
 
-            // ── Dimension Scores ──
-            const dims = [
-                ['Creativity', data.creativity_score, data.creativity_reasoning],
-                ['Originality', data.originality_score, data.originality_reasoning],
-                ['Usefulness & Relevance', data.usefulness_relevance_score, data.usefulness_relevance_reasoning],
-                ['Clarity', data.clarity_score, data.clarity_reasoning],
-                ['Level of Detail', data.level_of_detail_elaboration_score, data.level_of_detail_elaboration_reasoning],
-                ['Feasibility', data.feasibility_score, data.feasibility_reasoning],
-            ] as [string, number, string][];
+            // ════════════════════ IMAGE + OVERALL SCORE + DESCRIPTION ════════════════════
+            try {
+                const imgUrl = `http://localhost:8000${data.image_url}`;
+                const resp = await fetch(imgUrl);
+                const blob = await resp.blob();
+                const imgData = await new Promise<string>((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve(reader.result as string);
+                    reader.readAsDataURL(blob);
+                });
+                checkPage(55);
+                const imgW = 42;
+                const imgH = 42;
+                pdf.setFillColor(245, 246, 250);
+                pdf.roundedRect(margin, y, imgW + 4, imgH + 4, 2, 2, 'F');
+                pdf.addImage(imgData, 'JPEG', margin + 2, y + 2, imgW, imgH);
 
-            for (const [name, score, reasoning] of dims) {
-                checkPage(16);
-                addLine(`${name}: ${score}/5`, 10, 'bold');
-                addLine(reasoning, 8, 'normal', [75, 85, 99]);
-                y += 1;
+                const infoX = margin + imgW + 10;
+                const infoW = contentW - imgW - 10;
+
+                // Overall score badge
+                pdf.setFillColor(26, 35, 126);
+                pdf.roundedRect(infoX, y, 32, 14, 3, 3, 'F');
+                pdf.setFontSize(18);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(255, 255, 255);
+                pdf.text(`${data.overall_score}`, infoX + 16, y + 9, { align: 'center' });
+                pdf.setFontSize(8);
+                pdf.text('/5', infoX + 27, y + 9);
+                pdf.setFontSize(6);
+                pdf.setTextColor(200, 205, 230);
+                pdf.text('COMPOSITE SCORE', infoX + 16, y + 13, { align: 'center' });
+
+                // Description
+                pdf.setFontSize(8);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(26, 35, 126);
+                pdf.text('Assignment Instructions', infoX, y + 20);
+                pdf.setFont('helvetica', 'normal');
+                pdf.setTextColor(75, 85, 99);
+                pdf.setFontSize(7);
+                const descLines = pdf.splitTextToSize(data.description || '', infoW);
+                pdf.text(descLines.slice(0, 6), infoX, y + 25);
+                y += imgH + 8;
+            } catch {
+                addLine(`Overall Composite Score: ${data.overall_score}/5`, 14, 'bold', [26, 35, 126]);
+                y += 4;
             }
+
             addSep();
 
-            // ── Instructor Feedback ──
-            addLine('Instructor Feedback', 12, 'bold');
-            addLine(data.instructor_feedback_intro, 9, 'normal', [55, 65, 81]);
-            y += 2;
+            // ════════════════════ RADAR CHART ════════════════════
+            try {
+                checkPage(75);
+                addSection('Score Distribution');
+                const cx = W / 2;
+                const cy = y + 28;
+                const radius = 25;
+                const dims = ['Creativity', 'Originality', 'Usefulness', 'Clarity', 'Detail', 'Feasibility'];
+                const scores = [
+                    data.creativity_score, data.originality_score, data.usefulness_relevance_score,
+                    data.clarity_score, data.level_of_detail_elaboration_score, data.feasibility_score
+                ];
+                const n = dims.length;
 
+                pdf.setDrawColor(220, 225, 235);
+                pdf.setLineWidth(0.12);
+                for (let ring = 1; ring <= 5; ring++) {
+                    const r = (ring / 5) * radius;
+                    for (let i = 0; i < n; i++) {
+                        const a1 = (Math.PI * 2 * i) / n - Math.PI / 2;
+                        const a2 = (Math.PI * 2 * ((i + 1) % n)) / n - Math.PI / 2;
+                        pdf.line(cx + r * Math.cos(a1), cy + r * Math.sin(a1), cx + r * Math.cos(a2), cy + r * Math.sin(a2));
+                    }
+                }
+                for (let i = 0; i < n; i++) {
+                    const a = (Math.PI * 2 * i) / n - Math.PI / 2;
+                    pdf.line(cx, cy, cx + radius * Math.cos(a), cy + radius * Math.sin(a));
+                }
+                pdf.setDrawColor(59, 130, 246);
+                pdf.setLineWidth(0.5);
+                pdf.setFillColor(59, 130, 246);
+                const points: [number, number][] = [];
+                for (let i = 0; i < n; i++) {
+                    const a = (Math.PI * 2 * i) / n - Math.PI / 2;
+                    const r = ((scores[i] || 0) / 5) * radius;
+                    points.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+                }
+                for (let i = 0; i < n; i++) {
+                    const next = (i + 1) % n;
+                    pdf.line(points[i][0], points[i][1], points[next][0], points[next][1]);
+                }
+                for (const [px, py] of points) pdf.circle(px, py, 0.7, 'F');
+                pdf.setFontSize(6.5);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(55, 65, 81);
+                for (let i = 0; i < n; i++) {
+                    const a = (Math.PI * 2 * i) / n - Math.PI / 2;
+                    const lx = cx + (radius + 7) * Math.cos(a);
+                    const ly = cy + (radius + 7) * Math.sin(a);
+                    const align = Math.abs(Math.cos(a)) < 0.1 ? 'center' : Math.cos(a) > 0 ? 'left' : 'right';
+                    pdf.text(`${dims[i]} (${scores[i]}/5)`, lx, ly + 1, { align: align as any });
+                }
+                y = cy + radius + 10;
+            } catch (e) { console.warn('Chart error:', e); }
+
+            addSep();
+
+            // ════════════════════ DIMENSION SCORES TABLE ════════════════════
+            addSection('Dimension Scores');
+            const dimHeaders = ['Dimension', 'Score', 'AI Reasoning'];
+            const dimColWidths = [30, 14, contentW - 44];
+            const dimRows: string[][] = [
+                ['Creativity', `${data.creativity_score}/5`, data.creativity_reasoning || ''],
+                ['Originality', `${data.originality_score}/5`, data.originality_reasoning || ''],
+                ['Usefulness', `${data.usefulness_relevance_score}/5`, data.usefulness_relevance_reasoning || ''],
+                ['Clarity', `${data.clarity_score}/5`, data.clarity_reasoning || ''],
+                ['Detail', `${data.level_of_detail_elaboration_score}/5`, data.level_of_detail_elaboration_reasoning || ''],
+                ['Feasibility', `${data.feasibility_score}/5`, data.feasibility_reasoning || ''],
+            ];
+            drawTable(dimHeaders, dimRows, dimColWidths);
+
+            addSep();
+
+            // ════════════════════ INSTRUCTOR FEEDBACK ════════════════════
+            addSection('Instructor Feedback');
+            if (data.instructor_feedback_intro) {
+                addLine(data.instructor_feedback_intro, 8.5, 'normal', [55, 65, 81]);
+                y += 3;
+            }
             if (data.instructor_feedback_pivot) {
-                addLine('Pivot:', 10, 'bold', [180, 120, 20]);
-                addLine(data.instructor_feedback_pivot, 9, 'normal', [75, 85, 99]);
+                checkPage(14);
+                pdf.setFillColor(255, 248, 235);
+                pdf.setDrawColor(245, 190, 80);
+                pdf.roundedRect(margin, y, contentW, 12, 1.5, 1.5, 'FD');
+                pdf.setFontSize(7);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(180, 120, 20);
+                pdf.text('\u25B8 PIVOT', margin + 3, y + 4.5);
+                pdf.setFont('helvetica', 'normal');
+                pdf.setTextColor(100, 80, 40);
+                const pivotLines = pdf.splitTextToSize(data.instructor_feedback_pivot, contentW - 8);
+                pdf.text(pivotLines[0] || '', margin + 3, y + 9);
+                y += 15;
             }
             if (data.instructor_feedback_next_step) {
-                addLine('Next Step:', 10, 'bold', [16, 125, 80]);
-                addLine(data.instructor_feedback_next_step, 9, 'normal', [75, 85, 99]);
+                checkPage(14);
+                pdf.setFillColor(235, 250, 240);
+                pdf.setDrawColor(60, 180, 100);
+                pdf.roundedRect(margin, y, contentW, 12, 1.5, 1.5, 'FD');
+                pdf.setFontSize(7);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setTextColor(16, 125, 80);
+                pdf.text('\u25B8 NEXT STEP', margin + 3, y + 4.5);
+                pdf.setFont('helvetica', 'normal');
+                pdf.setTextColor(40, 100, 60);
+                const nextLines = pdf.splitTextToSize(data.instructor_feedback_next_step, contentW - 8);
+                pdf.text(nextLines[0] || '', margin + 3, y + 9);
+                y += 15;
             }
+
             addSep();
 
-            // ── Expert Panel ──
+            // ════════════════════ EXPERT PANEL TABLES ════════════════════
             if (personaGroups.length > 0) {
-                addLine('Expert Panel Results', 14, 'bold');
-                y += 2;
+                addSection(`Expert Panel \u2014 ${personaGroups.length} Personas \u00d7 3 LLMs`);
 
                 for (const group of personaGroups) {
-                    checkPage(20);
-                    addLine(`${group.persona.name} — ${group.persona.title}`, 11, 'bold', [59, 130, 246]);
-                    addLine(`"${group.persona.sub_text}"`, 8, 'normal', [107, 114, 128]);
-                    y += 2;
+                    checkPage(25);
+                    pdf.setFontSize(9);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setTextColor(59, 130, 246);
+                    pdf.text(`${group.persona.name} \u2014 ${group.persona.title}`, margin, y);
+                    y += 4;
+                    pdf.setFontSize(7);
+                    pdf.setFont('helvetica', 'normal');
+                    pdf.setTextColor(130, 135, 150);
+                    const stLines = pdf.splitTextToSize(`"${group.persona.sub_text}"`, contentW);
+                    pdf.text(stLines[0] || '', margin, y);
+                    y += 5;
 
-                    for (const agent of group.results) {
+                    const panelHeaders = ['LLM Provider', 'Overall', 'Creativity', 'Originality', 'Usefulness', 'Clarity', 'Detail', 'Feasibility'];
+                    const panelColWidths = [24, 14, 18, 18, 20, 18, 18, 18];
+                    const totalUsed = panelColWidths.reduce((a, b) => a + b, 0);
+                    if (totalUsed < contentW) panelColWidths[panelColWidths.length - 1] += contentW - totalUsed;
+
+                    const panelRows: string[][] = group.results.map(agent => {
                         const r = agent.result;
-                        if (!r) {
-                            addLine(`  ${agent.model_provider}: Error — ${agent.error || 'Unknown'}`, 9, 'normal', [220, 38, 38]);
-                            continue;
-                        }
-                        checkPage(30);
-                        addLine(`  ${agent.model_provider} — Overall: ${r.overall_score.toFixed(1)}/5`, 10, 'bold');
-                        const scores = [
-                            `Creativity: ${r.creativity_score}`,
-                            `Originality: ${r.originality_score}`,
-                            `Usefulness: ${r.usefulness_relevance_score}`,
-                            `Clarity: ${r.clarity_score}`,
-                            `Detail: ${r.level_of_detail_elaboration_score}`,
-                            `Feasibility: ${r.feasibility_score}`,
-                        ].join('  |  ');
-                        addLine(`    ${scores}`, 8, 'normal', [75, 85, 99]);
-                        if (r.instructor_feedback) {
-                            addLine(`    Feedback: ${r.instructor_feedback}`, 8, 'normal', [75, 85, 99]);
-                        }
-                        y += 2;
-                    }
-                    y += 2;
+                        if (!r) return [agent.model_provider, 'Err', '-', '-', '-', '-', '-', '-'];
+                        return [
+                            agent.model_provider,
+                            r.overall_score.toFixed(1),
+                            String(r.creativity_score),
+                            String(r.originality_score),
+                            String(r.usefulness_relevance_score),
+                            String(r.clarity_score),
+                            String(r.level_of_detail_elaboration_score),
+                            String(r.feasibility_score),
+                        ];
+                    });
+                    drawTable(panelHeaders, panelRows, panelColWidths);
                 }
                 addSep();
             }
 
-            // ── Statistics ──
+            // ════════════════════ STATISTICAL ANALYSIS ════════════════════
             if (data.stats) {
-                addLine('Statistical Analysis', 14, 'bold');
-                y += 2;
+                addSection('Statistical Analysis');
+
+                // ICC badge
                 if (data.stats.overall_icc) {
-                    addLine(`Overall ICC: ${data.stats.overall_icc.score?.toFixed(2) ?? 'N/A'} (${data.stats.overall_icc.label})`, 10, 'bold');
-                    addLine(data.stats.overall_icc.message, 8, 'normal', [75, 85, 99]);
-                    y += 2;
-                }
-                if (data.stats.two_way_anova) {
-                    const me = data.stats.two_way_anova.model_effect;
-                    const pe = data.stats.two_way_anova.persona_effect;
-                    addLine(`ANOVA — Model Effect: F=${me?.F ?? 'N/A'}, p=${me?.p ?? 'N/A'} (${me?.significant ? 'Significant' : 'Not significant'})`, 9, 'normal');
-                    addLine(`ANOVA — Persona Effect: F=${pe?.F ?? 'N/A'}, p=${pe?.p ?? 'N/A'} (${pe?.significant ? 'Significant' : 'Not significant'})`, 9, 'normal');
-                    addLine(data.stats.anova_message, 8, 'normal', [75, 85, 99]);
-                    y += 2;
-                }
-                if (data.stats.per_persona_icc?.length) {
-                    addLine('Per-Persona ICC:', 10, 'bold');
-                    for (const p of data.stats.per_persona_icc) {
-                        addLine(`  ${p.persona_name}: ${p.icc?.toFixed(2) ?? 'N/A'} (${p.label})`, 9, 'normal', [75, 85, 99]);
+                    const icc = data.stats.overall_icc;
+                    const sc = icc.score;
+                    const bClr: [number, number, number] = sc != null && sc >= 0.6 ? [34, 139, 34] : [200, 150, 20];
+                    addBadge('Overall ICC (Inter-rater Reliability)', sc?.toFixed(2) ?? 'N/A', icc.label ?? 'N/A', bClr);
+                    if (icc.message) {
+                        addLine(icc.message, 7.5, 'normal', [100, 110, 125]);
+                        y += 2;
                     }
+                }
+
+                // Kendall's W badge
+                if (data.stats.kendalls_w?.W != null) {
+                    const w = data.stats.kendalls_w.W;
+                    const wL = w >= 0.7 ? 'Strong' : w >= 0.4 ? 'Moderate' : 'Weak';
+                    const wC: [number, number, number] = w >= 0.7 ? [34, 139, 34] : w >= 0.4 ? [200, 150, 20] : [200, 60, 60];
+                    addBadge("Kendall's W (Concordance)", w.toFixed(2), wL, wC);
+                }
+
+                // Variance badge
+                if (data.stats.variance_analysis) {
+                    const av = data.stats.variance_analysis.average_variance;
+                    const avL = av != null ? (av <= 0.5 ? 'Low' : av <= 1.2 ? 'Moderate' : 'High') : 'N/A';
+                    const avC: [number, number, number] = av != null && av <= 0.5 ? [34, 139, 34] : av != null && av <= 1.2 ? [200, 150, 20] : [200, 60, 60];
+                    addBadge('Avg Dimension Variance', av?.toFixed(2) ?? 'N/A', avL, avC);
+                }
+
+                // Variance interpretation
+                if (data.stats.variance_message) {
+                    y += 1;
+                    addLine(data.stats.variance_message, 7.5, 'normal', [100, 110, 125]);
+                    y += 3;
+                }
+
+                // Per-Persona ICC table
+                if (data.stats.per_persona_icc?.length) {
+                    y += 2;
+                    pdf.setFontSize(9);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setTextColor(55, 65, 81);
+                    pdf.text('Per-Persona ICC (Model Agreement per Expert)', margin, y);
+                    y += 5;
+                    const pHeaders = ['Persona Name', 'ICC Score', 'Reliability'];
+                    const pColWidths = [contentW - 50, 25, 25];
+                    const pRows = data.stats.per_persona_icc.map(p => [
+                        p.persona_name,
+                        p.icc?.toFixed(2) ?? 'N/A',
+                        p.label,
+                    ]);
+                    drawTable(pHeaders, pRows, pColWidths);
+                }
+
+                // Per-Dimension Variance table
+                if (data.stats.variance_analysis?.per_dimension && Object.keys(data.stats.variance_analysis.per_dimension).length > 0) {
+                    pdf.setFontSize(9);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.setTextColor(55, 65, 81);
+                    pdf.text('Per-Dimension Variance (Score Spread by Category)', margin, y);
+                    y += 5;
+                    const vHeaders = ['Dimension', 'Variance (\u03C3\u00B2)'];
+                    const vColWidths = [contentW - 30, 30];
+                    const vRows = Object.entries(data.stats.variance_analysis.per_dimension)
+                        .sort((a, b) => b[1] - a[1])
+                        .map(([dim, val]) => [dim.replace(/_/g, ' '), val.toFixed(3)]);
+                    drawTable(vHeaders, vRows, vColWidths);
                 }
             }
 
-            // ── Footer ──
+            // ════════════════════ FOOTER ════════════════════
             const pageCount = pdf.getNumberOfPages();
             for (let i = 1; i <= pageCount; i++) {
                 pdf.setPage(i);
-                pdf.setFontSize(7);
-                pdf.setTextColor(160, 160, 160);
-                pdf.text(`raati.ai — Page ${i} of ${pageCount}`, margin, pdf.internal.pageSize.getHeight() - 8);
+                pdf.setFillColor(245, 246, 250);
+                pdf.rect(0, H - 10, W, 10, 'F');
+                pdf.setFontSize(6.5);
+                pdf.setFont('helvetica', 'normal');
+                pdf.setTextColor(140, 145, 160);
+                pdf.text('raati.ai \u2014 AI Creativity Assessment Platform', margin, H - 4);
+                pdf.text(`Page ${i} of ${pageCount}`, W - margin, H - 4, { align: 'right' });
             }
 
             pdf.save(`raati-report-${data.id.slice(0, 8)}.pdf`);
@@ -367,9 +654,9 @@ const Results: React.FC = () => {
                 {/* ═══════════════════════════════════════════════════════ */}
                 {/* ROW 1: ASSESSMENT SUMMARY                              */}
                 {/* ═══════════════════════════════════════════════════════ */}
-                <div className={`${cardBg} border rounded-xl shadow-sm overflow-hidden`}>
+                <div className={`${cardBg} border rounded-xl shadow-sm`}>
                     {/* Section header */}
-                    <div className={`px-5 py-3 border-b ${divider} flex items-center justify-between`}>
+                    <div className={`px-5 py-3 border-b ${divider} flex items-center justify-between rounded-t-xl`}>
                         <h2 className={`text-xs font-bold uppercase tracking-widest ${txt}`}>Assessment Summary</h2>
                         <span className={`text-[9px] font-bold uppercase tracking-widest ${sub2}`}>
                             ID: {data.id?.slice(0, 8)}
@@ -458,9 +745,9 @@ const Results: React.FC = () => {
 
                             <h3 className={`text-xs font-bold uppercase tracking-wide mb-2 ${sub}`}>Dimension Scores</h3>
                             <div className="mb-3">
-                                <DimBar label="Creativity" score={data.creativity_score} reasoning={data.creativity_reasoning} dark={dark} />
-                                <DimBar label="Originality" score={data.originality_score} reasoning={data.originality_reasoning} dark={dark} />
-                                <DimBar label="Usefulness" score={data.usefulness_relevance_score} reasoning={data.usefulness_relevance_reasoning} dark={dark} />
+                                <DimBar label="Creativity" score={data.creativity_score} reasoning={data.creativity_reasoning} dark={dark} invertTooltip />
+                                <DimBar label="Originality" score={data.originality_score} reasoning={data.originality_reasoning} dark={dark} invertTooltip />
+                                <DimBar label="Usefulness" score={data.usefulness_relevance_score} reasoning={data.usefulness_relevance_reasoning} dark={dark} invertTooltip />
                                 <DimBar label="Clarity" score={data.clarity_score} reasoning={data.clarity_reasoning} dark={dark} />
                                 <DimBar label="Detail" score={data.level_of_detail_elaboration_score} reasoning={data.level_of_detail_elaboration_reasoning} dark={dark} />
                                 <DimBar label="Feasibility" score={data.feasibility_score} reasoning={data.feasibility_reasoning} dark={dark} />
@@ -491,16 +778,19 @@ const Results: React.FC = () => {
                 {/* ═══════════════════════════════════════════════════════ */}
                 {/* ROW 2: EXPERT PANEL + STATISTICS                       */}
                 {/* ═══════════════════════════════════════════════════════ */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
 
                     {/* Expert Panel (8/12) */}
-                    <div className="lg:col-span-8">
-                        <div className="flex items-center justify-between mb-3">
-                            <h3 className={`text-xs font-bold uppercase tracking-wide ${txt}`}>Expert Panel</h3>
-                            <span className={`text-[9px] rounded-full px-2.5 py-1 font-bold uppercase tracking-widest border ${dark ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-indigo-50 text-indigo-600 border-indigo-100'}`}>
-                                {personaGroups.length} Personas × 3 LLMs
-                            </span>
-                        </div>
+                    <div className="lg:col-span-8 flex flex-col">
+                        <div className={`${cardBg} border rounded-xl shadow-sm overflow-hidden flex-1 flex flex-col`}>
+                            <div className={`${subBg} px-4 py-3 border-b ${divider2} flex items-center justify-between`}>
+                                <h3 className={`text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 ${txt}`}>
+                                    <Users size={13} className="text-indigo-500" /> Expert Panel
+                                </h3>
+                                <span className={`text-[9px] rounded-full px-2.5 py-1 font-bold uppercase tracking-widest border ${dark ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-indigo-50 text-indigo-600 border-indigo-100'}`}>
+                                    {personaGroups.length} Personas × 3 LLMs
+                                </span>
+                            </div>
                         {personaGroups.length > 0 ? (
                             <>
                                 <div className={`flex border-b ${divider2}`}>
@@ -525,7 +815,7 @@ const Results: React.FC = () => {
                                     })}
                                 </div>
                                 {personaGroups[activeTab] && (
-                                    <div className={`${cardBg} border border-t-0 rounded-b-xl p-5`}>
+                                    <div className={`flex-1 p-5 ${dark ? 'bg-[#181b23]' : 'bg-white'}`}>
                                         <p className={`text-xs italic mb-4 pb-3 border-b ${divider} ${sub}`}>"{personaGroups[activeTab].persona.sub_text}"</p>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                             {personaGroups[activeTab].results.map((a, i) => <LLMCard key={`${a.model_provider}-${i}`} agent={a} dark={dark} />)}
@@ -534,13 +824,14 @@ const Results: React.FC = () => {
                                 )}
                             </>
                         ) : (
-                            <div className={`text-sm text-center py-8 rounded-xl border ${cardBg} ${sub}`}>No expert panel data.</div>
+                            <div className={`text-sm text-center py-8 flex-1 flex items-center justify-center ${sub}`}>No expert panel data.</div>
                         )}
+                        </div>
                     </div>
 
                     {/* Statistics (4/12) */}
-                    <div className="lg:col-span-4">
-                        <div className={`${cardBg} border rounded-xl shadow-sm overflow-hidden h-full flex flex-col`}>
+                    <div className="lg:col-span-4 flex flex-col">
+                        <div className={`${cardBg} border rounded-xl shadow-sm overflow-hidden flex-1 flex flex-col`}>
                             <div className={`${subBg} px-4 py-3 border-b ${divider2} flex items-center justify-between`}>
                                 <h3 className={`text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 ${txt}`}>
                                     <BarChart3 size={13} className="text-indigo-500" /> Statistics
@@ -550,33 +841,72 @@ const Results: React.FC = () => {
                             <div className={`p-4 border-b ${divider}`}>
                                 <div className="flex justify-between items-start mb-1">
                                     <div className={`text-[10px] font-bold uppercase tracking-wider ${sub}`}>Overall ICC</div>
-                                    <div className={`px-1.5 py-0.5 rounded text-[9px] font-bold border ${data.stats?.overall_icc?.bg ?? (dark ? 'bg-gray-700' : 'bg-gray-50')} ${data.stats?.overall_icc?.color ?? sub} ${data.stats?.overall_icc?.border ?? divider2}`}>
-                                        {data.stats?.overall_icc?.label ?? '...'}
-                                    </div>
+                                    {(() => {
+                                        const icc = data.stats?.overall_icc;
+                                        const score = icc?.score;
+                                        let badgeBg = '', badgeText = '', badgeBorder = '';
+                                        if (score != null && score >= 0.6) {
+                                            badgeBg = dark ? 'bg-green-500/10' : 'bg-green-50';
+                                            badgeText = dark ? 'text-green-400' : 'text-green-700';
+                                            badgeBorder = dark ? 'border-green-500/30' : 'border-green-200';
+                                        } else {
+                                            badgeBg = dark ? 'bg-yellow-500/10' : 'bg-yellow-50';
+                                            badgeText = dark ? 'text-yellow-400' : 'text-yellow-700';
+                                            badgeBorder = dark ? 'border-yellow-500/30' : 'border-yellow-200';
+                                        }
+                                        return (
+                                            <div className={`px-1.5 py-0.5 rounded text-[9px] font-bold border ${badgeBg} ${badgeText} ${badgeBorder}`}>
+                                                {icc?.label ?? '...'}
+                                            </div>
+                                        );
+                                    })()}
                                 </div>
                                 <div className={`text-3xl font-light mb-1 tracking-tight ${txt}`}>{data.stats?.overall_icc?.score != null ? data.stats.overall_icc.score.toFixed(2) : '—'}</div>
                                 <p className={`text-[10px] leading-tight ${sub}`}>{data.stats?.overall_icc?.message ?? 'Measures agreement across evaluations.'}</p>
                             </div>
-                            <div className={`p-4 border-b ${divider}`}>
-                                <div className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${sub}`}>Two-Way ANOVA</div>
-                                <div className="space-y-2">
-                                    {[
-                                        { label: "Model", d: data.stats?.two_way_anova?.model_effect },
-                                        { label: "Persona", d: data.stats?.two_way_anova?.persona_effect },
-                                    ].map(({ label, d }) => (
-                                        <div key={label} className="flex items-center justify-between">
-                                            <span className={`text-[11px] ${dark ? 'text-gray-400' : 'text-gray-600'}`}>{label}</span>
-                                            <div className="flex items-center gap-1.5">
-                                                <span className={`text-[10px] font-mono ${sub}`}>p={d?.p ?? '—'}</span>
-                                                <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${d?.significant ? 'bg-red-500/10 text-red-400 border border-red-500/30' : 'bg-green-500/10 text-green-400 border border-green-500/30'}`}>
-                                                    {d?.significant ? 'Sig.' : 'n.s.'}
-                                                </span>
-                                            </div>
+                            {data.stats?.kendalls_w?.W != null && (
+                                <div className={`p-4 border-b ${divider}`}>
+                                    <div className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${sub}`}>Concordance & Variance</div>
+                                    <div className="flex justify-between items-center mb-1">
+                                        <span className={`text-[11px] ${dark ? 'text-gray-400' : 'text-gray-600'}`}>Kendall's W</span>
+                                        <div className="flex items-center gap-1.5">
+                                            <span className={`text-[11px] font-bold ${txt}`}>{data.stats.kendalls_w.W.toFixed(2)}</span>
+                                            <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${
+                                                data.stats.kendalls_w.W >= 0.7 ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 
+                                                data.stats.kendalls_w.W >= 0.4 ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/30' : 
+                                                'bg-red-500/10 text-red-400 border border-red-500/30'
+                                            }`}>
+                                                {data.stats.kendalls_w.W >= 0.7 ? 'Strong' : data.stats.kendalls_w.W >= 0.4 ? 'Moderate' : 'Weak'}
+                                            </span>
                                         </div>
-                                    ))}
+                                    </div>
+                                    <div className="flex justify-between items-center bg-transparent mt-2">
+                                        <span className={`text-[11px] ${dark ? 'text-gray-400' : 'text-gray-600'}`}>Avg Dimension Variance</span>
+                                        <div className="flex items-center gap-1.5">
+                                            <span className={`text-[11px] font-bold ${txt}`}>{data.stats.variance_analysis?.average_variance?.toFixed(2) ?? '—'}</span>
+                                            {data.stats.variance_analysis?.average_variance != null && (
+                                                <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${
+                                                    data.stats.variance_analysis.average_variance <= 0.5 ? 'bg-green-500/10 text-green-400 border border-green-500/30' : 
+                                                    data.stats.variance_analysis.average_variance <= 1.2 ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/30' : 
+                                                    'bg-red-500/10 text-red-400 border border-red-500/30'
+                                                }`}>
+                                                    {data.stats.variance_analysis.average_variance <= 0.5 ? 'Low' : data.stats.variance_analysis.average_variance <= 1.2 ? 'Moderate' : 'High'}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    {data.stats.variance_analysis?.per_dimension && Object.keys(data.stats.variance_analysis.per_dimension).length > 0 && (
+                                        <div className="mt-2 text-[9px] text-gray-500 flex items-center justify-between">
+                                            <span>Highest Var:</span>
+                                            <span className="font-medium text-gray-400">{Object.entries(data.stats.variance_analysis.per_dimension).sort((a,b)=>b[1]-a[1])[0][0].replace(/_/g, ' ')}</span>
+                                        </div>
+                                    )}
+                                    <p className={`text-[10px] mt-3 leading-tight ${sub}`}>
+                                        {data.stats?.variance_message ?? 'Analyzing score variance across models...'}
+                                    </p>
                                 </div>
-                                <p className={`text-[10px] mt-2 leading-tight ${sub}`}>{data.stats?.anova_message ?? 'Analyzing variance...'}</p>
-                            </div>
+                            )}
+
                             {data.stats?.per_persona_icc && data.stats.per_persona_icc.length > 0 && (
                                 <div className="p-4 flex-1">
                                     <div className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${sub}`}>Per-Persona ICC3</div>

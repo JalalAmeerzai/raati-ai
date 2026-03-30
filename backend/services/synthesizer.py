@@ -70,15 +70,14 @@ Given the following mathematically-computed statistics, write brief, plain-Engli
 
 Overall ICC value: {overall_icc}
 Overall ICC interpretation: {overall_icc_interp}
-Per-persona ICC values: {per_persona_icc}
-Two-Way ANOVA model effect p-value: {model_p}
-Two-Way ANOVA persona effect p-value: {persona_p}
+Kendall's W (Concordance): {kendalls_w}
+Average Dimension Variance: {avg_variance}
 Highest-variance dimension: {outlier_dim}
 
 Write a JSON response with:
 - "icc_label": A 1-2 word badge label (e.g. "Excellent", "Good", "Moderate", "Poor")
 - "icc_message": One plain-English sentence explaining what the overall ICC score means for the student.
-- "anova_message": One plain-English sentence summarizing the ANOVA results — whether different AI models or different expert lenses produced significantly different scores.
+- "variance_message": One plain-English sentence explaining how strongly the AI judges agreed (using Kendall's W) and which specific dimension caused the most debate (highest variance).
 
 Return ONLY the JSON object, no other text.
 """
@@ -109,6 +108,42 @@ def _build_long_df(expert_results: list) -> pd.DataFrame:
                 except (TypeError, ValueError):
                     pass
     return pd.DataFrame(rows)
+
+def _compute_kendalls_w(df: pd.DataFrame) -> dict:
+    """Compute Kendall's W (Coefficient of Concordance) for multiple raters."""
+    try:
+        df_copy = df.copy()
+        df_copy["rater"] = df_copy["model_provider"] + "_" + df_copy["persona_id"]
+        pivot = df_copy.pivot(index="dimension", columns="rater", values="score")
+        pivot = pivot.dropna(axis=1) # Drop raters with missing scores
+        
+        k = pivot.shape[1] # number of raters
+        n = pivot.shape[0] # number of subjects (dimensions)
+        
+        if k < 2 or n < 2:
+            return {"W": None}
+            
+        ranks = pivot.rank(method="average", ascending=True)
+        row_sums = ranks.sum(axis=1)
+        mean_sum = row_sums.mean()
+        S = ((row_sums - mean_sum) ** 2).sum()
+        
+        W = (12 * S) / (k ** 2 * (n ** 3 - n))
+        return {"W": round(float(W), 3)}
+    except Exception as e:
+        logger.warning(f"Kendalls W failed: {e}")
+        return {"W": None}
+
+def _compute_variance_analysis(df: pd.DataFrame) -> dict:
+    """Compute variance per dimension and identify highest/lowest agreement."""
+    try:
+        var_series = df.groupby("dimension")["score"].var()
+        variance_dict = {str(k): round(float(v), 3) if pd.notnull(v) else 0.0 for k, v in var_series.items()}
+        avg_var = round(float(var_series.mean()), 3) if not var_series.empty else 0.0
+        return {"per_dimension": variance_dict, "average_variance": avg_var}
+    except Exception as e:
+        logger.warning(f"Variance analysis failed: {e}")
+        return {"per_dimension": {}, "average_variance": 0.0}
 
 
 def _compute_per_persona_icc(df: pd.DataFrame) -> list:
@@ -186,59 +221,13 @@ def _compute_overall_icc(df: pd.DataFrame) -> dict:
         return {"score": None, "interp": "unavailable"}
 
 
-def _compute_two_way_anova(df: pd.DataFrame) -> dict:
-    """
-    Two-Way Repeated Measures ANOVA.
-    Factors: model_provider × persona_name on CAT scores.
-    """
-    try:
-        # For RM-ANOVA we need 'subject' as the within-subject grouping.
-        # Here, 'dimension' serves as the subject (the items being rated).
-        anova_results = pg.rm_anova(
-            data=df,
-            dv="score",
-            within="model_provider",
-            subject="dimension",
-            detailed=True
-        )
-        model_p = round(float(anova_results["p_unc"].iloc[0]), 4)
-
-        # separate ANOVA for persona effect
-        anova_persona = pg.rm_anova(
-            data=df,
-            dv="score",
-            within="persona_name",
-            subject="dimension",
-            detailed=True
-        )
-        persona_p = round(float(anova_persona["p_unc"].iloc[0]), 4)
-
-        return {
-            "model_effect": {
-                "F": round(float(anova_results["F"].iloc[0]), 3),
-                "p": model_p,
-                "significant": model_p < 0.05
-            },
-            "persona_effect": {
-                "F": round(float(anova_persona["F"].iloc[0]), 3),
-                "p": persona_p,
-                "significant": persona_p < 0.05
-            }
-        }
-    except Exception as e:
-        logger.warning(f"Two-Way ANOVA failed: {e}")
-        return {
-            "model_effect": {"F": None, "p": None, "significant": False},
-            "persona_effect": {"F": None, "p": None, "significant": False}
-        }
-
-
 def _compute_statistics(expert_results: list) -> dict:
     """
     Full statistical analysis for the 3×3 matrix:
     - Per-persona ICC3
     - Overall ICC
-    - Two-Way RM-ANOVA (model_provider × persona_name)
+    - Kendall's W
+    - Variance Analysis
     """
     df = _build_long_df(expert_results)
 
@@ -246,16 +235,15 @@ def _compute_statistics(expert_results: list) -> dict:
         return {
             "per_persona_icc": [],
             "overall_icc": {"score": None, "interp": "unavailable"},
-            "two_way_anova": {
-                "model_effect": {"F": None, "p": None, "significant": False},
-                "persona_effect": {"F": None, "p": None, "significant": False}
-            },
+            "kendalls_w": {"W": None},
+            "variance_analysis": {"per_dimension": {}, "average_variance": 0.0},
             "outlier_dim": "unknown"
         }
 
     per_persona = _compute_per_persona_icc(df)
     overall = _compute_overall_icc(df)
-    anova = _compute_two_way_anova(df)
+    kendalls = _compute_kendalls_w(df)
+    variance = _compute_variance_analysis(df)
 
     # Find dimension with highest variance between raters
     try:
@@ -266,7 +254,8 @@ def _compute_statistics(expert_results: list) -> dict:
     return {
         "per_persona_icc": per_persona,
         "overall_icc": overall,
-        "two_way_anova": anova,
+        "kendalls_w": kendalls,
+        "variance_analysis": variance,
         "outlier_dim": outlier_dim
     }
 
@@ -276,9 +265,8 @@ async def _get_stat_interpretation(stats: dict) -> dict:
     prompt = ICC_INTERPRETATION_PROMPT.format(
         overall_icc=stats.get("overall_icc", {}).get("score", "N/A"),
         overall_icc_interp=stats.get("overall_icc", {}).get("interp", "unavailable"),
-        per_persona_icc=json.dumps(stats.get("per_persona_icc", []), default=str),
-        model_p=stats.get("two_way_anova", {}).get("model_effect", {}).get("p", "N/A"),
-        persona_p=stats.get("two_way_anova", {}).get("persona_effect", {}).get("p", "N/A"),
+        kendalls_w=stats.get("kendalls_w", {}).get("W", "N/A"),
+        avg_variance=stats.get("variance_analysis", {}).get("average_variance", "N/A"),
         outlier_dim=stats.get("outlier_dim", "unknown")
     )
     try:
@@ -295,7 +283,7 @@ async def _get_stat_interpretation(stats: dict) -> dict:
         return {
             "icc_label": "N/A",
             "icc_message": "Unable to compute reliability interpretation.",
-            "anova_message": "Unable to compute variance interpretation.",
+            "variance_message": "Unable to compute variance interpretation.",
         }
 
 
@@ -311,12 +299,10 @@ async def synthesize(expert_results: list) -> dict:
         raise ValueError("No valid expert results to synthesize.")
 
     # Step 2: Run Python math for ICC and ANOVA
-    print("\nRunning statistical calculations (per-persona ICC + Two-Way ANOVA)...")
+    print("\nRunning statistical calculations (per-persona ICC + Kendall's W)...")
     raw_stats = _compute_statistics(expert_results)
     print(f"  Overall ICC: {raw_stats.get('overall_icc', {}).get('score')} ({raw_stats.get('overall_icc', {}).get('interp')})")
-    print(f"  Per-persona ICCs: {json.dumps(raw_stats.get('per_persona_icc', []), default=str)}")
-    anova = raw_stats.get("two_way_anova", {})
-    print(f"  ANOVA model p={anova.get('model_effect', {}).get('p')}, persona p={anova.get('persona_effect', {}).get('p')}")
+    print(f"  Kendall's W: {raw_stats.get('kendalls_w', {}).get('W')}")
 
     # Step 3: LLM synthesis of scores and feedback
     experts_text = "\n\n".join([
@@ -362,8 +348,9 @@ async def synthesize(expert_results: list) -> dict:
             "border": "border-green-200" if interp in ["excellent", "good"] else "border-yellow-200",
         },
         "per_persona_icc": raw_stats.get("per_persona_icc", []),
-        "two_way_anova": raw_stats.get("two_way_anova", {}),
-        "anova_message": stat_text.get("anova_message", ""),
+        "kendalls_w": raw_stats.get("kendalls_w", {}),
+        "variance_analysis": raw_stats.get("variance_analysis", {}),
+        "variance_message": stat_text.get("variance_message", ""),
     }
 
     return synthesis

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Layout, { useTheme } from '../components/Layout';
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ const Dashboard: React.FC = () => {
     const { dark } = useTheme();
     const [file, setFile] = useState<File | null>(null);
     const [description, setDescription] = useState('');
+    const [submitterName, setSubmitterName] = useState('');
     const [isDragOver, setIsDragOver] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,11 +24,12 @@ const Dashboard: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        if (!file || !description) return;
+        if (!file || !description || !submitterName.trim()) return;
         setIsLoading(true);
         const formData = new FormData();
         formData.append('image', file);
         formData.append('description', description);
+        formData.append('submitter_name', submitterName.trim());
         try {
             const response = await axios.post('http://localhost:8000/evaluate', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
             navigate(`/results/${response.data.id}`, { state: { result: response.data } });
@@ -44,14 +46,15 @@ const Dashboard: React.FC = () => {
     const dropBg  = isDragOver
         ? (dark ? 'border-blue-400 bg-blue-500/10' : 'border-blue-500 bg-blue-50')
         : (dark ? 'border-gray-700 hover:bg-[#12141c]' : 'border-gray-300 hover:bg-gray-50');
+    const labelClr = dark ? 'text-gray-300' : 'text-gray-700';
 
     return (
         <Layout title="Student Sketch Upload Dashboard">
             <div className={`max-w-4xl mx-auto ${cardBg} border rounded-xl shadow-sm p-8 transition-colors`}>
 
                 {/* Upload Area */}
-                <div className="mb-8">
-                    <label className={`block text-sm font-medium mb-2 ${dark ? 'text-gray-300' : 'text-gray-700'}`}>Student Sketch</label>
+                <div className="mb-6">
+                    <label className={`block text-sm font-medium mb-2 ${labelClr}`}>Student Sketch</label>
                     <div
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}
@@ -70,9 +73,24 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
 
+                {/* Name Field */}
+                <div className="mb-6">
+                    <label className={`block text-sm font-medium mb-2 ${labelClr}`}>Your Name</label>
+                    <div className="relative">
+                        <User size={16} className={`absolute left-3 top-1/2 -translate-y-1/2 ${dark ? 'text-gray-600' : 'text-gray-400'}`} />
+                        <input
+                            type="text"
+                            value={submitterName}
+                            onChange={(e) => setSubmitterName(e.target.value)}
+                            className={`w-full pl-10 pr-4 py-3 rounded-lg border focus:ring-blue-500 focus:border-blue-500 transition-colors ${inputBg}`}
+                            placeholder="Enter your full name (e.g., Jalal Ghaffar)"
+                        />
+                    </div>
+                </div>
+
                 {/* Text Area */}
                 <div className="mb-8">
-                    <label className={`block text-sm font-medium mb-2 ${dark ? 'text-gray-300' : 'text-gray-700'}`}>Design Description/Rationale</label>
+                    <label className={`block text-sm font-medium mb-2 ${labelClr}`}>Design Description/Rationale</label>
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -85,9 +103,9 @@ const Dashboard: React.FC = () => {
                 {/* Submit */}
                 <button
                     onClick={handleSubmit}
-                    disabled={isLoading || !file || !description}
+                    disabled={isLoading || !file || !description || !submitterName.trim()}
                     className={`w-full py-4 rounded-lg text-white font-medium text-lg flex items-center justify-center space-x-2 shadow-sm transition-all ${
-                        isLoading || !file || !description
+                        isLoading || !file || !description || !submitterName.trim()
                             ? (dark ? 'bg-gray-700 cursor-not-allowed' : 'bg-gray-400 cursor-not-allowed')
                             : (dark ? 'bg-blue-600 hover:bg-blue-500' : 'bg-[#1a237e] hover:bg-[#151b60]')
                     }`}

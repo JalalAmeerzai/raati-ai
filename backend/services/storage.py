@@ -25,7 +25,7 @@ class _SafeEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
-def save_submission(image_file, description, evaluation_result):
+def save_submission(image_file, description, evaluation_result, submitter_name: str = ""):
     """
     Saves the uploaded image, the full evaluation result (JSON), and a CSV index row.
     """
@@ -51,6 +51,7 @@ def save_submission(image_file, description, evaluation_result):
         "image_filename": saved_filename,
         "image_url": f"/images/{saved_filename}",
         "description": description,
+        "submitter_name": submitter_name,
         # Synthesised consensus scores
         "creativity_score": evaluation_result.get("creativity_score"),
         "originality_score": evaluation_result.get("originality_score"),
@@ -87,11 +88,12 @@ def save_submission(image_file, description, evaluation_result):
         "image_filename": saved_filename,
         "description": description,
         "overall_score": evaluation_result.get("overall_score"),
+        "submitter_name": submitter_name,
     }
 
     file_exists = RESULTS_FILE.exists()
     with open(RESULTS_FILE, mode="a", newline="", encoding="utf-8") as f:
-        fieldnames = ["id", "timestamp", "image_filename", "description", "overall_score"]
+        fieldnames = ["id", "timestamp", "image_filename", "description", "overall_score", "submitter_name"]
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         if not file_exists:
             writer.writeheader()
@@ -130,6 +132,21 @@ def get_history():
         reader = csv.DictReader(f)
         for row in reader:
             row["image_url"] = f"/images/{row['image_filename']}"
+            # Enrich from JSON when CSV fields are missing
+            needs_score = not row.get("overall_score")
+            needs_name = not row.get("submitter_name")
+            if needs_score or needs_name:
+                json_path = RESULTS_DIR / f"{row['id']}.json"
+                if json_path.exists():
+                    try:
+                        with open(json_path, "r", encoding="utf-8") as jf:
+                            full = json.load(jf)
+                            if needs_score:
+                                row["overall_score"] = full.get("overall_score")
+                            if needs_name:
+                                row["submitter_name"] = full.get("submitter_name", "")
+                    except Exception:
+                        pass
             results.append(row)
 
     return list(reversed(results))

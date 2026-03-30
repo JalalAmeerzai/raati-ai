@@ -2,13 +2,9 @@
 
 > A multi-agent AI system that evaluates design creativity using the **Consensual Assessment Technique (CAT)** framework, built as a University of Oulu thesis project. It now features a powerful **3x3 Fan-Out matrix** architecture that yields 9 simultaneous evaluations.
 
----
-
 ## 1. Problem Statement & Motivation
 
 Evaluating creative design work is inherently subjective. The **Consensual Assessment Technique (CAT)**, the gold standard in creativity research, relies on multiple independent expert judges to score work, then measures **inter-rater reliability** to validate the assessment. This project replaces human judges with a matrix of **multiple LLM models role-playing multiple expert personas**, testing whether AI can replicate the CAT methodology at scale. The key research question is: _Can a 3x3 multi-agent LLM panel produce reliable, agreement-consistent creativity assessments?_
-
----
 
 ## 2. System Architecture
 
@@ -23,8 +19,6 @@ Evaluating creative design work is inherently subjective. The **Consensual Asses
 ### 2.3 Frontend Page Flow
 
 ![Frontend Page Flow](./Docs/frontend.png)
-
----
 
 ## 3. Pipeline Steps — Detailed Breakdown
 
@@ -57,7 +51,7 @@ All 9 evaluators enforce `temperature=0.1` and `response_format: json_object`.
 | **Score Synthesis** | Averages all 9 outcomes for the Composite Score |
 | **Instructor Feedback** | `gpt-4o` writes Intro, Pivot, and Next Step |
 | **ICC Calculation** | `pingouin` computes Overall ICC & Per-Persona ICC |
-| **ANOVA** | Two-way ANOVA to detect systematic Model or Persona bias |
+| **Variance Analysis** | Kendall's W for concordance and Dimension Variance to detect debate areas |
 | **Interpretation** | LLM translates raw P-values and ICCs to plain-English badges |
 
 ### Step 4: Storage (`storage.py`)
@@ -65,8 +59,6 @@ All 9 evaluators enforce `temperature=0.1` and `response_format: json_object`.
 - **Images** → `backend/data/images/{uuid}.{ext}`
 - **Evaluations** → Full response saved as `backend/data/evaluations/{uuid}.json` to persist the 9 deep nested results.
 - **Index** → Metadata (ID, overall score, date) appended to `backend/data/results.csv` for fast history populating.
-
----
 
 ## 4. Evaluation Rubric
 
@@ -78,8 +70,6 @@ All 9 parallel instances score the design on a **0–5 scale** across **6 dimens
 5. **Level of Detail** — Depth and completeness
 6. **Feasibility** — Technical/economic viability
 
----
-
 ## 5. Tech Stack
 
 ### Backend
@@ -87,7 +77,7 @@ All 9 parallel instances score the design on a **0–5 scale** across **6 dimens
 |-------|-----------|---------|
 | Framework | **FastAPI** | Async REST API |
 | Providers | `openai`, `anthropic` | LLM interactions |
-| Statistics | `pandas`, `pingouin` | ICC(2) + Two-Way ANOVA |
+| Statistics | `pandas`, `pingouin` | ICC(2) + Kendall's W + Variance Analysis |
 | Storage | JSON + CSV + Filesystem | Persistence |
 
 ### Frontend
@@ -99,8 +89,6 @@ All 9 parallel instances score the design on a **0–5 scale** across **6 dimens
 | PDF Export| **jsPDF** | Data-driven, layout-independent PDF rendering |
 | HTTP | **Axios** | API calls |
 
----
-
 ## 6. Frontend Pages — Detail
 
 ### Results (`/results/:id`)
@@ -108,32 +96,25 @@ The centerpiece of the application. Highlights include:
 - **Assessment Summary**: Image inspection modal (dark hover-reveal), radar consensus chart, dimension score breakdown, and Instructor Feedback.
 - **Data-Driven PDF**: Downloads an A4 report directly using `jsPDF` without unstable DOM captures.
 - **Expert Panel Accordion**: Groups the 9 evaluations by the 3 Personas. Expanding a persona reveals a 3-column grid comparing how OpenAI, xAI, and Claude interpreted that specific persona's prompt.
-- **Statistical Reliability**: Displays Overall ICC, Per-Persona ICC, and ANOVA (Model Effect vs Persona Effect).
-
----
+- **Statistical Reliability**: Displays Overall ICC, Per-Persona ICC, Kendall's W (Concordance), and Average Dimension Variance.
 
 ## 7. Statistical Methods — Deep Dive
 
 The matrix architecture (3 Personas, 3 Models) enables robust multi-dimensional analysis:
 - **Overall ICC(2)**: How well do all 9 evaluation paths agree? (Excellent ≥ 0.75, Poor < 0.40)
 - **Per-Persona ICC**: Holding the persona constant, how well do the 3 AI models agree?
-- **Two-Way ANOVA**: 
-  - *Model Effect* (p < 0.05): Is one LLM provider systematically scoring higher/lower than others?
-  - *Persona Effect* (p < 0.05): Is one Persona archetype systematically harsher/more lenient?
-
----
+- **Kendall's W (Concordance)**: A normalized measure from 0.0 to 1.0 showing how consistently the 9 raters rank the 6 evaluated dimensions.
+- **Dimension Variance**: Calculates the mathematical sample variance across the 9 scores for every dimension to identify exactly which aspect of the design caused the most debate among the AI panel.
 
 ## 8. Key Design Decisions
 
 | Decision | Rationale |
 |----------|-----------|
 | **3x3 Fan-Out** | Provides statistically significant variance (N=9) while keeping latency low via concurrent execution. |
-| **Two-Way ANOVA** | Standard 1-way ANOVA isn't enough; we must isolate *Provider variance* from *Persona variance*. |
+| **Variance & Concordance** | Tracking Kendall's W and Dimension Variance provides much clearer operational metrics on AI agreement than classical P-values. |
 | **Full JSON Storage** | Relational DBs are overkill, but CSVs cannot easily store 9 deeply nested agent results. JSON files solve this perfectly. |
 | **jsPDF over window.print()** | Browser print dialogs struggle with `oklch` modern CSS and dark mode overrides. jsPDF builds a clean, readable document directly from the result data. |
 | **Dark Mode First** | The UI utilizes Tailwind dark mode extensively to provide a sleek, focused analytical environment. |
-
----
 
 ## 9. Future Improvements
 

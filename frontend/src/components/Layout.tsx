@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutDashboard, PieChart, Users, Settings, Bell, Menu, Moon, Sun } from 'lucide-react';
 
@@ -7,13 +7,36 @@ interface ThemeCtx { dark: boolean; toggle: () => void; collapsed: boolean; togg
 const ThemeContext = createContext<ThemeCtx>({ dark: false, toggle: () => {}, collapsed: false, toggleSidebar: () => {} });
 export const useTheme = () => useContext(ThemeContext);
 
+/* ───── Global Theme Provider (wrap once in App) ───── */
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [dark, setDark] = useState(() => {
+        try { return localStorage.getItem('raati-dark-mode') === 'true'; } catch { return false; }
+    });
+    const [collapsed, setCollapsed] = useState(false);
+
+    const toggle = () => setDark(d => {
+        const next = !d;
+        try { localStorage.setItem('raati-dark-mode', String(next)); } catch {}
+        return next;
+    });
+    const toggleSidebar = () => setCollapsed(c => !c);
+
+    // Sync dark mode class on <html> for global CSS access
+    useEffect(() => {
+        document.documentElement.classList.toggle('dark', dark);
+    }, [dark]);
+
+    return (
+        <ThemeContext.Provider value={{ dark, toggle, collapsed, toggleSidebar }}>
+            {children}
+        </ThemeContext.Provider>
+    );
+};
+
 interface LayoutProps { children: React.ReactNode; title: string }
 
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
-    const [dark, setDark] = useState(false);
-    const [collapsed, setCollapsed] = useState(false);
-    const toggle = () => setDark(d => !d);
-    const toggleSidebar = () => setCollapsed(c => !c);
+    const { dark, toggle, collapsed, toggleSidebar } = useTheme();
 
     const bg     = dark ? 'bg-[#0f1117]' : 'bg-gray-50';
     const cardBg = dark ? 'bg-[#181b23]' : 'bg-white';
@@ -22,86 +45,84 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
     const subtext = dark ? 'text-gray-400' : 'text-gray-600';
 
     return (
-        <ThemeContext.Provider value={{ dark, toggle, collapsed, toggleSidebar }}>
-            <div className={`flex h-screen ${bg} ${text} transition-colors duration-300`}>
+        <div className={`flex h-screen ${bg} ${text} transition-colors duration-300`}>
 
-                {/* ─── Sidebar ─── */}
-                <aside className={`${collapsed ? 'w-16' : 'w-64'} ${dark ? 'bg-[#12141c]' : 'bg-[#1a237e]'} text-white flex flex-col transition-all duration-300 flex-shrink-0`}>
-                    {/* Top: Logo + Collapse toggle */}
-                    <div className={`flex items-center ${collapsed ? 'justify-center py-4 px-2' : 'justify-between px-5 py-4'}`}>
-                        {!collapsed && <h1 className="text-xl font-bold tracking-tight">raati.ai</h1>}
-                        <button
-                            onClick={toggleSidebar}
-                            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                            className="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            {/* ─── Sidebar ─── */}
+            <aside className={`${collapsed ? 'w-16' : 'w-64'} ${dark ? 'bg-[#12141c]' : 'bg-[#1a237e]'} text-white flex flex-col transition-all duration-300 flex-shrink-0`}>
+                {/* Top: Logo + Collapse toggle */}
+                <div className={`flex items-center ${collapsed ? 'justify-center py-4 px-2' : 'justify-between px-5 py-4'}`}>
+                    {!collapsed && <h1 className="text-xl font-bold tracking-tight">raati.ai</h1>}
+                    <button
+                        onClick={toggleSidebar}
+                        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                        className="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+                    >
+                        <Menu size={18} />
+                    </button>
+                </div>
+
+                {/* Nav */}
+                <nav className={`flex-1 ${collapsed ? 'px-2' : 'px-4'} space-y-1 mt-2`}>
+                    {[
+                        { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+                        { to: '/history', icon: Users, label: 'Submissions' },
+                        { to: '/analytics', icon: PieChart, label: 'Analytics' },
+                    ].map(({ to, icon: Icon, label }) => (
+                        <NavLink
+                            key={to}
+                            to={to}
+                            title={collapsed ? label : undefined}
+                            className={({ isActive }) =>
+                                `flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} px-3 py-3 rounded-lg transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`
+                            }
                         >
-                            <Menu size={18} />
+                            <Icon size={20} />
+                            {!collapsed && <span>{label}</span>}
+                        </NavLink>
+                    ))}
+                </nav>
+
+                {/* Bottom: Settings */}
+                <div className={`${collapsed ? 'px-2' : 'px-4'} pb-4`}>
+                    <button className={`flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} text-gray-400 hover:text-white transition-colors w-full px-3 py-2 rounded-lg hover:bg-white/5`}>
+                        <Settings size={20} />
+                        {!collapsed && <span className="text-sm">Settings</span>}
+                    </button>
+                </div>
+            </aside>
+
+            {/* ─── Main Content ─── */}
+            <main className="flex-1 flex flex-col overflow-hidden transition-colors duration-300">
+                {/* Header */}
+                <header className={`h-14 ${cardBg} ${border} border-b flex items-center justify-between px-6 transition-colors duration-300`}>
+                    <h2 className={`text-lg font-semibold ${dark ? 'text-gray-100' : 'text-gray-800'}`}>{title}</h2>
+                    <div className="flex items-center space-x-4">
+                        <button
+                            onClick={toggle}
+                            className={`p-1.5 rounded-lg transition-colors ${dark ? 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
+                            title={dark ? 'Light mode' : 'Dark mode'}
+                        >
+                            {dark ? <Sun size={18} /> : <Moon size={18} />}
                         </button>
-                    </div>
-
-                    {/* Nav */}
-                    <nav className={`flex-1 ${collapsed ? 'px-2' : 'px-4'} space-y-1 mt-2`}>
-                        {[
-                            { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-                            { to: '/history', icon: Users, label: 'Submissions' },
-                            { to: '/analytics', icon: PieChart, label: 'Analytics' },
-                        ].map(({ to, icon: Icon, label }) => (
-                            <NavLink
-                                key={to}
-                                to={to}
-                                title={collapsed ? label : undefined}
-                                className={({ isActive }) =>
-                                    `flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} px-3 py-3 rounded-lg transition-colors ${isActive ? 'bg-white/10 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white'}`
-                                }
-                            >
-                                <Icon size={20} />
-                                {!collapsed && <span>{label}</span>}
-                            </NavLink>
-                        ))}
-                    </nav>
-
-                    {/* Bottom: Settings */}
-                    <div className={`${collapsed ? 'px-2' : 'px-4'} pb-4`}>
-                        <button className={`flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} text-gray-400 hover:text-white transition-colors w-full px-3 py-2 rounded-lg hover:bg-white/5`}>
-                            <Settings size={20} />
-                            {!collapsed && <span className="text-sm">Settings</span>}
+                        <button className={`relative ${dark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'}`}>
+                            <Bell size={18} />
+                            <span className="absolute -top-0.5 -right-0.5 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500" />
                         </button>
-                    </div>
-                </aside>
-
-                {/* ─── Main Content ─── */}
-                <main className="flex-1 flex flex-col overflow-hidden transition-colors duration-300">
-                    {/* Header */}
-                    <header className={`h-14 ${cardBg} ${border} border-b flex items-center justify-between px-6 transition-colors duration-300`}>
-                        <h2 className={`text-lg font-semibold ${dark ? 'text-gray-100' : 'text-gray-800'}`}>{title}</h2>
-                        <div className="flex items-center space-x-4">
-                            <button
-                                onClick={toggle}
-                                className={`p-1.5 rounded-lg transition-colors ${dark ? 'bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}
-                                title={dark ? 'Light mode' : 'Dark mode'}
-                            >
-                                {dark ? <Sun size={18} /> : <Moon size={18} />}
-                            </button>
-                            <button className={`relative ${dark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'}`}>
-                                <Bell size={18} />
-                                <span className="absolute -top-0.5 -right-0.5 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500" />
-                            </button>
-                            <div className="flex items-center space-x-2">
-                                <div className="h-7 w-7 rounded-full bg-gray-200 overflow-hidden">
-                                    <img src="https://ui-avatars.com/api/?name=Jalal+Ghaffar&background=0D8ABC&color=fff" alt="Profile" />
-                                </div>
-                                <span className={`text-sm font-medium ${subtext} hidden sm:block`}>Jalal Ghaffar</span>
+                        <div className="flex items-center space-x-2">
+                            <div className="h-7 w-7 rounded-full bg-gray-200 overflow-hidden">
+                                <img src="https://ui-avatars.com/api/?name=Jalal+Ghaffar&background=0D8ABC&color=fff" alt="Profile" />
                             </div>
+                            <span className={`text-sm font-medium ${subtext} hidden sm:block`}>Jalal Ghaffar</span>
                         </div>
-                    </header>
-
-                    {/* Page Content */}
-                    <div className={`flex-1 overflow-auto p-6 ${bg} transition-colors duration-300`}>
-                        {children}
                     </div>
-                </main>
-            </div>
-        </ThemeContext.Provider>
+                </header>
+
+                {/* Page Content */}
+                <div className={`flex-1 overflow-auto p-6 ${bg} transition-colors duration-300`}>
+                    {children}
+                </div>
+            </main>
+        </div>
     );
 };
 

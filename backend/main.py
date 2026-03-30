@@ -38,7 +38,8 @@ from fastapi.concurrency import run_in_threadpool
 @app.post("/evaluate")
 async def evaluate_submission(
     image: UploadFile = File(...),
-    description: str = Form(...)
+    description: str = Form(...),
+    submitter_name: str = Form("")
 ):
     """
     Receives an image and description, runs 3×3 AI evaluation, and saves the full result.
@@ -48,7 +49,7 @@ async def evaluate_submission(
 
     # 2. Save full result (image + JSON + CSV index)
     await image.seek(0)
-    saved_record = await run_in_threadpool(save_submission, image, description, ai_result)
+    saved_record = await run_in_threadpool(save_submission, image, description, ai_result, submitter_name)
 
     return saved_record
 
