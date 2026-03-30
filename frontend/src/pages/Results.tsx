@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import Layout, { useTheme } from '../components/Layout';
 import axios from 'axios';
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
-import { Download, Maximize2, Users, BarChart3, X, ArrowRight, Loader2 } from 'lucide-react';
+import { Download, Maximize2, Users, BarChart3, X, ArrowRight, Loader2, User } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { OpenAIIcon, XAIIcon, ClaudeIcon } from '../components/LLMIcons';
 
@@ -22,7 +22,7 @@ interface AgentResult {
 }
 interface PerPersonaICC { persona_id: string; persona_name: string; icc: number | null; label: string }
 interface ResultData {
-    id: string; image_url: string; description: string;
+    id: string; submitter_name?: string; image_url: string; description: string;
     creativity_score: number; originality_score: number; usefulness_relevance_score: number;
     clarity_score: number; level_of_detail_elaboration_score: number; feasibility_score: number; overall_score: number;
     creativity_reasoning: string; originality_reasoning: string; usefulness_relevance_reasoning: string;
@@ -658,9 +658,17 @@ const Results: React.FC = () => {
                     {/* Section header */}
                     <div className={`px-5 py-3 border-b ${divider} flex items-center justify-between rounded-t-xl`}>
                         <h2 className={`text-xs font-bold uppercase tracking-widest ${txt}`}>Assessment Summary</h2>
-                        <span className={`text-[9px] font-bold uppercase tracking-widest ${sub2}`}>
-                            ID: {data.id?.slice(0, 8)}
-                        </span>
+                        <div className="flex items-center gap-4">
+                            {data.submitter_name && (
+                                <span className={`flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider ${sub}`}>
+                                    <User size={13} strokeWidth={2.5} className="opacity-60" />
+                                    {data.submitter_name.trim()}
+                                </span>
+                            )}
+                            <span className={`text-[9px] font-bold uppercase tracking-widest ${sub2}`}>
+                                ID: {data.id?.slice(0, 8)}
+                            </span>
+                        </div>
                     </div>
 
                     {/* 3-column layout with soft gradient dividers */}

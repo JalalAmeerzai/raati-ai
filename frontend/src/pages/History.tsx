@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import Layout, { useTheme } from '../components/Layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -37,6 +37,10 @@ type SortDir = 'asc' | 'desc';
 
 const History: React.FC = () => {
     const [history, setHistory] = useState<HistoryItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [visibleCount, setVisibleCount] = useState(20);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const loaderRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
     const { dark } = useTheme();
 
@@ -51,8 +55,14 @@ const History: React.FC = () => {
 
     useEffect(() => {
         axios.get('http://localhost:8000/history')
-            .then(response => setHistory(response.data))
-            .catch(err => console.error(err));
+            .then(response => {
+                setHistory(response.data);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                setIsLoading(false);
+            });
     }, []);
 
     const filteredAndSortedHistory = useMemo(() => {
@@ -101,6 +111,29 @@ const History: React.FC = () => {
         return result;
     }, [history, searchQuery, scoreFilter, dateFilter, sortField, sortDir]);
 
+    const visibleHistory = filteredAndSortedHistory.slice(0, visibleCount);
+
+    useEffect(() => {
+        setVisibleCount(20);
+    }, [searchQuery, scoreFilter, dateFilter, sortField, sortDir]);
+
+    useEffect(() => {
+        const observerTarget = loaderRef.current;
+        const observer = new IntersectionObserver((entries) => {
+            const entry = entries[0];
+            if (entry.isIntersecting && !loadingMore && !isLoading && visibleCount < filteredAndSortedHistory.length) {
+                setLoadingMore(true);
+                setTimeout(() => {
+                    setVisibleCount(prev => prev + 20);
+                    setLoadingMore(false);
+                }, 600);
+            }
+        }, { threshold: 0.1 });
+
+        if (observerTarget) observer.observe(observerTarget);
+        return () => { if (observerTarget) observer.unobserve(observerTarget); };
+    }, [loadingMore, isLoading, visibleCount, filteredAndSortedHistory.length]);
+
     const handleSort = (field: SortField) => {
         if (sortField === field) {
             setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
@@ -132,6 +165,18 @@ const History: React.FC = () => {
         return sortDir === 'asc' ? <ChevronUp size={14} className="text-blue-500" /> : <ChevronDown size={14} className="text-blue-500" />;
     };
 
+    const SkeletonRow = () => (
+        <tr className="animate-pulse opacity-60 border-b border-gray-100 dark:border-gray-800">
+            <td className="px-5 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div></td>
+            <td className="px-5 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-28"></div></td>
+            <td className="px-5 py-4"><div className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto"></div></td>
+            <td className="px-5 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full max-w-[200px]"></div></td>
+            <td className="px-5 py-4"><div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-8 mx-auto"></div></td>
+            <td className="px-5 py-4"><div className="h-5 bg-gray-200 dark:bg-gray-700 rounded-full w-16 mx-auto"></div></td>
+            <td className="px-5 py-4 text-right"><div className="h-8 bg-gray-200 dark:bg-gray-700 rounded-full w-24 inline-block"></div></td>
+        </tr>
+    );
+
     const cardBg = dark ? 'bg-[#181b23] border-gray-700/50' : 'bg-white border-gray-200';
     const headerBg = dark ? 'bg-[#12141c]' : 'bg-gray-50';
     const rowHover = dark ? 'hover:bg-[#1e2130]' : 'hover:bg-gray-50';
@@ -148,7 +193,6 @@ const History: React.FC = () => {
         <Layout title="Submission History">
             <div className={`${cardBg} border rounded-xl shadow-sm transition-colors`}>
 
-                {/* Header + Filters */}
                 <div className={`p-4 border-b ${border} ${headerBg} rounded-t-xl`}>
                     <div className="flex justify-between items-center mb-3">
                         <h3 className={`font-semibold ${txt}`}>All Submissions</h3>
@@ -161,7 +205,6 @@ const History: React.FC = () => {
                         </div>
                     </div>
                     <div className="flex flex-wrap gap-2 items-center">
-                        {/* Search */}
                         <div className="relative flex-1 min-w-[200px]">
                             <Search size={14} className={`absolute left-3 top-1/2 -translate-y-1/2 ${dark ? 'text-gray-600' : 'text-gray-400'}`} />
                             <input
@@ -173,7 +216,6 @@ const History: React.FC = () => {
                             />
                         </div>
 
-                        {/* Score filter */}
                         <select
                             value={scoreFilter}
                             onChange={e => setScoreFilter(e.target.value as any)}
@@ -185,7 +227,6 @@ const History: React.FC = () => {
                             <option value="low">Low (&lt; 2.5)</option>
                         </select>
 
-                        {/* Date filter chips */}
                         {(['all', '7d', '30d', '90d'] as const).map(d => (
                             <button
                                 key={d}
@@ -198,55 +239,35 @@ const History: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Table */}
                 <div className="overflow-visible">
                     <table className="w-full text-left">
                         <thead>
                             <tr className={`${headerBg} ${sub} text-sm border-b ${border}`}>
-                                {/* ID Header (Sortable) */}
-                                <th 
-                                    className={`px-5 py-3 font-medium cursor-pointer select-none transition-colors ${dark ? 'hover:text-gray-200' : 'hover:text-gray-900'}`}
-                                    onClick={() => handleSort('id')}
-                                >
+                                <th className={`px-5 py-3 font-medium cursor-pointer select-none transition-colors ${dark ? 'hover:text-gray-200' : 'hover:text-gray-900'}`} onClick={() => handleSort('id')}>
                                     <div className="flex items-center gap-1">ID <SortIcon field="id" /></div>
                                 </th>
-
-                                {/* Date Header (Sortable) */}
-                                <th 
-                                    className={`px-5 py-3 font-medium cursor-pointer select-none transition-colors ${dark ? 'hover:text-gray-200' : 'hover:text-gray-900'}`}
-                                    onClick={() => handleSort('timestamp')}
-                                >
+                                <th className={`px-5 py-3 font-medium cursor-pointer select-none transition-colors ${dark ? 'hover:text-gray-200' : 'hover:text-gray-900'}`} onClick={() => handleSort('timestamp')}>
                                     <div className="flex items-center gap-1">Date <SortIcon field="timestamp" /></div>
                                 </th>
-
-                                {/* Student Header (Fixed) */}
                                 <th className="px-5 py-3 font-medium w-12 text-center">Student</th>
-
-                                {/* Description Header (Fixed) */}
                                 <th className="px-5 py-3 font-medium">Description</th>
-
-                                {/* Score Header (Sortable) */}
-                                <th 
-                                    className={`px-5 py-3 font-medium cursor-pointer select-none transition-colors ${dark ? 'hover:text-gray-200' : 'hover:text-gray-900'}`}
-                                    onClick={() => handleSort('overall_score')}
-                                >
+                                <th className={`px-5 py-3 font-medium cursor-pointer select-none transition-colors ${dark ? 'hover:text-gray-200' : 'hover:text-gray-900'}`} onClick={() => handleSort('overall_score')}>
                                     <div className="flex items-center gap-1">Score <SortIcon field="overall_score" /></div>
                                 </th>
-
                                 <th className="px-5 py-3 font-medium">Status</th>
                                 <th className="px-5 py-3 font-medium">Action</th>
                             </tr>
                         </thead>
                         <tbody className={`${divider} divide-y`}>
-                            {filteredAndSortedHistory.length === 0 ? (
+                            {isLoading ? (
+                                Array.from({ length: 10 }).map((_, i) => <SkeletonRow key={`initial-skeleton-${i}`} />)
+                            ) : filteredAndSortedHistory.length === 0 ? (
                                 <tr><td colSpan={7} className={`px-6 py-8 text-center ${sub}`}>
                                     {history.length > 0 ? 'No submissions match your filters.' : 'No submissions yet.'}
                                 </td></tr>
                             ) : (
-                                filteredAndSortedHistory.map((item, index) => (
+                                visibleHistory.map((item, index) => (
                                     <tr key={item.id} className={`${rowHover} transition-colors`}>
-                                        
-                                        {/* 1. ID */}
                                         <td className="px-5 py-3">
                                             <span className={`text-xs font-mono px-2 py-1 rounded bg-black/5 dark:bg-white/5 ${sub}`}>
                                                 {item.id.split('-')[0]}
@@ -322,14 +343,21 @@ const History: React.FC = () => {
                                     </tr>
                                 ))
                             )}
+                            {/* Infinite scroll loader placeholder + skeletons */}
+                            {loadingMore && Array.from({ length: 3 }).map((_, i) => <SkeletonRow key={`more-skeleton-${i}`} />)}
                         </tbody>
                     </table>
+                    
+                    {/* Intersection Observer Target */}
+                    {!isLoading && visibleCount < filteredAndSortedHistory.length && (
+                        <div ref={loaderRef} className="h-10 w-full" />
+                    )}
                 </div>
 
                 {/* Footer */}
-                <div className={`p-4 border-t ${border} ${headerBg} flex justify-between text-sm ${sub} rounded-b-xl`}>
-                    <span>Showing {filteredAndSortedHistory.length} of {history.length} submissions</span>
-                    {activeFiltersCount > 0 && <span className={`text-xs ${dark ? 'text-blue-400' : 'text-blue-600'}`}>{activeFiltersCount} active filter{activeFiltersCount > 1 ? 's' : ''}</span>}
+                <div className={`p-4 border-t ${border} ${headerBg} flex justify-between items-center text-sm ${sub} rounded-b-xl`}>
+                    <span>Showing {Math.min(visibleCount, filteredAndSortedHistory.length)} of {filteredAndSortedHistory.length} submissions</span>
+                    {activeFiltersCount > 0 && <span className={`text-xs px-2 py-0.5 rounded-md ${dark ? 'bg-blue-900/40 text-blue-300' : 'bg-blue-100 text-blue-700'}`}>{activeFiltersCount} active filter{activeFiltersCount > 1 ? 's' : ''}</span>}
                 </div>
             </div>
         </Layout>
