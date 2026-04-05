@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, PieChart, Users, Settings, Bell, Menu, Moon, Sun } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Users, FlaskConical, Moon, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
 
 /* ───── Theme Context ───── */
 interface ThemeCtx { dark: boolean; toggle: () => void; collapsed: boolean; toggleSidebar: () => void }
@@ -37,36 +37,49 @@ interface LayoutProps { children: React.ReactNode; title: string }
 
 const Layout: React.FC<LayoutProps> = ({ children, title }) => {
     const { dark, toggle, collapsed, toggleSidebar } = useTheme();
+    const navigate = useNavigate();
 
     const bg     = dark ? 'bg-[#0f1117]' : 'bg-gray-50';
     const cardBg = dark ? 'bg-[#181b23]' : 'bg-white';
     const text   = dark ? 'text-gray-100' : 'text-gray-900';
     const border = dark ? 'border-gray-700/50' : 'border-gray-200';
-    const subtext = dark ? 'text-gray-400' : 'text-gray-600';
 
     return (
         <div className={`flex h-screen ${bg} ${text} transition-colors duration-300`}>
 
             {/* ─── Sidebar ─── */}
-            <aside className={`${collapsed ? 'w-16' : 'w-64'} ${dark ? 'bg-[#12141c]' : 'bg-[#1a237e]'} text-white flex flex-col transition-all duration-300 flex-shrink-0`}>
-                {/* Top: Logo + Collapse toggle */}
-                <div className={`flex items-center ${collapsed ? 'justify-center py-4 px-2' : 'justify-between px-5 py-4'}`}>
-                    {!collapsed && <h1 className="text-xl font-bold tracking-tight">raati.ai</h1>}
-                    <button
-                        onClick={toggleSidebar}
-                        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-                        className="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors"
+            <aside className={`relative ${collapsed ? 'w-16' : 'w-64'} ${dark ? 'bg-[#12141c]' : 'bg-[#1a237e]'} text-white flex flex-col transition-all duration-300 flex-shrink-0`}>
+                {/* Top: Logo */}
+                <div className={`flex items-center ${collapsed ? 'justify-center py-4' : 'px-5 py-4'}`}>
+                    <div
+                        className={`flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ${collapsed ? 'justify-center w-full' : ''}`}
+                        onClick={() => navigate('/landing')}
+                        title="Go to Landing Page"
                     >
-                        <Menu size={18} />
-                    </button>
+                        <img src="/logo.svg" alt="raati.ai logo" className="w-8 h-8 brightness-0 invert shrink-0" />
+                        {!collapsed && (
+                            <h1 className="text-xl font-bold tracking-tight whitespace-nowrap">
+                                raati.ai
+                            </h1>
+                        )}
+                    </div>
                 </div>
+
+                {/* Floating Collapse Toggler */}
+                <button
+                    onClick={toggleSidebar}
+                    title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                    className={`absolute -right-3 top-6 p-1 rounded-full shadow-md border transition-all z-50 ${dark ? 'bg-[#181b23] border-gray-700 text-gray-300 hover:text-white hover:bg-gray-800' : 'bg-white border-gray-200 text-[#1a237e] hover:bg-gray-50'}`}
+                >
+                    {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+                </button>
 
                 {/* Nav */}
                 <nav className={`flex-1 ${collapsed ? 'px-2' : 'px-4'} space-y-1 mt-2`}>
                     {[
                         { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+                        { to: '/evaluate', icon: FlaskConical, label: 'Run Evaluation' },
                         { to: '/history', icon: Users, label: 'Submissions' },
-                        { to: '/analytics', icon: PieChart, label: 'Analytics' },
                     ].map(({ to, icon: Icon, label }) => (
                         <NavLink
                             key={to}
@@ -82,13 +95,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                     ))}
                 </nav>
 
-                {/* Bottom: Settings */}
-                <div className={`${collapsed ? 'px-2' : 'px-4'} pb-4`}>
-                    <button className={`flex items-center ${collapsed ? 'justify-center' : 'space-x-3'} text-gray-400 hover:text-white transition-colors w-full px-3 py-2 rounded-lg hover:bg-white/5`}>
-                        <Settings size={20} />
-                        {!collapsed && <span className="text-sm">Settings</span>}
-                    </button>
-                </div>
+                {/* Bottom spacer (settings removed) */}
+                <div className="pb-4" />
             </aside>
 
             {/* ─── Main Content ─── */}
@@ -104,16 +112,6 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                         >
                             {dark ? <Sun size={18} /> : <Moon size={18} />}
                         </button>
-                        <button className={`relative ${dark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'}`}>
-                            <Bell size={18} />
-                            <span className="absolute -top-0.5 -right-0.5 block h-2 w-2 rounded-full ring-2 ring-white bg-red-500" />
-                        </button>
-                        <div className="flex items-center space-x-2">
-                            <div className="h-7 w-7 rounded-full bg-gray-200 overflow-hidden">
-                                <img src="https://ui-avatars.com/api/?name=Jalal+Ghaffar&background=0D8ABC&color=fff" alt="Profile" />
-                            </div>
-                            <span className={`text-sm font-medium ${subtext} hidden sm:block`}>Jalal Ghaffar</span>
-                        </div>
                     </div>
                 </header>
 

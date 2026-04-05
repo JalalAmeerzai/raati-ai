@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './components/Layout';
-import Login from './pages/Login';
+import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
+import Evaluate from './pages/Evaluate';
 import Results from './pages/Results';
 import History from './pages/History';
-import Analytics from './pages/Analytics';
 
 function App() {
   return (
@@ -12,12 +12,12 @@ function App() {
       <Router>
         <div className="min-h-screen font-sans">
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/landing" replace />} />
+            <Route path="/landing" element={<Landing />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/evaluate" element={<Evaluate />} />
             <Route path="/results/:id" element={<Results />} />
             <Route path="/history" element={<History />} />
-            <Route path="/analytics" element={<Analytics />} />
           </Routes>
         </div>
       </Router>

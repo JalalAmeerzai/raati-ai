@@ -73,8 +73,10 @@ def get_submission_history():
 @app.get("/analytics")
 def get_analytics():
     """
-    Returns analytics data for the user.
+    Returns platform-wide analytics data (open/public metrics).
     """
+    from datetime import datetime
+
     history = get_history()
     valid_scores = []
 
@@ -91,34 +93,55 @@ def get_analytics():
     if total_submissions == 0:
         return {
             "total_submissions": 0,
+            "submissions_this_month": 0,
             "average_score": 0,
-            "trend": []
+            "highest_score": 0,
+            "distribution": []
         }
 
     total_score = sum(valid_scores)
     average_score = round(total_score / total_submissions, 1)
+    highest_score = round(max(valid_scores), 1)
 
-    chronological = list(reversed(history))
-
-    trend = []
-    valid_count = 0
-    for item in chronological:
-        score_val = item.get("overall_score")
-        if score_val:
+    # Count submissions from the current calendar month
+    now = datetime.now()
+    submissions_this_month = 0
+    for item in history:
+        ts = item.get("timestamp")
+        if ts:
             try:
-                score_num = float(score_val)
-                trend.append({"week": f"Upload {valid_count+1}", "score": score_num})
-                valid_count += 1
-            except ValueError:
+                dt = datetime.fromisoformat(ts)
+                if dt.month == now.month and dt.year == now.year:
+                    submissions_this_month += 1
+            except (ValueError, TypeError):
                 pass
 
-    trend = trend[-6:]
+    distribution = [
+        {"range": "Needs Work (0-2)", "count": 0},
+        {"range": "Fair (2-3)", "count": 0},
+        {"range": "Good (3-4)", "count": 0},
+        {"range": "Excellent (4-5)", "count": 0},
+    ]
+
+    for score_num in valid_scores:
+        if score_num < 2:
+            distribution[0]["count"] += 1
+        elif score_num < 3:
+            distribution[1]["count"] += 1
+        elif score_num < 4:
+            distribution[2]["count"] += 1
+        else:
+            distribution[3]["count"] += 1
+
+    for bucket in distribution:
+        bucket["percentage"] = round((bucket["count"] / total_submissions * 100)) if total_submissions > 0 else 0
 
     return {
         "total_submissions": total_submissions,
+        "submissions_this_month": submissions_this_month,
         "average_score": average_score,
-        "trend": trend,
-        "creative_standing": "Top 10%"
+        "highest_score": highest_score,
+        "distribution": distribution,
     }
 
 if __name__ == "__main__":

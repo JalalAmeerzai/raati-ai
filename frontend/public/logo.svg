@@ -1,0 +1,56 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Glowing subtle backdrop -->
+  <circle cx="128" cy="128" r="110" fill="url(#coreGradient)" opacity="0.15" />
+  
+  <!-- Back / underlying decorative ring -->
+  <circle cx="128" cy="128" r="88" stroke="url(#accentGradient)" stroke-width="4" stroke-dasharray="16 24" stroke-linecap="round" opacity="0.3" />
+  
+  <!-- Orbital lines -->
+  <path d="M128 42C175.5 42 214 80.5 214 128" stroke="url(#blueGradient)" stroke-width="8" stroke-linecap="round" />
+  <path d="M128 214C80.5 214 42 175.5 42 128" stroke="url(#magentaGradient)" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Connection Network (AI thematic) -->
+  <path d="M85 96L128 65L171 96V160L128 191L85 160V96Z" fill="url(#innerHex)" stroke="#ffffff" stroke-width="2" stroke-opacity="0.8" stroke-linejoin="round" />
+  <path d="M128 65V128M85 96L128 128M171 96L128 128M85 160L128 128M171 160L128 128M128 191V128" stroke="#ffffff" stroke-width="2" stroke-opacity="0.4" stroke-linecap="round" />
+  
+  <!-- Pulse dots -->
+  <circle cx="128" cy="65" r="8" fill="#fff" />
+  <circle cx="85" cy="96" r="8" fill="#4dabf7" />
+  <circle cx="171" cy="96" r="8" fill="#748ffc" />
+  <circle cx="85" cy="160" r="8" fill="#b197fc" />
+  <circle cx="171" cy="160" r="8" fill="#4dabf7" />
+  <circle cx="128" cy="191" r="8" fill="#fff" />
+  <circle cx="128" cy="128" r="12" fill="url(#centerNode)" shadow="0 0 10px #748ffc" />
+
+  <defs>
+    <linearGradient id="coreGradient" x1="128" y1="18" x2="128" y2="238" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3b82f6" />
+      <stop offset="1" stop-color="#8b5cf6" />
+    </linearGradient>
+
+    <linearGradient id="accentGradient" x1="40" y1="40" x2="216" y2="216" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#60a5fa" />
+      <stop offset="1" stop-color="#c084fc" />
+    </linearGradient>
+
+    <linearGradient id="blueGradient" x1="128" y1="42" x2="214" y2="128" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563eb" />
+      <stop offset="1" stop-color="#60a5fa" />
+    </linearGradient>
+
+    <linearGradient id="magentaGradient" x1="42" y1="128" x2="128" y2="214" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c084fc" />
+      <stop offset="1" stop-color="#7c3aed" />
+    </linearGradient>
+    
+    <linearGradient id="innerHex" x1="85" y1="65" x2="171" y2="191" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1e1b4b" stop-opacity="0.9" />
+      <stop offset="1" stop-color="#1e3a8a" stop-opacity="0.7" />
+    </linearGradient>
+
+    <radialGradient id="centerNode" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(128 128) rotate(90) scale(12)">
+      <stop stop-color="#ffffff" />
+      <stop offset="1" stop-color="#93c5fd" />
+    </radialGradient>
+  </defs>
+</svg>

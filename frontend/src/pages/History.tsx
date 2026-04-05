@@ -239,7 +239,7 @@ const History: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="overflow-visible">
+                <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
                             <tr className={`${headerBg} ${sub} text-sm border-b ${border}`}>
