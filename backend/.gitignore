@@ -3,3 +3,5 @@ __pycache__/
 *$py.class
 venv/
 .env
+*.zip
+backup_and_reset.py
