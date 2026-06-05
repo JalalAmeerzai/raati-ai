@@ -3,6 +3,7 @@ import Layout, { useTheme } from '../components/Layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Search, CheckCircle, X, ChevronUp, ChevronDown, ArrowRight } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 interface HistoryItem {
     id: string;
@@ -54,7 +55,7 @@ const History: React.FC = () => {
     const [sortDir, setSortDir] = useState<SortDir>('desc');
 
     useEffect(() => {
-        axios.get('http://localhost:8000/history')
+        axios.get(`${API_BASE_URL}/history`)
             .then(response => {
                 setHistory(response.data);
                 setIsLoading(false);

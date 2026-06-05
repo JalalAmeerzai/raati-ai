@@ -11,6 +11,8 @@ logger = logging.getLogger(__name__)
 api_key = os.getenv("OPENAI_API_KEY")
 client = AsyncOpenAI(api_key=api_key if api_key else "placeholder")
 
+from .utils import sanitize_json_numbers
+
 DIMENSION_KEYS = [
     "creativity_score",
     "originality_score",
@@ -353,4 +355,4 @@ async def synthesize(expert_results: list) -> dict:
         "variance_message": stat_text.get("variance_message", ""),
     }
 
-    return synthesis
+    return sanitize_json_numbers(synthesis)

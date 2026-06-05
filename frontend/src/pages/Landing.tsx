@@ -1,21 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../components/Layout';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
     BrainCircuit, 
     Zap, 
     ArrowRight, 
     Target, 
-    ShieldCheck, 
     BarChart3, 
-    Dna,
-    Network,
-    Sun,
-    Moon,
-    Sparkles,
-    Users,
-    ImagePlus,
+    Network, 
+    Sun, 
+    Moon, 
+    Users, 
+    ImagePlus, 
     FileCheck
 } from 'lucide-react';
 import { OpenAIIcon, XAIIcon, ClaudeIcon } from '../components/LLMIcons';
@@ -142,7 +139,7 @@ const SynapticBackground: React.FC = () => {
                         r={node.r}
                         fill={nodeColor}
                         filter="url(#nodeGlow)"
-                        initial={{ opacity: 0, scale: 0 }}
+                        initial={{ opacity: 0 }}
                         animate={{
                             opacity: [0.4, 1, 0.4],
                             cx: [node.cx, node.cx + (i % 2 === 0 ? 8 : -8), node.cx],
@@ -180,6 +177,180 @@ const SynapticBackground: React.FC = () => {
             <div className={`absolute inset-0 ${dark ? 'bg-gradient-to-tr from-[#0b0d12] via-transparent to-[#0b0d12]/80' : 'bg-gradient-to-tr from-white via-transparent to-white/70'}`} />
             <div className={`absolute inset-0 ${dark ? 'bg-gradient-to-b from-transparent via-transparent to-[#0b0d12]' : 'bg-gradient-to-b from-transparent via-transparent to-white'}`} />
         </div>
+    );
+};
+
+// ─── Pipeline Wizard Component ───
+interface PipelineStep {
+    num: string;
+    title: string;
+    desc: string;
+    icon: React.FC<{ size?: number; className?: string }>;
+    color: string;
+    bg: string;
+}
+
+const PipelineWizard: React.FC<{ steps: PipelineStep[]; dark: boolean; sub: string }> = ({ steps, dark, sub }) => {
+    const PHASE_DURATION = 3000; // 3s per phase
+    const TICK_INTERVAL = 50;
+    const TICKS_PER_PHASE = PHASE_DURATION / TICK_INTERVAL; // 60 ticks per phase
+
+    const [tick, setTick] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
+
+    useEffect(() => {
+        if (isPaused) return;
+        const interval = setInterval(() => {
+            setTick(t => t + 1);
+        }, TICK_INTERVAL);
+        return () => clearInterval(interval);
+    }, [isPaused]);
+
+    // Derive activePhase and progress from the single tick counter
+    const activePhase = Math.floor(tick / TICKS_PER_PHASE) % steps.length;
+    const progress = ((tick % TICKS_PER_PHASE) / TICKS_PER_PHASE) * 100;
+
+    const handleClick = (idx: number) => {
+        setTick(idx * TICKS_PER_PHASE);
+        setIsPaused(true);
+        setTimeout(() => setIsPaused(false), 5000); // Resume after 5s
+    };
+
+    const ActiveIcon = steps[activePhase].icon;
+
+    return (
+        <section className="snap-start h-screen shrink-0 flex flex-col justify-center py-20 px-6 relative overflow-hidden">
+            <div className="max-w-7xl mx-auto w-full">
+                {/* Header */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-10"
+                >
+                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] mb-5 ${dark ? 'bg-indigo-500/10 text-indigo-400' : 'bg-indigo-50 text-indigo-700'}`}><Zap size={12} /> The Pulse Pipeline</div>
+                    <h2 className={`text-4xl sm:text-6xl font-black tracking-tight mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>High-Fidelity <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-blue-600">Workflow.</span></h2>
+                </motion.div>
+
+                {/* Progress Bar */}
+                <div className={`relative h-1.5 rounded-full mb-8 overflow-hidden ${dark ? 'bg-white/5' : 'bg-black/5'}`}>
+                    <motion.div 
+                        className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
+                        style={{ width: `${((activePhase) / steps.length) * 100 + (progress / steps.length)}%` }}
+                    />
+                </div>
+
+                {/* Pipeline Nodes */}
+                <div className="relative">
+                    {/* Horizontal beam (desktop) */}
+                    <div className={`absolute top-8 left-[5%] right-[5%] h-0.5 z-0 hidden lg:block ${dark ? 'bg-white/5' : 'bg-black/5'}`}>
+                        {/* Animated glow pulse traveling along beam */}
+                        <motion.div
+                            className="absolute top-0 h-full w-32 bg-gradient-to-r from-transparent via-blue-500/60 to-transparent rounded-full"
+                            animate={{ left: ['-10%', '110%'] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 relative z-10">
+                        {steps.map((step, idx) => {
+                            const isActive = idx === activePhase;
+                            const isPast = idx < activePhase;
+                            const StepIcon = step.icon;
+
+                            return (
+                                <motion.div 
+                                    key={idx}
+                                    onClick={() => handleClick(idx)}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.08 }}
+                                    className="cursor-pointer"
+                                >
+                                    {/* Node dot */}
+                                    <div className="flex justify-center mb-4 relative">
+                                        <motion.div 
+                                            animate={isActive ? { scale: [1, 1.3, 1] } : {}}
+                                            transition={{ duration: 2, repeat: Infinity }}
+                                            className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${
+                                                isActive 
+                                                    ? `${step.bg} ${step.color} shadow-xl ring-2 ring-offset-2 ${dark ? 'ring-blue-500/50 ring-offset-[#0b0d12]' : 'ring-blue-500/30 ring-offset-white'} scale-110`
+                                                    : isPast
+                                                        ? `${step.bg} ${step.color} opacity-60`
+                                                        : `${dark ? 'bg-white/5 text-white/20' : 'bg-gray-100 text-gray-300'}`
+                                            }`}
+                                        >
+                                            <StepIcon size={28} />
+                                        </motion.div>
+                                    </div>
+
+                                    {/* Card */}
+                                    <motion.div 
+                                        animate={{ 
+                                            height: isActive ? 'auto' : 'auto',
+                                        }}
+                                        className={`p-6 rounded-2xl border transition-all duration-500 ${
+                                            isActive 
+                                                ? `${dark ? 'bg-gradient-to-b from-blue-500/10 to-indigo-500/5 border-blue-500/30' : 'bg-gradient-to-b from-blue-50 to-indigo-50 border-blue-200 shadow-xl shadow-blue-900/5'}`
+                                                : `${dark ? 'bg-white/[0.02] border-white/5 hover:bg-white/5' : 'bg-white/50 border-black/5 hover:border-black/10'}`
+                                        }`}
+                                    >
+                                        <div className={`text-[10px] font-black uppercase tracking-widest mb-1.5 transition-colors duration-500 ${
+                                            isActive ? (dark ? 'text-blue-400' : 'text-blue-600') : (dark ? 'text-white/20' : 'text-gray-300')
+                                        }`}>Phase {step.num}</div>
+                                        <h3 className={`text-base font-black mb-2 leading-tight transition-colors duration-500 ${
+                                            isActive ? (dark ? 'text-white' : 'text-gray-900') : (dark ? 'text-white/40' : 'text-gray-400')
+                                        }`}>{step.title}</h3>
+                                        
+                                        <AnimatePresence>
+                                            {isActive && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: 'auto' }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    transition={{ duration: 0.3 }}
+                                                >
+                                                    <p className={`text-xs leading-relaxed ${sub}`}>{step.desc}</p>
+                                                    {/* Phase progress mini-bar */}
+                                                    <div className={`mt-3 h-1 rounded-full overflow-hidden ${dark ? 'bg-white/10' : 'bg-black/10'}`}>
+                                                        <motion.div 
+                                                            className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
+                                                            style={{ width: `${progress}%` }}
+                                                        />
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Active Phase Detail Strip */}
+                <motion.div 
+                    key={activePhase}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`mt-8 p-5 rounded-2xl border flex items-center gap-6 ${dark ? 'bg-white/[0.03] border-white/5' : 'bg-white border-black/5 shadow-lg'}`}
+                >
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${steps[activePhase].bg} ${steps[activePhase].color}`}>
+                        <ActiveIcon size={24} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                        <div className={`text-[10px] font-black uppercase tracking-widest ${dark ? 'text-blue-400' : 'text-blue-600'}`}>Currently Processing — Phase {steps[activePhase].num}</div>
+                        <p className={`text-sm font-bold ${dark ? 'text-white' : 'text-gray-900'}`}>{steps[activePhase].title}: {steps[activePhase].desc}</p>
+                    </div>
+                    <div className="flex gap-1.5">
+                        {steps.map((_, i) => (
+                            <div key={i} className={`w-2 h-2 rounded-full transition-all ${i === activePhase ? 'bg-blue-500 scale-125' : i < activePhase ? 'bg-blue-500/40' : (dark ? 'bg-white/10' : 'bg-black/10')}`} />
+                        ))}
+                    </div>
+                </motion.div>
+            </div>
+        </section>
     );
 };
 
@@ -356,20 +527,121 @@ const Landing: React.FC = () => {
                                 </div>
                             </motion.div>
 
+                            {/* Premium Multi-Ring Orbital System */}
                             <motion.div 
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 whileInView={{ scale: 1, opacity: 1 }}
                                 viewport={{ once: true }}
                                 className="relative flex items-center justify-center"
                             >
-                                <div className={`w-[26rem] h-[26rem] rounded-full border-2 border-dashed relative flex items-center justify-center ${dark ? 'border-white/10' : 'border-[#1a237e]/10'}`}>
+                                {/* SVG for connection beams + particles */}
+                                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 420 420" fill="none">
+                                    <defs>
+                                        <radialGradient id="rippleGrad">
+                                            <stop offset="0%" stopColor={dark ? 'rgba(99,102,241,0.3)' : 'rgba(26,35,126,0.2)'} />
+                                            <stop offset="100%" stopColor="transparent" />
+                                        </radialGradient>
+                                        <linearGradient id="beam1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
+                                            <stop offset="50%" stopColor="#3b82f6" stopOpacity="0.6" />
+                                            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+                                        </linearGradient>
+                                        <linearGradient id="beam2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stopColor="#f97316" stopOpacity="0" />
+                                            <stop offset="50%" stopColor="#f97316" stopOpacity="0.5" />
+                                            <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
+                                        </linearGradient>
+                                        <linearGradient id="beam3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0" />
+                                            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.5" />
+                                            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+                                        </linearGradient>
+                                    </defs>
+                                    
+                                    {/* Energy ripple from center */}
+                                    <motion.circle cx="210" cy="210" r="60" fill="url(#rippleGrad)"
+                                        animate={{ r: [60, 140, 60], opacity: [0.6, 0, 0.6] }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: "easeOut" }}
+                                    />
+                                    <motion.circle cx="210" cy="210" r="60" fill="url(#rippleGrad)"
+                                        animate={{ r: [60, 140, 60], opacity: [0.4, 0, 0.4] }}
+                                        transition={{ duration: 4, delay: 2, repeat: Infinity, ease: "easeOut" }}
+                                    />
+
+                                    {/* Pulsing connection beams: center to each LLM position */}
+                                    {/* To OpenAI (top) */}
+                                    <motion.line x1="210" y1="170" x2="210" y2="45" stroke="url(#beam1)" strokeWidth="2"
+                                        animate={{ opacity: [0, 0.8, 0] }}
+                                        transition={{ duration: 3, repeat: Infinity, delay: 0 }}
+                                    />
+                                    {/* To Claude (bottom-left) */}
+                                    <motion.line x1="185" y1="230" x2="75" y2="340" stroke="url(#beam2)" strokeWidth="2"
+                                        animate={{ opacity: [0, 0.8, 0] }}
+                                        transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                                    />
+                                    {/* To xAI (bottom-right) */}
+                                    <motion.line x1="235" y1="230" x2="345" y2="340" stroke="url(#beam3)" strokeWidth="2"
+                                        animate={{ opacity: [0, 0.8, 0] }}
+                                        transition={{ duration: 3, repeat: Infinity, delay: 2 }}
+                                    />
+
+                                    {/* Data-stream particles traveling to center */}
+                                    {/* OpenAI -> center */}
+                                    <circle r="3" fill="#10a37f" opacity="0.9">
+                                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M210,40 L210,175" />
+                                        <animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" />
+                                    </circle>
+                                    <circle r="2" fill="#10a37f" opacity="0.6">
+                                        <animateMotion dur="2.5s" repeatCount="indefinite" path="M215,45 L212,175" begin="0.8s" />
+                                        <animate attributeName="opacity" values="0;0.7;0.7;0" dur="2.5s" repeatCount="indefinite" begin="0.8s" />
+                                    </circle>
+                                    {/* Claude -> center */}
+                                    <circle r="3" fill="#f97316" opacity="0.9">
+                                        <animateMotion dur="2.8s" repeatCount="indefinite" path="M70,345 L190,220" />
+                                        <animate attributeName="opacity" values="0;1;1;0" dur="2.8s" repeatCount="indefinite" />
+                                    </circle>
+                                    <circle r="2" fill="#f97316" opacity="0.6">
+                                        <animateMotion dur="2.8s" repeatCount="indefinite" path="M75,340 L192,222" begin="1s" />
+                                        <animate attributeName="opacity" values="0;0.7;0.7;0" dur="2.8s" repeatCount="indefinite" begin="1s" />
+                                    </circle>
+                                    {/* xAI -> center */}
+                                    <circle r="3" fill={dark ? "#a78bfa" : "#7c3aed"} opacity="0.9">
+                                        <animateMotion dur="2.6s" repeatCount="indefinite" path="M350,345 L230,220" />
+                                        <animate attributeName="opacity" values="0;1;1;0" dur="2.6s" repeatCount="indefinite" />
+                                    </circle>
+                                    <circle r="2" fill={dark ? "#a78bfa" : "#7c3aed"} opacity="0.6">
+                                        <animateMotion dur="2.6s" repeatCount="indefinite" path="M345,340 L228,222" begin="0.9s" />
+                                        <animate attributeName="opacity" values="0;0.7;0.7;0" dur="2.6s" repeatCount="indefinite" begin="0.9s" />
+                                    </circle>
+                                </svg>
+
+                                {/* Outer decorative ring */}
+                                <motion.div 
+                                    animate={{ rotate: -360 }}
+                                    transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                                    className={`absolute w-[28rem] h-[28rem] rounded-full border ${dark ? 'border-white/5' : 'border-black/5'}`}
+                                />
+
+                                {/* Main orbit ring */}
+                                <div className={`w-[24rem] h-[24rem] rounded-full border-2 border-dashed relative flex items-center justify-center ${dark ? 'border-white/10' : 'border-[#1a237e]/10'}`}>
+                                    {/* Inner decorative ring */}
+                                    <motion.div 
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                                        className={`absolute w-[16rem] h-[16rem] rounded-full border ${dark ? 'border-blue-500/10' : 'border-blue-300/20'}`}
+                                    />
+
                                     {/* Central Intelligence Hub */}
-                                    <div className={`w-48 h-48 rounded-[3rem] flex flex-col items-center justify-center text-center relative z-20 shadow-4xl border ${dark ? 'bg-[#151921]/100 border-white/10' : 'bg-white border-black/5'}`}>
-                                        <div className="p-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mb-4 shadow-2xl shadow-blue-500/30">
-                                            <BrainCircuit size={40} className="text-white" />
-                                        </div>
-                                        <span className={`text-[10px] font-black uppercase tracking-widest ${dark ? 'text-blue-400' : 'text-blue-700'} mb-1`}>Verified</span>
-                                        <span className={`text-sm font-black tracking-tight leading-tight ${dark ? 'text-white' : 'text-gray-900'}`}>Professional Synthesis</span>
+                                    <div className={`w-44 h-44 rounded-[3rem] flex flex-col items-center justify-center text-center relative z-20 shadow-4xl border ${dark ? 'bg-[#151921] border-white/10' : 'bg-white border-black/5'}`}>
+                                        <motion.div 
+                                            animate={{ scale: [1, 1.05, 1] }}
+                                            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                            className="p-5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl mb-3 shadow-2xl shadow-blue-500/30"
+                                        >
+                                            <BrainCircuit size={36} className="text-white" />
+                                        </motion.div>
+                                        <span className={`text-[9px] font-black uppercase tracking-widest ${dark ? 'text-blue-400' : 'text-blue-700'} mb-0.5`}>Verified</span>
+                                        <span className={`text-xs font-black tracking-tight leading-tight ${dark ? 'text-white' : 'text-gray-900'}`}>Professional Synthesis</span>
                                     </div>
 
                                     {/* Rotating Orbit Container */}
@@ -379,24 +651,66 @@ const Landing: React.FC = () => {
                                         className="absolute inset-0"
                                     >
                                         {/* OpenAI (Top) */}
-                                        <div className="absolute top-0 left-1/2 -ml-9 -mt-9">
-                                            <div className="w-18 h-18 rounded-full bg-white flex items-center justify-center shadow-2xl border border-gray-100 overflow-hidden p-3 transition-transform hover:scale-110">
-                                                <OpenAIIcon size={32} className="text-[#10a37f]" />
-                                            </div>
+                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                            <motion.div 
+                                                animate={{ rotate: -360 }}
+                                                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                                                className="flex flex-col items-center gap-1.5"
+                                            >
+                                                <div className="relative">
+                                                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-2xl shadow-emerald-500/20 border border-gray-100 overflow-hidden p-3">
+                                                        <OpenAIIcon size={30} className="text-[#10a37f]" />
+                                                    </div>
+                                                    <motion.div 
+                                                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                                                        transition={{ duration: 2, repeat: Infinity }}
+                                                        className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 border-2 border-white"
+                                                    />
+                                                </div>
+                                                <span className={`text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md ${dark ? 'bg-white/10 text-white/70' : 'bg-gray-100 text-gray-600'}`}>GPT</span>
+                                            </motion.div>
                                         </div>
 
                                         {/* Claude (Bottom Left) */}
-                                        <div className="absolute bottom-6 left-6 -ml-9">
-                                            <div className="w-18 h-18 rounded-full bg-orange-500 flex items-center justify-center shadow-2xl transition-transform hover:scale-110 p-3">
-                                                <ClaudeIcon size={32} className="text-white" />
-                                            </div>
+                                        <div className="absolute bottom-[12%] left-[12%] -translate-x-1/2 translate-y-1/2">
+                                            <motion.div 
+                                                animate={{ rotate: -360 }}
+                                                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                                                className="flex flex-col items-center gap-1.5"
+                                            >
+                                                <div className="relative">
+                                                    <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center shadow-2xl shadow-orange-500/30 p-3">
+                                                        <ClaudeIcon size={30} className="text-white" />
+                                                    </div>
+                                                    <motion.div 
+                                                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                                                        transition={{ duration: 2, repeat: Infinity, delay: 0.7 }}
+                                                        className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-orange-400 border-2 border-white"
+                                                    />
+                                                </div>
+                                                <span className={`text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md ${dark ? 'bg-white/10 text-white/70' : 'bg-gray-100 text-gray-600'}`}>Claude</span>
+                                            </motion.div>
                                         </div>
 
                                         {/* xAI (Bottom Right) */}
-                                        <div className="absolute bottom-6 right-6 -mr-9">
-                                            <div className="w-18 h-18 rounded-full bg-gray-950 flex items-center justify-center shadow-2xl transition-transform hover:scale-110 p-3">
-                                                <XAIIcon size={32} className="text-white" />
-                                            </div>
+                                        <div className="absolute bottom-[12%] right-[12%] translate-x-1/2 translate-y-1/2">
+                                            <motion.div 
+                                                animate={{ rotate: -360 }}
+                                                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                                                className="flex flex-col items-center gap-1.5"
+                                            >
+                                                <div className="relative">
+                                                    <div className="w-16 h-16 rounded-full bg-gray-950 flex items-center justify-center shadow-2xl shadow-purple-500/20 p-3">
+                                                        <XAIIcon size={30} className="text-white" />
+                                                    </div>
+                                                    <motion.div 
+                                                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                                                        transition={{ duration: 2, repeat: Infinity, delay: 1.4 }}
+                                                        className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-purple-400 border-2 border-white"
+                                                    />
+                                                </div>
+                                                <span className={`text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md ${dark ? 'bg-white/10 text-white/70' : 'bg-gray-100 text-gray-600'}`}>Grok</span>
+                                            </motion.div>
                                         </div>
                                     </motion.div>
                                 </div>
@@ -405,50 +719,8 @@ const Landing: React.FC = () => {
                     </div>
                 </section>
 
-                {/* 3. Integrated Flow Section */}
-                <section className="snap-start h-screen shrink-0 flex flex-col justify-center py-24 px-6 relative overflow-hidden">
-                    <div className="max-w-7xl mx-auto w-full">
-                        <motion.div 
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="text-center mb-16"
-                        >
-                            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] mb-6 ${dark ? 'bg-indigo-500/10 text-indigo-400' : 'bg-indigo-50 text-indigo-700'}`}><Zap size={12} /> The Pulse Pipeline</div>
-                            <h2 className={`text-4xl sm:text-6xl font-black tracking-tight mb-4 ${dark ? 'text-white' : 'text-gray-900'}`}>High-Fidelity <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-blue-600">Workflow.</span></h2>
-                        </motion.div>
-
-                        <div className="relative mt-12">
-                            {/* Connector Line */}
-                            <div className={`absolute top-1/2 left-0 w-full h-px -translate-y-1/2 z-0 hidden lg:block ${dark ? 'bg-white/10' : 'bg-black/10'}`} />
-                            
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 relative z-10">
-                                {steps.map((step, idx) => (
-                                    <motion.div 
-                                        key={idx}
-                                        initial={{ opacity: 0, y: 30 }}
-                                        whileInView={{ opacity: 1, y: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: idx * 0.1 }}
-                                        className={`group p-8 rounded-[2rem] border relative overflow-hidden transition-all hover:scale-105 ${dark ? 'bg-[#151921] border-white/10 hover:border-blue-500/40' : 'bg-white border-black/5 hover:border-blue-200 shadow-xl shadow-blue-900/5'}`}
-                                    >
-                                        <div className={`w-14 h-14 rounded-2xl mb-6 flex items-center justify-center transition-transform group-hover:scale-110 ${step.bg} ${step.color}`}>
-                                            <step.icon size={28} />
-                                        </div>
-                                        <div className={`text-[10px] font-black uppercase tracking-widest mb-2 ${dark ? 'text-blue-400' : 'text-blue-600'}`}>Phase {step.num}</div>
-                                        <h3 className={`text-lg font-black mb-3 leading-tight ${dark ? 'text-white' : 'text-gray-900'}`}>{step.title}</h3>
-                                        <p className={`text-xs leading-relaxed ${sub}`}>{step.desc}</p>
-                                        
-                                        {/* Animated Sparkle on Hover */}
-                                        <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <Sparkles size={14} className="text-blue-500 animate-pulse" />
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {/* 3. Animated Pipeline Wizard Section */}
+                <PipelineWizard steps={steps} dark={dark} sub={sub} />
 
                 {/* 4. Footer Section */}
                 <section className="snap-start h-screen shrink-0 flex items-center justify-center bg-[#0a0c10] text-white relative">

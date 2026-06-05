@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FileText, CalendarDays, TrendingUp, Award, ArrowRight, Image, ShieldCheck, Zap, AlertCircle } from 'lucide-react';
 import { OpenAIIcon, XAIIcon, ClaudeIcon } from '../components/LLMIcons';
+import { API_BASE_URL } from '../config';
 import { 
     XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
     BarChart, Bar, Cell,
@@ -75,8 +76,8 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         Promise.all([
-            axios.get('http://localhost:8000/analytics'),
-            axios.get('http://localhost:8000/history'),
+            axios.get(`${API_BASE_URL}/analytics`),
+            axios.get(`${API_BASE_URL}/history`),
         ]).then(([analyticsRes, historyRes]) => {
             setAnalytics(analyticsRes.data);
             const hist = historyRes.data;
@@ -85,7 +86,7 @@ const Dashboard: React.FC = () => {
             
             // Immediately fetch detail for the top item
             if (hist.length > 0) {
-                axios.get(`http://localhost:8000/results/${hist[0].id}`)
+                axios.get(`${API_BASE_URL}/results/${hist[0].id}`)
                     .then(res => setFeaturedDetail(res.data))
                     .catch(err => console.error("Failed to load featured details", err));
             }
@@ -286,7 +287,7 @@ const Dashboard: React.FC = () => {
                                             {/* Section 1: Visual (Image) */}
                                             <div className={`w-full lg:w-[320px] h-72 lg:h-auto relative shrink-0 overflow-hidden ${dark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                                                 <img
-                                                    src={`http://localhost:8000${featuredItem.image_url}`}
+                                                    src={`${API_BASE_URL}${featuredItem.image_url}`}
                                                     alt="Submission Sketch"
                                                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2.5s] ease-out"
                                                     crossOrigin="anonymous"
@@ -478,7 +479,7 @@ const Dashboard: React.FC = () => {
                                         {/* Large Image Reveal */}
                                         <div className={`w-full flex-grow relative overflow-hidden ${dark ? 'bg-gray-800' : 'bg-gray-100'}`}>
                                             <img
-                                                src={`http://localhost:8000${item.image_url}`}
+                                                src={`${API_BASE_URL}${item.image_url}`}
                                                 alt="Submission Sketch"
                                                 className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                                 crossOrigin="anonymous"

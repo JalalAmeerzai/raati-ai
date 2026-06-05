@@ -3,6 +3,7 @@ import Layout, { useTheme } from '../components/Layout';
 import { UploadCloud, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const Evaluate: React.FC = () => {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Evaluate: React.FC = () => {
         formData.append('description', description);
         formData.append('submitter_name', submitterName.trim());
         try {
-            const response = await axios.post('http://localhost:8000/evaluate', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+            const response = await axios.post(`${API_BASE_URL}/evaluate`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
             navigate(`/results/${response.data.id}`, { state: { result: response.data } });
         } catch (error) {
             console.error('Error uploading:', error);

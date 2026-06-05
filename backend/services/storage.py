@@ -5,6 +5,8 @@ import json
 import shutil
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
+from .utils import sanitize_json_numbers
 
 # Define paths
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -99,10 +101,10 @@ def save_submission(image_file, description, evaluation_result, submitter_name: 
             writer.writeheader()
         writer.writerow(csv_row)
 
-    return full_record
+    return sanitize_json_numbers(full_record)
 
 
-def get_result_by_id(result_id: str) -> dict | None:
+def get_result_by_id(result_id: str) -> Optional[dict]:
     """Load a full result from JSON. Falls back to CSV row if JSON doesn't exist."""
     json_path = RESULTS_DIR / f"{result_id}.json"
     if json_path.exists():

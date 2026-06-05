@@ -30,6 +30,30 @@ def _compute_overall_score(result_json: dict) -> float:
         return 0.0
     return round(sum(scores) / len(scores), 2)
 
+def _try_repair_truncated_json(raw: str) -> dict | None:
+    """
+    Attempt to repair JSON that was truncated mid-string by the LLM hitting
+    its max_tokens limit. The most common symptom is an unterminated string
+    inside the last field (usually instructor_feedback).
+    Returns the parsed dict on success, or None if repair fails.
+    """
+    if not raw or not raw.strip():
+        return None
+    text = raw.strip()
+    # Try progressively more aggressive repairs
+    for suffix in ['"}', '"', '']:
+        candidate = text + suffix
+        # Balance braces / brackets
+        open_braces = candidate.count('{') - candidate.count('}')
+        open_brackets = candidate.count('[') - candidate.count(']')
+        candidate += ']' * max(open_brackets, 0)
+        candidate += '}' * max(open_braces, 0)
+        try:
+            return json.loads(candidate)
+        except json.JSONDecodeError:
+            continue
+    return None
+
 def _detect_mime_type(image_bytes: bytes) -> str:
     """Detect image MIME type from magic bytes."""
     if image_bytes[:8] == b'\x89PNG\r\n\x1a\n':
@@ -107,7 +131,7 @@ async def evaluate_with_openai(persona: dict, description: str, base64_image: st
             model="gpt-5.2",
             response_format={ "type": "json_object" },
             temperature=0.1,
-            max_completion_tokens=800,
+            max_completion_tokens=2000,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {
@@ -128,7 +152,7 @@ async def evaluate_with_openai(persona: dict, description: str, base64_image: st
                 model="gpt-4o",
                 response_format={ "type": "json_object" },
                 temperature=0.1,
-                max_tokens=800,
+                max_tokens=2000,
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {
@@ -145,10 +169,15 @@ async def evaluate_with_openai(persona: dict, description: str, base64_image: st
         try:
             result_json = json.loads(result_text)
         except Exception as parse_error:
-            print("\n--- ERROR PARSING OPENAI RESPONSE ---")
-            print(f"Raw Output: {result_text}")
+            print("\n--- ERROR PARSING OPENAI RESPONSE (attempting repair) ---")
             print(f"Parse Error: {parse_error}")
-            return {"model_provider": "OpenAI", "persona": persona, "error": f"Parse error: {parse_error}, Raw text: {result_text}"}
+            repaired = _try_repair_truncated_json(result_text)
+            if repaired:
+                print("--- REPAIR SUCCESSFUL ---")
+                result_json = repaired
+            else:
+                print(f"Raw Output: {result_text}")
+                return {"model_provider": "OpenAI", "persona": persona, "error": f"Parse error: {parse_error}, Raw text: {result_text}"}
         
         # Compute overall_score deterministically
         result_json["overall_score"] = _compute_overall_score(result_json)
@@ -171,7 +200,7 @@ async def evaluate_with_xai(persona: dict, description: str, base64_image: str, 
         response = await client.chat.completions.create(
             model="grok-4-1-fast-reasoning",
             temperature=0.1,
-            max_tokens=800,
+            max_tokens=2000,
             response_format={ "type": "json_object" },
             messages=[
                 {"role": "system", "content": system_prompt},
@@ -185,7 +214,18 @@ async def evaluate_with_xai(persona: dict, description: str, base64_image: str, 
             ]
         )
         result_text = response.choices[0].message.content
-        result_json = json.loads(result_text)
+        try:
+            result_json = json.loads(result_text)
+        except Exception as parse_error:
+            print(f"\n--- ERROR PARSING XAI RESPONSE (attempting repair) ---")
+            print(f"Parse Error: {parse_error}")
+            repaired = _try_repair_truncated_json(result_text)
+            if repaired:
+                print("--- REPAIR SUCCESSFUL ---")
+                result_json = repaired
+            else:
+                print(f"Raw Output: {result_text}")
+                return {"model_provider": "xAI", "persona": persona, "error": f"Parse error: {parse_error}"}
         
         # Compute overall_score deterministically
         result_json["overall_score"] = _compute_overall_score(result_json)
