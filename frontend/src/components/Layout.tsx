@@ -10,7 +10,7 @@ export const useTheme = () => useContext(ThemeContext);
 /* ───── Global Theme Provider (wrap once in App) ───── */
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [dark, setDark] = useState(() => {
-        try { return localStorage.getItem('raati-dark-mode') === 'true'; } catch { return false; }
+        try { const stored = localStorage.getItem('raati-dark-mode'); return stored === null ? true : stored === 'true'; } catch { return true; }
     });
     const [collapsed, setCollapsed] = useState(false);
 

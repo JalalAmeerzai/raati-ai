@@ -1,3 +1,4 @@
+import math
 import os
 import json
 import logging
@@ -148,12 +149,41 @@ def _compute_variance_analysis(df: pd.DataFrame) -> dict:
         return {"per_dimension": {}, "average_variance": 0.0}
 
 
+def _has_sufficient_variance(df: pd.DataFrame, rater_col: str = "model_provider") -> tuple[bool, str]:
+    """
+    Check whether the DataFrame has enough between-dimension variance to compute ICC.
+    Returns (ok, reason) where ok=True means ICC can be computed.
+    ICC requires: variance of dimension means across raters > 0.
+    When all raters give identical scores on every dimension, MSB = 0 → ICC = NaN.
+    """
+    if df.empty or df[rater_col].nunique() < 2:
+        return False, "fewer than 2 raters"
+    # Compute the mean score per dimension (averaged over raters)
+    dim_means = df.groupby("dimension")["score"].mean()
+    between_dim_var = float(dim_means.var())
+    if between_dim_var < 1e-9:  # effectively zero
+        return False, "zero between-dimension variance (all dimensions scored equally)"
+    return True, ""
+
+
 def _compute_per_persona_icc(df: pd.DataFrame) -> list:
     """Compute ICC3 for each persona — measures LLM agreement within each expert lens."""
     results = []
     for pid in df["persona_id"].unique():
         persona_df = df[df["persona_id"] == pid].copy()
         persona_name = persona_df["persona_name"].iloc[0] if len(persona_df) > 0 else "Unknown"
+
+        # Guard: check for degenerate input before calling pingouin
+        ok, reason = _has_sufficient_variance(persona_df, rater_col="model_provider")
+        if not ok:
+            logger.info(f"Per-persona ICC skipped for {pid}: {reason}")
+            # If all raters gave identical scores → perfect consensus → treat as 1.0
+            all_scores = persona_df["score"].dropna()
+            if all_scores.var() < 1e-9:
+                results.append({"persona_id": pid, "persona_name": persona_name, "icc": 1.0, "label": "Perfect Consensus"})
+            else:
+                results.append({"persona_id": pid, "persona_name": persona_name, "icc": None, "label": "Indeterminate"})
+            continue
 
         try:
             icc_results = pg.intraclass_corr(
@@ -163,8 +193,15 @@ def _compute_per_persona_icc(df: pd.DataFrame) -> list:
                 ratings="score"
             )
             icc_row = icc_results[icc_results["Type"].isin(["ICC3", "ICC2"])].iloc[0]
-            icc_val = round(float(icc_row["ICC"]), 3)
+            icc_val = float(icc_row["ICC"])
 
+            # Guard against NaN/Inf that slipped through (e.g. near-zero variance)
+            if not math.isfinite(icc_val):
+                logger.warning(f"Pingouin returned non-finite ICC for persona {pid}: {icc_val}")
+                results.append({"persona_id": pid, "persona_name": persona_name, "icc": None, "label": "Indeterminate"})
+                continue
+
+            icc_val = round(icc_val, 3)
             if icc_val >= 0.75:
                 label = "Excellent"
             elif icc_val >= 0.6:
@@ -194,11 +231,21 @@ def _compute_per_persona_icc(df: pd.DataFrame) -> list:
 
 def _compute_overall_icc(df: pd.DataFrame) -> dict:
     """Compute overall ICC across all 9 evaluations."""
-    try:
-        # Create a unique rater ID for each (model_provider, persona_id) combo
-        df_copy = df.copy()
-        df_copy["rater"] = df_copy["model_provider"] + "_" + df_copy["persona_id"]
+    df_copy = df.copy()
+    df_copy["rater"] = df_copy["model_provider"] + "_" + df_copy["persona_id"]
 
+    # Guard: ICC requires between-dimension variance > 0
+    ok, reason = _has_sufficient_variance(df_copy, rater_col="rater")
+    if not ok:
+        all_scores = df_copy["score"].dropna()
+        if all_scores.var() < 1e-9:
+            # All 9 raters gave identical scores on every dimension → perfect consensus
+            logger.info(f"Overall ICC: perfect consensus detected ({reason})")
+            return {"score": 1.0, "interp": "excellent", "note": "perfect_consensus"}
+        logger.info(f"Overall ICC skipped: {reason}")
+        return {"score": None, "interp": "indeterminate", "note": reason}
+
+    try:
         icc_results = pg.intraclass_corr(
             data=df_copy,
             targets="dimension",
@@ -206,8 +253,14 @@ def _compute_overall_icc(df: pd.DataFrame) -> dict:
             ratings="score"
         )
         icc_row = icc_results[icc_results["Type"].isin(["ICC2", "ICC3"])].iloc[0]
-        icc_val = round(float(icc_row["ICC"]), 3)
+        icc_val = float(icc_row["ICC"])
 
+        # Guard against NaN/Inf that slipped through
+        if not math.isfinite(icc_val):
+            logger.warning(f"Pingouin returned non-finite overall ICC: {icc_val}")
+            return {"score": None, "interp": "indeterminate", "note": "non_finite_result"}
+
+        icc_val = round(icc_val, 3)
         if icc_val >= 0.75:
             interp = "excellent"
         elif icc_val >= 0.6:

@@ -5,3 +5,9 @@ venv/
 .env
 *.zip
 backup_and_reset.py
+
+# Runtime data — keep directory structure but ignore actual data files
+data/images/*
+data/results/*
+!data/images/.gitkeep
+!data/results/.gitkeep
