@@ -67,6 +67,30 @@ async def evaluate_design(image_file, description: str):
     # 1. Read Image
     await image_file.seek(0)
     image_bytes = await image_file.read()
+    
+    try:
+        from PIL import Image
+        import io
+        
+        # Open image and resize if it's too large to save memory
+        img = Image.open(io.BytesIO(image_bytes))
+        
+        # Convert RGBA to RGB to avoid issues with JPEG
+        if img.mode in ('RGBA', 'LA') or (img.mode == 'P' and 'transparency' in img.info):
+            bg = Image.new('RGB', img.size, (255, 255, 255))
+            bg.paste(img, mask=img.split()[3] if img.mode == 'RGBA' else None)
+            img = bg
+            
+        img.thumbnail((1024, 1024), Image.Resampling.LANCZOS)
+        
+        # Save optimized image back to bytes
+        img_byte_arr = io.BytesIO()
+        img.save(img_byte_arr, format='JPEG', quality=85)
+        image_bytes = img_byte_arr.getvalue()
+        print(f"Image optimized. New size: {len(image_bytes)} bytes")
+    except Exception as e:
+        logger.warning(f"Failed to optimize image: {e}. Using original bytes.")
+
     base64_image = base64.b64encode(image_bytes).decode('utf-8')
 
     try:

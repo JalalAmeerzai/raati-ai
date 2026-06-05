@@ -313,20 +313,28 @@ async def evaluate_with_claude(persona: dict, description: str, image_bytes: byt
 async def run_expert_panel(personas_list: list, description: str, base64_image: str, image_bytes: bytes) -> list:
     """
     3×3 Fan-Out: Each persona is evaluated by ALL 3 LLMs (OpenAI, xAI, Claude).
-    Fires 9 async tasks in parallel.
+    Fires 9 async tasks, limited to 3 concurrent tasks to avoid OOM limits on memory-constrained servers.
     Returns a list of 9 results, each tagged with model_provider and persona info.
     """
     mime_type = _detect_mime_type(image_bytes)
+    
+    # Semaphore to limit concurrent network requests and memory usage
+    sem = asyncio.Semaphore(3)
+
+    async def _bound_evaluate(coro):
+        async with sem:
+            return await coro
+
     tasks = []
     
     for persona in personas_list:
         # Each persona gets evaluated by all 3 LLMs
-        tasks.append(evaluate_with_openai(persona, description, base64_image, mime_type))
-        tasks.append(evaluate_with_xai(persona, description, base64_image, mime_type))
-        tasks.append(evaluate_with_claude(persona, description, image_bytes))
+        tasks.append(_bound_evaluate(evaluate_with_openai(persona, description, base64_image, mime_type)))
+        tasks.append(_bound_evaluate(evaluate_with_xai(persona, description, base64_image, mime_type)))
+        tasks.append(_bound_evaluate(evaluate_with_claude(persona, description, image_bytes)))
     
-    print(f"\n--- FIRING {len(tasks)} PARALLEL EVALUATIONS (3 personas × 3 LLMs) ---")
+    print(f"\n--- FIRING {len(tasks)} EVALUATIONS (Max 3 Concurrent) ---")
     
-    # Run all 9 evaluations simultaneously
+    # Run evaluations with concurrency limit
     results = await asyncio.gather(*tasks)
     return list(results)
