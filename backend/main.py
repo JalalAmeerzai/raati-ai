@@ -13,10 +13,13 @@ from services.creativity_judge import evaluate_design
 
 app = FastAPI(title="raati.ai — Creativity Assessment Tool")
 
-# Setup CORS
+# Setup CORS — restrict to the deployed frontend in production
+FRONTEND_URL = os.getenv("FRONTEND_URL", "*")
+allowed_origins = [FRONTEND_URL] if FRONTEND_URL != "*" else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for dev
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
