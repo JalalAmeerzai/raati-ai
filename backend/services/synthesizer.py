@@ -197,7 +197,16 @@ def _compute_per_persona_icc(df: pd.DataFrame) -> list:
                 raters="model_provider",
                 ratings="score"
             )
-            icc_row = icc_results[icc_results["Type"].isin(["ICC3", "ICC2"])].iloc[0]
+            print(f"[ICC DEBUG] Per-persona pingouin types available: {icc_results['Type'].tolist()}")
+            # Try ICC2 first (two-way random, single raters), then ICC3, then ICC1, then first row
+            icc_row = None
+            for preferred in ["ICC2", "ICC3", "ICC1"]:
+                subset = icc_results[icc_results["Type"] == preferred]
+                if not subset.empty:
+                    icc_row = subset.iloc[0]
+                    break
+            if icc_row is None:
+                icc_row = icc_results.iloc[0]  # last resort: take whatever is first
             icc_val = float(icc_row["ICC"])
 
             if not math.isfinite(icc_val):
@@ -258,7 +267,16 @@ def _compute_overall_icc(df: pd.DataFrame) -> dict:
             raters="rater",
             ratings="score"
         )
-        icc_row = icc_results[icc_results["Type"].isin(["ICC2", "ICC3"])].iloc[0]
+        print(f"[ICC DEBUG] Overall pingouin types available: {icc_results['Type'].tolist()}")
+        # Try ICC2 first (two-way random, single raters), then ICC3, then ICC1, then first row
+        icc_row = None
+        for preferred in ["ICC2", "ICC3", "ICC1"]:
+            subset = icc_results[icc_results["Type"] == preferred]
+            if not subset.empty:
+                icc_row = subset.iloc[0]
+                break
+        if icc_row is None:
+            icc_row = icc_results.iloc[0]  # last resort
         icc_val = float(icc_row["ICC"])
 
         if not math.isfinite(icc_val):
