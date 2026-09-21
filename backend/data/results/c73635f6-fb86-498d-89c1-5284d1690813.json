@@ -1,0 +1,301 @@
+{
+  "id": "c73635f6-fb86-498d-89c1-5284d1690813",
+  "timestamp": "2026-08-04T10:35:03.903082",
+  "image_filename": "c73635f6-fb86-498d-89c1-5284d1690813.jpg",
+  "image_url": "/images/c73635f6-fb86-498d-89c1-5284d1690813.jpg",
+  "description": "Please sketch a modern cylinder vacuum cleaner—featuring a rounded, compact body with prominent rear wheels, a top handle, an integrated controls panel, a flexible hose connection, and a telescopic wand leading to a floor head—from two different viewpoints. For each viewpoint, provide two distinct versions: a 'concept view' that retains all your initial perspective scaffolding, center axes, bounding boxes, intersecting ellipses, and internal cross-sectional lines, and a polished 'presentation view' that uses clean, confident contour lines with all underlying construction hidden. You should deliver a total of four sketches that clearly show your underlying structural thinking right next to the final, clean presentation.",
+  "submitter_name": "Test User",
+  "creativity_score": 2.5,
+  "originality_score": 1.5,
+  "usefulness_relevance_score": 3.3,
+  "clarity_score": 4.0,
+  "level_of_detail_elaboration_score": 3.3,
+  "feasibility_score": 4.5,
+  "overall_score": 3.18,
+  "creativity_reasoning": "The design demonstrates a clean and contemporary form language with a compact, rounded body that aligns with modern consumer products. However, it lacks inventive features or novel reinterpretations of the vacuum cleaner form, staying within the bounds of conventional design.",
+  "originality_reasoning": "The design closely resembles existing commercial cylinder vacuums, with no distinctive visual or functional elements that set it apart. The sketches show good industrial design restraint but do not introduce a unique signature element.",
+  "usefulness_relevance_reasoning": "The design effectively demonstrates technical illustration workflow and addresses some key elements of the brief, such as compact body and wheel placement. However, it falls short in representing the full product scenario, as several functional components like the handle and hose system are missing.",
+  "clarity_reasoning": "The side-by-side concept and presentation views clearly communicate the structural thinking and final form, with consistent perspective and volume. However, clarity is reduced where functional features are implied rather than explicitly drawn.",
+  "level_of_detail_elaboration_reasoning": "The sketches include robust construction lines and bounding boxes, transitioning well into clean presentation views. However, the design remains at a primary form stage, lacking detailed product-specific elements and a complete vacuum system representation.",
+  "feasibility_reasoning": "The design is technically and economically viable, with manufacturable geometry and standard components. Feasibility could be enhanced with clearer packaging cues and more explicit functional interfaces, but nothing suggests an impossible build.",
+  "instructor_feedback_intro": "You're hitting the 'construction sweet spot'! Your work shows a strong grasp of perspective scaffolding and clean linework, effectively translating structural thinking into polished product forms.",
+  "instructor_feedback_pivot": "Focus on fully integrating the complete vacuum system into your design. Ensure that key components like the handle, controls, and hose system are clearly represented to avoid the design feeling incomplete.",
+  "instructor_feedback_next_step": "Add a focused feature pass to one viewpoint: draw the hose port with swivel/locking detail, a clearly placed handle, and a simple control UI. Include a quick side sketch of the wand and floor head to ensure the product reads as a complete, usable vacuum system.",
+  "expert_panel": [
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Clara Davidson",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in visual communication techniques.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of perspective and the effectiveness of structural representation in the sketches."
+      },
+      "result": {
+        "creativity_score": 3,
+        "creativity_reasoning": "The form language shows thoughtful exploration of a compact, rounded cylinder-vac body with a clear “soft monolith” vibe and a few nice surfacing moves (the wrapped top panel and the recessed front feature). However, the concept stays within a fairly standard canister-vac typology and doesn’t introduce a notably new interaction, storage, or modularity idea beyond the refined casing.",
+        "originality_score": 2,
+        "originality_reasoning": "The overall silhouette and component layout (rear wheels, top handle zone, front hose port) reads as familiar and close to existing consumer vacuums. The sketching focuses more on clean industrial surfacing than on a distinct new architecture, so the uniqueness is modest.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The design addresses the prompt’s key elements well: compact body, prominent rear wheels, top handle area, a front connection point, and two viewpoints with both construction and presentation versions. The object reads as a vacuum cleaner immediately, and the wheel placement suggests practical roll stability and maneuverability.",
+        "clarity_score": 3,
+        "clarity_reasoning": "Your presentation views communicate the main massing clearly, and the concept views show solid intent with bounding boxes, centerlines, and ellipses. Clarity drops because some perspective cues are inconsistent between features: wheel ellipses don’t always share the same minor-axis orientation as the body’s perspective, and a few surface seams/contours don’t fully wrap in a way that confirms the underlying 3D turn. Also, the hose/wand/floor head system requested in the description is not clearly depicted, so the full product system is only partially communicated.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You provide four sketches (two viewpoints × concept/presentation), and the construction layers are present and useful. Detail is still mid-level: controls panel, handle definition, hose connection geometry, and functional part breaks (lid, bin access, cord management) are implied rather than explicitly designed. The wand and floor head are largely absent, which reduces completeness relative to the brief.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "The casing volumes, wheel integration, and general parting logic look manufacturable with typical injection-molded shells and simple wheel hubs. The surfacing is smooth and plausible. Feasibility would be stronger if you clarified where the handle structurally anchors, how the hose port seals/locks, and where service access/emptying occurs, but nothing shown appears technically unrealistic.",
+        "instructor_feedback": "You’re building a strong “scaffold-to-surface” workflow! The big win here is that your concept views genuinely show structural thinking—bounding boxes, center axes, and ellipse families—and your presentation views simplify into confident primary forms with readable highlights and shadow direction. The vacuum’s massing feels stable and compact, and the rear wheel emphasis is clear. Where the drawings need more discipline is perspective consistency: the wheel ellipses, front port ellipse, and the body’s cross-contours aren’t always agreeing on the same vanishing logic, which slightly flattens the volume. Also, the brief asks for the full cleaning system (hose → telescopic wand → floor head), and right now the sketches read mostly as the canister body without the complete functional chain.\n\nWhere we need to pivot: lock your ellipse alignment to one perspective system per view (shared minor axes, consistent degree changes along the length), and use 2–3 deliberate wraparound cross-contours to “prove” the curvature transitions. Avoid adding extra construction lines that don’t resolve into a clear plane change—keep scaffolding purposeful so it supports, rather than muddies, the read. Finally, don’t leave the accessory system implicit: the hose connection needs a clear interface (collar, latch, swivel), and the wand/head should be drawn as secondary forms to communicate usability and scale.\n\nYour Next Step: do one additional page per viewpoint with (1) a clean 2-point perspective box, (2) a single centerline down the body, (3) three matched ellipse sets (wheel, port, body cross-section) that all share the same perspective logic, then (4) add the hose + telescopic wand + floor head as simple cylinders/boxes first, before refining. After that, re-ink one presentation view using line-weight hierarchy (thicker silhouette, thinner internal seams) to make the form read instantly.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Clara Davidson",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in visual communication techniques.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of perspective and the effectiveness of structural representation in the sketches."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept follows a conventional cylinder vacuum layout without novel features or inventive reinterpretation of form or function.",
+        "originality_score": 1,
+        "originality_reasoning": "The design closely mirrors existing commercial cylinder vacuums; no distinctive visual or functional differentiation is evident.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The sketches directly address the requested viewpoints and construction-to-presentation pairing, making the exercise relevant to learning structural sketching.",
+        "clarity_score": 5,
+        "clarity_reasoning": "Both concept and presentation views clearly communicate perspective, bounding boxes, ellipses, and final contours, fulfilling the structural-representation goal.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Construction lines, cross-sections, and clean final lines are well executed, though surface detailing and material indication remain minimal.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The depicted product is a mature, manufacturable appliance; no technical barriers are introduced by the sketched geometry.",
+        "instructor_feedback": "You are hitting the 'construction sweet spot'! Your concept views beautifully retain the full scaffolding of axes, bounding boxes, and intersecting ellipses, demonstrating solid grasp of perspective while the adjacent presentation views show confident, clean contours. This side-by-side format effectively reveals your structural thinking. Where we need to pivot: avoid letting the polished views become overly generic; push the silhouette and control-panel integration to feel more distinctive. Your Next Step: in the next round, add one quick orthographic side view with key dimensions and a single material/shadow study on the presentation renderings to elevate both readability and professional polish.",
+        "overall_score": 3.5
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "1",
+        "name": "Clara Davidson",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in visual communication techniques.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of perspective and the effectiveness of structural representation in the sketches."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKcbu89YaiopeRgyqh8'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Marcelo Rojas",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Evaluating detailed visual communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the quality of the polished presentation view and the accuracy of the concept views."
+      },
+      "result": {
+        "creativity_score": 3,
+        "creativity_reasoning": "The form language shows thoughtful industrial-design sensibility: a compact, rounded “capsule” body with a clear top surface break and a recessed front feature reads modern and cohesive. The two-view approach and the explicit construction-to-presentation pairing demonstrates creative process discipline. However, the concept itself stays fairly conservative—there’s limited exploration of novel control placement, hose routing, storage, or distinctive functional features beyond the core cylinder-vac archetype.",
+        "originality_score": 2,
+        "originality_reasoning": "The silhouette and surfacing feel close to established cylinder vacuum cleaner typologies (rounded body, large rear wheels, front intake/feature). While the sketching is strong, the design doesn’t yet introduce a unique signature element (e.g., an unconventional wheel integration, handle architecture, docking/storage solution, or a standout control interface) that would clearly differentiate it from existing products.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "The drawings communicate a plausible compact canister body and wheel placement, which are relevant to stability and maneuverability. That said, several requested functional elements are not clearly represented in the views: the top handle is not explicit, the integrated controls panel is ambiguous, and the flexible hose connection/telescopic wand/floor head are not shown—so the design only partially addresses the full problem statement.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The side-by-side concept vs. presentation views are easy to compare, and the presentation drawings have clean contour hierarchy and readable volumes. Perspective is generally consistent, and the construction lines in the concept views effectively reveal the underlying scaffolding. Clarity drops mainly where key features are missing or under-defined (handle, controls, hose port), making it harder to understand how the product is used from these views alone.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "The construction is robust: bounding boxes, center axes, and ellipses are used to build the main volumes, and the transition to a cleaner presentation is well executed. However, the design remains at a “primary form” stage—secondary/tertiary details (panel breaks, control geometry, hose swivel joint, wheel hubs/axles, bumper/trim, intake/exhaust logic) are minimal, and the accessory system (wand/head) is absent despite being requested.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "The overall geometry is manufacturable with common processes (injection-molded shells, simple wheel modules) and the proportions look stable. The large rear wheels and low body suggest good tip resistance. Feasibility would improve further with clearer packaging cues (where the dust bin/bag sits, motor airflow path, cord rewind location, hose swivel clearance) and more explicit functional interfaces (handle and controls).",
+        "instructor_feedback": "You’re building a strong “construction-to-confidence” pipeline! The concept views show solid perspective scaffolding (boxes/axes/ellipses) and you’re successfully translating that into polished presentation drawings with clean contour control and believable surfacing—especially in the way the top plane breaks and the rounded front transitions are handled. The two viewpoints are consistent enough to read as the same product, and the presentation linework has a nice hierarchy that sells the volume. Where we need to pivot: the assignment asks for a modern cylinder vacuum with prominent rear wheels, a top handle, an integrated controls panel, a flexible hose connection, and a telescopic wand leading to a floor head—right now the body and wheels are implied, but the handle/controls/hose port are not clearly designed, and the wand + floor head are missing entirely, which makes the concept feel incomplete as a vacuum system rather than a styled shell. Also watch the wheel integration: in the presentation views the wheel reads as a simple cylinder attached to the side; adding a clearer axle relationship, hub detail, and body clearance will make it feel mechanically grounded. Your Next Step: add a third “feature pass” on top of your existing presentation views—(1) explicitly draw the handle (folding or fixed) with attachment points, (2) design a readable control panel (buttons/dial + icons) on the top surface, (3) add a hose swivel port with an ellipse that matches the body’s perspective, and (4) include the telescopic wand and floor head in at least one view (even as a simplified silhouette) to prove the full user workflow and scale.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Marcelo Rojas",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Evaluating detailed visual communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the quality of the polished presentation view and the accuracy of the concept views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The vacuum cleaner concept follows a conventional cylinder form with standard features; little inventive deviation or novel functional ideas are shown.",
+        "originality_score": 1,
+        "originality_reasoning": "The design closely mirrors existing commercial cylinder vacuums without distinctive styling or unique mechanisms.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The exercise effectively demonstrates technical illustration workflow for product visualization, relevant to industrial design training.",
+        "clarity_score": 4,
+        "clarity_reasoning": "Side-by-side concept and presentation views clearly communicate construction process and final form from two angles.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Construction lines and bounding boxes are thorough, but polished views retain visible hatching and incomplete line cleanup, limiting refinement.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Cylinder vacuum geometry and components are standard, technically and economically viable to manufacture.",
+        "instructor_feedback": "You're hitting the 'construction-to-clean' sweet spot! The side-by-side views show solid progress in understanding perspective scaffolding and how it translates to confident final contours, with accurate proportions for a compact cylinder vacuum. Where we need to pivot: the polished presentation views still carry too many leftover construction and hatching lines—focus on fully erasing or hiding them to achieve crisp, presentation-ready surfaces. Your Next Step: Redraw the two polished views using a fresh layer or overlay, committing only to the outermost confident contours and adding subtle shading for volume without any visible guidelines.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "2",
+        "name": "Marcelo Rojas",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Evaluating detailed visual communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the quality of the polished presentation view and the accuracy of the concept views."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKdifCYTjc4dEpENnio'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Sofia Chen",
+        "title": "Visual Communication Expert",
+        "sub_text": "Analyze visual hierarchy and coherence.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Expert, you will focus specifically on the overall coherence between the concept views and the final presentation views."
+      },
+      "result": {
+        "creativity_score": 3,
+        "creativity_reasoning": "The form language is clean and contemporary, with a nicely simplified “soft-rectangular cylinder” volume and clear wheel pods that read as a modern consumer product. However, the concept doesn’t yet introduce a distinctive functional twist (e.g., novel hose docking, storage logic, or control/UX innovation) beyond a well-executed baseline cylinder-vac silhouette.",
+        "originality_score": 2,
+        "originality_reasoning": "The overall massing and proportions feel close to existing compact canister/cylinder vacuums—rounded body, rear wheels, top surface break lines—without a standout signature feature. The sketches show good industrial-design restraint, but the identity is not yet strongly differentiated from common market archetypes.",
+        "usefulness_relevance_score": 2,
+        "usefulness_relevance_reasoning": "Relative to the written brief (rear wheels, top handle, integrated controls panel, flexible hose connection, telescopic wand, and floor head), the body and wheel intent is present, but key system components are missing or underrepresented: there’s no clearly articulated handle geometry, no readable control interface, and the hose/wand/floor head are not shown. As a result, the design only partially addresses the full product scenario and user workflow.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The pairing of concept views (with scaffolding) next to presentation views is clear and coherent, and the two viewpoints are consistent in perspective and volume. The construction lines convincingly explain the underlying form, and the presentation drawings cleanly communicate the final outer shell. Clarity drops mainly where functional features (controls/handle/hose port) are implied rather than explicitly drawn.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You provide four sketches as requested (two viewpoints × concept/presentation), and the construction is robust (bounding boxes, axes, ellipses, cross-contours). The presentation views have confident contours and some tonal hatching. Detail is limited in product-specific elements: interface layout, part breaks, hose swivel geometry, wheel hubs, bumper/trim, and accessory storage are not developed, so the concept reads more like a form study than a complete vacuum system.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "The geometry is manufacturable (large-radius fillets, simple parting-friendly surfaces, plausible wheel volumes) and would likely be feasible in injection-molded housings with standard wheel assemblies. Feasibility is slightly constrained by the lack of defined component packaging (where the motor, dust bin/bag, cord reel, filters, and hose routing live), but nothing in the form suggests an impossible build.",
+        "instructor_feedback": "You’re building a strong “construction-to-presentation bridge” — the coherence between your scaffolded concept views and the clean presentation views is the best part of this submission, and it shows disciplined 3D thinking (consistent perspective, believable ellipses, and a readable volume progression). The two viewpoints feel like the same product, and the presentation lines successfully simplify the underlying structure without losing the main massing. Where we need to pivot: the brief is for a vacuum *system*, not just a shell—right now the drawings communicate a compact body and wheels, but the handle, controls panel, hose connection, telescopic wand, and floor head are either missing or too ambiguous to evaluate, which also reduces the perceived originality because the design stays at “generic canister” level. Your Next Step: pick one viewpoint and do a focused feature pass—draw the hose port (with swivel/locking detail), a clearly placed handle (with grip clearance), and a simple control UI (buttons/dial + icons), then add a quick side sketch of the wand + floor head connection so the product reads as a complete, usable vacuum rather than a form-only study.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Sofia Chen",
+        "title": "Visual Communication Expert",
+        "sub_text": "Analyze visual hierarchy and coherence.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Expert, you will focus specifically on the overall coherence between the concept views and the final presentation views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept follows a conventional cylinder vacuum cleaner form without introducing novel features or inventive reinterpretations of the product.",
+        "originality_score": 1,
+        "originality_reasoning": "The design closely mirrors existing commercial vacuum cleaners with no distinctive or unique elements that differentiate it from market solutions.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "While the sketches demonstrate standard industrial design practice, the underlying product itself offers limited new practical value beyond typical vacuum functionality.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The side-by-side concept and presentation views effectively communicate structural thinking and final form, with clear progression from construction to polished lines.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Construction lines, axes, and bounding boxes are well-executed in concept views, and the polished versions show confident contours with appropriate detail for the exercise.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The depicted vacuum cleaner is a mature, mass-produced product; both the technical realization and economic viability are fully established.",
+        "instructor_feedback": "You are hitting the 'construction sweet spot'! Your progress shows strong command of perspective scaffolding and clean linework, with the concept views successfully revealing the underlying ellipses and bounding boxes that the presentation views then refine into confident product forms. Where we need to pivot: avoid over-relying on generic product archetypes—push the form language further to explore asymmetry or integrated storage solutions. Your Next Step: iterate one viewpoint by introducing a novel feature (such as a modular wand lock) and redraw both the construction and presentation versions to test visual coherence.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "3",
+        "name": "Sofia Chen",
+        "title": "Visual Communication Expert",
+        "sub_text": "Analyze visual hierarchy and coherence.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Expert, you will focus specifically on the overall coherence between the concept views and the final presentation views."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKePHeweYmYddR8twQ2'}"
+    }
+  ],
+  "stats": {
+    "overall_icc": {
+      "score": 0.744,
+      "label": "Good",
+      "message": "The overall ICC score of 0.744 indicates that there is a good level of agreement among the judges in their evaluations.",
+      "bg": "bg-green-50",
+      "color": "text-green-700",
+      "border": "border-green-200"
+    },
+    "per_persona_icc": [
+      {
+        "persona_id": "1",
+        "persona_name": "Clara Davidson",
+        "icc": 0.574,
+        "label": "Moderate"
+      },
+      {
+        "persona_id": "2",
+        "persona_name": "Marcelo Rojas",
+        "icc": 0.744,
+        "label": "Good"
+      },
+      {
+        "persona_id": "3",
+        "persona_name": "Sofia Chen",
+        "icc": 0.706,
+        "label": "Good"
+      }
+    ],
+    "kendalls_w": {
+      "W": 0.74
+    },
+    "variance_analysis": {
+      "per_dimension": {
+        "clarity": 0.4,
+        "creativity": 0.3,
+        "feasibility": 0.3,
+        "level_of_detail_elaboration": 0.267,
+        "originality": 0.3,
+        "usefulness_relevance": 0.667
+      },
+      "average_variance": 0.372
+    },
+    "variance_message": "The AI judges showed a strong level of agreement with a Kendall's W of 0.74, but there was the most debate about the 'usefulness_relevance' dimension, which had the highest variance.",
+    "data_quality": {
+      "total_evaluations_attempted": 9,
+      "successful_evaluations": 6,
+      "failed_evaluations": 3,
+      "failure_rate_pct": 33.3,
+      "per_provider_failures": {
+        "Claude": 3
+      },
+      "failure_details": [
+        {
+          "model_provider": "Claude",
+          "persona_name": "Clara Davidson",
+          "persona_id": "1",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKcbu89YaiopeRgyqh8'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Marcelo Rojas",
+          "persona_id": "2",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKdifCYTjc4dEpENnio'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Sofia Chen",
+          "persona_id": "3",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKePHeweYmYddR8twQ2'}"
+        }
+      ],
+      "data_completeness": "partial"
+    }
+  },
+  "domain_analysis": {
+    "identified_task": "Sketch a modern cylinder vacuum cleaner from two viewpoints.",
+    "key_instruction_words": [
+      "sketch",
+      "featuring",
+      "provide",
+      "show"
+    ],
+    "domain": "VISUAL_ARTISTIC",
+    "rationale": "The main task focuses on sketching skills and visual representation."
+  }
+}

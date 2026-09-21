@@ -1,0 +1,301 @@
+{
+  "id": "b796ae28-6289-4624-9cc5-33e150b6bf1d",
+  "timestamp": "2026-08-04T10:32:21.289353",
+  "image_filename": "b796ae28-6289-4624-9cc5-33e150b6bf1d.jpg",
+  "image_url": "/images/b796ae28-6289-4624-9cc5-33e150b6bf1d.jpg",
+  "description": "Please sketch a shampoo bottle—focusing on its generalised, contoured prismatic form and distinct cap—from two different viewpoints. For each viewpoint, provide two distinct versions: a 'concept view' that retains all your initial perspective scaffolding, center axes, bounding volumes, and internal construction ellipses, and a polished 'presentation view' that uses clean, confident contour lines with all underlying construction hidden. You should deliver a total of four sketches that clearly show your underlying structural thinking right next to the final, clean presentation.",
+  "submitter_name": "Test User",
+  "creativity_score": 2.0,
+  "originality_score": 1.5,
+  "usefulness_relevance_score": 3.5,
+  "clarity_score": 3.5,
+  "level_of_detail_elaboration_score": 3.0,
+  "feasibility_score": 4.5,
+  "overall_score": 3.0,
+  "creativity_reasoning": "The design adheres to a conventional shampoo bottle form, lacking inventive elements or unique features. While the foundational drawing techniques are solid, the concept does not push boundaries or explore new design territories.",
+  "originality_reasoning": "The design is highly conventional, with a silhouette and cap that are indistinguishable from existing market products. There is no distinct feature or innovative approach that sets it apart from typical designs.",
+  "usefulness_relevance_reasoning": "The exercise effectively demonstrates structural thinking and sketching techniques, aligning well with the assignment's goals. However, its practical application in product innovation is limited.",
+  "clarity_reasoning": "The sketches clearly differentiate between concept and presentation views, effectively communicating the design process. However, some areas, such as the cap, lack distinct articulation, which affects overall clarity.",
+  "level_of_detail_elaboration_reasoning": "The sketches show good use of construction lines and bounding volumes, but the design details are sparse. The cap and body lack refinement and secondary features, making the presentation feel minimal.",
+  "feasibility_reasoning": "The design is highly feasible, with a straightforward manufacturable form using existing processes. The lack of detailed cap design is the only minor uncertainty in terms of feasibility.",
+  "instructor_feedback_intro": "You're on the right track with a solid foundation in sketching techniques, but it's time to break out of the mold! Your work demonstrates a clear understanding of structural thinking and presentation, yet it remains within the bounds of conventional design.",
+  "instructor_feedback_pivot": "Focus on distinguishing your design by exploring unique features and cap mechanisms. Avoid relying on generic forms and push for more distinctive ergonomic or brand-specific details.",
+  "instructor_feedback_next_step": "Redraw one viewpoint with a focus on originality: introduce a unique cap mechanism and experiment with asymmetrical or distinctive body contours to enhance the design's uniqueness.",
+  "expert_panel": [
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Emily Harper",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating structural integrity and form exploration.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the effectiveness of the structural scaffolding and the clarity of contour in both the concept and presentation views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The form exploration stays within a very standard shampoo-bottle archetype (tapered prismatic body with a rounded shoulder). There’s some subtle contouring and asymmetry implied, but no notable functional or expressive twist (grip logic, dispensing interaction, or distinctive cap mechanism) that would push the concept into more inventive territory.",
+        "originality_score": 2,
+        "originality_reasoning": "The silhouette and proportion read as familiar and market-typical. The cap is indicated but not differentiated enough (no clear hinge/flip-top geometry, pump, or locking feature), so the design doesn’t separate itself strongly from existing solutions.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "You followed the assignment intent well: two viewpoints, each with a construction-heavy concept view and a cleaner presentation view. The sketches focus on generalized contoured prismatic form and show an attempt to separate scaffolding from final contour, which is directly relevant to the prompt.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The overall bottle volume is readable, and the two-viewpoint intent is clear. However, the cap/closure is not clearly resolved (it reads more like a generic top plane/shoulder than a distinct cap), and some contour decisions in the presentation views feel tentative—line confidence and consistent edge hierarchy could be stronger to improve immediate readability.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "The concept views include perspective rays, bounding volumes, and center-axis thinking, which is good. What’s missing are more internal construction ellipses/cross-contours to describe the prismatic-to-rounded transitions (shoulder, neck, and base), plus clearer separation of primary/secondary forms (cap vs. shoulder vs. body). Presentation views are clean-ish but still sparse in design information (no seam, label panel, cap split line, or base detail).",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "A tapered, contoured bottle is highly manufacturable (blow-molded HDPE/PET) and economically plausible. The only feasibility uncertainty is the closure: since the cap mechanism isn’t defined, it’s hard to confirm thread/hinge geometry, but nothing shown suggests an unbuildable form.",
+        "instructor_feedback": "You’re building a solid “scaffold-to-silhouette” workflow! The strongest progress here is that you’re clearly thinking in bounding volumes and centerlines first, then attempting to commit to a simplified contour in the presentation views—this is exactly the right habit for industrial design sketching. Your perspective setup is present and your bottle mass reads as a tapered prismatic form with softened shoulders; however, the construction isn’t yet doing enough work to *control* the curvature (especially at the shoulder/neck transition), and the cap is not reading as a distinct, engineered component—right now it blends into the top volume rather than snapping into place as a separate part.\n\nWhere we need to pivot: stop “guessing” the curvature with single contour strokes and instead *earn* the contour with 2–3 cross-contour ellipses per major transition (base, mid-body, shoulder/neck). Also avoid letting the presentation view inherit hesitant lines from the concept view—your final should have a clear line hierarchy (outer silhouette darkest, secondary edges lighter, no interior construction). Most importantly, define the cap with a clear split line and a functional cue (flip-top hinge line, threaded cap skirt, or pump collar) so it reads instantly as a separate closure system.\n\nYour Next Step: redo one viewpoint only, but add (1) a center axis, (2) three evenly spaced cross-section ellipses to control the taper, (3) a clearly boxed-in neck/cap cylinder with an ellipse at the cap base, and (4) in the presentation pass, commit to 6–10 confident silhouette strokes with deliberate line weight—then add one cap seam/hinge line to make the closure unmistakable.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Emily Harper",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating structural integrity and form exploration.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the effectiveness of the structural scaffolding and the clarity of contour in both the concept and presentation views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept is a standard contoured shampoo bottle with minimal inventive elements beyond basic prismatic form.",
+        "originality_score": 1,
+        "originality_reasoning": "The shape and cap are highly conventional and indistinguishable from countless existing commercial bottles.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "The exercise demonstrates form sketching technique but offers little practical innovation for actual product design.",
+        "clarity_score": 4,
+        "clarity_reasoning": "Concept views clearly retain scaffolding and ellipses while presentation views show clean contours; viewpoints are distinct.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Construction is visible and bounding volumes are used, yet the cap lacks refinement and surface details are minimal.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The generalized prismatic form with simple cap is straightforward to manufacture using existing blow-molding processes.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw construction and clean presentation! Your concept views successfully expose the bounding volumes, center axes, and internal ellipses, giving strong evidence of structural thinking, while the adjacent polished views deliver confident contours without clutter. Where we need to pivot: avoid letting the perspective rays dominate the page and ensure the cap reads as a distinctly separate volume rather than blending into the body. Your Next Step: in the next iteration, add one additional orthographic detail view of the cap alone, showing how its attachment rim and dispensing geometry differ from the body ellipse.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "1",
+        "name": "Emily Harper",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating structural integrity and form exploration.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the effectiveness of the structural scaffolding and the clarity of contour in both the concept and presentation views."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKR2GW15SnPtfmCwdcM'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "James Smith",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing clarity and presentation of ideas.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the visual clarity and confidence of the contour lines in the presentation views compared to the concept views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The form exploration stays within a familiar tapered, rounded-rectangle shampoo bottle archetype. There’s some thoughtful contouring (pinched waist, softened shoulders), but no notable functional or stylistic twist beyond standard packaging proportions.",
+        "originality_score": 2,
+        "originality_reasoning": "The silhouette and cap treatment read as conventional and could map onto many existing bottles. The drawings show solid foundational construction thinking, but the concept itself doesn’t differentiate strongly from common market forms.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "You delivered the requested structure-to-presentation pairing for two viewpoints: concept views include perspective scaffolding, center axes, and bounding volumes; presentation views remove most construction and clarify the outer contour. This directly addresses the prompt’s goal of showing underlying structural thinking next to a clean result.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The overall bottle volume is readable in both viewpoints, and the separation between “concept” (left) and “presentation” (right) is clear. However, the presentation contours still show some tentative/overlapped strokes and a few proportion shifts from the concept versions, which reduces confidence and makes the final form feel less locked-in. The cap is implied but not distinctly articulated as a separate component in the presentation views.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "The concept sketches include helpful construction (vanishing lines, bounding boxes, centerline, and some ellipses), indicating process. The presentation views are simplified appropriately, but they may be oversimplified: key secondary contours (cap seam, neck transition, base thickness/foot, and consistent cross-contour cues) are minimal, so the prismatic/contoured nature is not fully explained in the clean drawings.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "A tapered prismatic bottle with rounded edges and a simple cap is highly manufacturable (blow-molded body, injection-molded cap). Nothing in the geometry suggests unrealistic undercuts or impossible parting, though the cap/neck interface needs clearer definition to confirm closure type.",
+        "instructor_feedback": "You’re building a strong “X-ray to final” workflow! The concept views show you understand perspective scaffolding and volumetric blocking—your bounding boxes and center axes are doing real work, and the bottle reads as a coherent tapered volume in both viewpoints. Where the work is currently holding back is the jump in line confidence and consistency between concept and presentation: the presentation contours still feel a bit hesitant (multiple searching strokes), and a few edges drift compared to the constructed volume, which makes the final silhouette feel less decisive. Also, the prompt asks for a distinct cap; right now the cap is suggested by a top curve, but it doesn’t clearly separate as its own part with a seam, thickness, or a defined neck transition.\n\nWhere we need to pivot: prioritize contour hierarchy and part definition in the presentation views. Avoid “hairy” outlines—commit to a single, continuous outer contour per edge, and use line weight strategically (slightly heavier on the silhouette, lighter on internal seams). Keep the presentation proportions faithful to the construction: don’t redraw a new bottle—trace the same decisions with confidence. Finally, make the cap unmistakable by adding a clear cap-body seam line, a small neck/shoulder step, and a consistent top ellipse that matches the perspective of the body.\n\nYour Next Step: do one more pass on each viewpoint by (1) lightly ghosting the final silhouette over the concept drawing, (2) drawing the presentation outline in one deliberate stroke per edge (no sketching back-and-forth), and (3) adding just three “clarifiers” in the presentation: a cap seam, a neck transition, and a base ellipse/foot line. This will immediately increase the perceived confidence and make the prismatic contouring read more convincingly.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "James Smith",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing clarity and presentation of ideas.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the visual clarity and confidence of the contour lines in the presentation views compared to the concept views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept follows a standard industrial design sketching exercise without introducing novel forms or unexpected features for the shampoo bottle.",
+        "originality_score": 1,
+        "originality_reasoning": "This is a conventional orthographic-to-perspective construction demo that closely mirrors textbook examples rather than offering a distinct approach.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "The exercise effectively teaches structural thinking and line confidence, which is relevant for foundational design communication skills.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The side-by-side layout of concept and presentation views clearly demonstrates the progression from construction to clean contours.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Construction lines and bounding volumes are visible, but the bottle form itself remains generic with limited surface or cap detail.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The sketches are straightforward to produce with basic drawing tools and require no specialized resources or technology.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw construction and clean presentation! The side-by-side views successfully reveal your structural thinking while showcasing confident final contours, indicating solid progress in visual communication fundamentals. Where we need to pivot: avoid over-relying on generic prismatic forms—push the cap and body silhouette toward more distinctive ergonomic or brand-specific details. Your Next Step: redraw the presentation views with bolder, varied line weights that emphasize the cap's twist mechanism and the bottle's contoured grip zones.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "2",
+        "name": "James Smith",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing clarity and presentation of ideas.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the visual clarity and confidence of the contour lines in the presentation views compared to the concept views."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKS8Pd42okEyPPjDDBj'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Sophia Chen",
+        "title": "Concept Ideation Facilitator",
+        "sub_text": "Analyzing creativity and iteration in design.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Concept Ideation Facilitator, you will focus specifically on the innovative ideas presented in the sketches and the evolution from the concept view to the polished presentation view."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The work shows solid foundational drawing thinking (bounding boxes, centerline, and contour/ellipse construction) but the bottle form itself stays fairly generic and doesn’t explore inventive cap mechanisms, asymmetry, grip features, or distinctive prismatic surfacing beyond a simple tapered volume. The “innovation” here is more about process (concept-to-presentation pairing) than a novel product idea.",
+        "originality_score": 2,
+        "originality_reasoning": "The silhouette reads as a common shampoo/soap bottle archetype (tapered body, rounded shoulders). There isn’t a clearly differentiated cap design or unique sectional geometry that would separate it from existing market forms. The two viewpoints are consistent, but they don’t introduce a new design language or feature set.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "You directly address the prompt’s intent: two viewpoints, each with a construction-heavy concept view and a cleaner presentation view. The sketches demonstrate underlying structural thinking (perspective rays, bounding volumes, internal ellipses) and then a simplified contour pass, which is exactly the requested learning outcome.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The separation between concept and presentation is clear (left = scaffolded, right = cleaned). However, the object can still read a bit ambiguous as “bottle vs. generic container” because the cap is not distinctly articulated, and some key cues (neck transition, cap seam, base thickness) are minimal. The perspective intent is visible, but the final contours don’t fully communicate the 3D planes/edges of a contoured prismatic form.",
+        "level_of_detail_elaboration_score": 2,
+        "level_of_detail_elaboration_reasoning": "Construction is present, but the bottle’s design details are sparse: the cap is suggested rather than designed (no hinge/flip-top indication, no seam line, no overhang), and the body lacks secondary forms (label panel, grip indent, chamfers, base ring). The presentation views are clean but very minimal, so the “polished” stage feels more like an outline pass than a fully resolved product sketch.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "A tapered, rounded-shoulder bottle is highly manufacturable (blow molding/injection stretch blow molding) and economically realistic. The implied cap is also feasible, though it’s not specified enough to evaluate closure type. Nothing in the geometry suggests an impossible undercut or assembly challenge.",
+        "instructor_feedback": "You’re building the “X-ray to silhouette” pipeline! The strongest progress here is your commitment to structural scaffolding: the perspective rays, bounding volumes, and center-axis thinking show you’re not guessing the form—you’re constructing it, then intentionally stripping it down for presentation. That’s exactly the evolution we want to see from concept view to polished view. Where we need to pivot: right now the bottle reads more like a generic tapered container because the ‘distinct cap’ and the prismatic/contoured plane changes aren’t being emphasized in the presentation pass—your clean outlines remove the construction, but they also remove the cues that make the volume feel designed (cap seam, neck transition, planar breaks, and base structure). Your Next Step: pick one closure type (e.g., flip-top, pump, disc-top) and design it explicitly—add a clear cap/body seam, a neck ring, and one or two prismatic plane breaks (subtle chamfers or a front label panel) and then redo one viewpoint with (1) 2–3 cross-contour ellipses in the concept view to lock the turning of the form and (2) a presentation view that keeps just a few strategic contour/edge accents to preserve the 3D read without reverting to full construction.",
+        "overall_score": 2.83
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Sophia Chen",
+        "title": "Concept Ideation Facilitator",
+        "sub_text": "Analyzing creativity and iteration in design.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Concept Ideation Facilitator, you will focus specifically on the innovative ideas presented in the sketches and the evolution from the concept view to the polished presentation view."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept follows a standard industrial design sketching exercise without introducing novel forms or functions for the shampoo bottle.",
+        "originality_score": 1,
+        "originality_reasoning": "The contoured prismatic bottle and cap are generic; no unique or distinct features differentiate it from common existing designs.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "Useful as a basic perspective and construction practice but limited applicability beyond foundational sketching training.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The side-by-side concept and presentation views effectively communicate structural thinking and final contours.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Strong visualization of axes, bounding volumes, and ellipses in concept views, with clean polished results.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Simple hand-sketching technique is fully viable with no technical or economic barriers.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' of clear construction-to-presentation progression! The sketches demonstrate solid grasp of perspective scaffolding and confident line work as you evolve from rough volumes to polished forms. Where we need to pivot: avoid staying with such a generic bottle silhouette—push the cap integration and overall proportions to feel more distinctive. Your Next Step: Redraw the same viewpoints but exaggerate the shoulder taper and experiment with an asymmetric cap profile to build originality.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "3",
+        "name": "Sophia Chen",
+        "title": "Concept Ideation Facilitator",
+        "sub_text": "Analyzing creativity and iteration in design.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Concept Ideation Facilitator, you will focus specifically on the innovative ideas presented in the sketches and the evolution from the concept view to the polished presentation view."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKSmGf3ftQNni38bFoP'}"
+    }
+  ],
+  "stats": {
+    "overall_icc": {
+      "score": 0.812,
+      "label": "Excellent",
+      "message": "The overall ICC score of 0.812 indicates that the AI judges had a high level of agreement in their evaluations, suggesting consistent and reliable assessments.",
+      "bg": "bg-green-50",
+      "color": "text-green-700",
+      "border": "border-green-200"
+    },
+    "per_persona_icc": [
+      {
+        "persona_id": "1",
+        "persona_name": "Emily Harper",
+        "icc": 0.75,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "2",
+        "persona_name": "James Smith",
+        "icc": 0.75,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "3",
+        "persona_name": "Sophia Chen",
+        "icc": 0.556,
+        "label": "Moderate"
+      }
+    ],
+    "kendalls_w": {
+      "W": 0.797
+    },
+    "variance_analysis": {
+      "per_dimension": {
+        "clarity": 0.3,
+        "creativity": 0.0,
+        "feasibility": 0.3,
+        "level_of_detail_elaboration": 0.4,
+        "originality": 0.3,
+        "usefulness_relevance": 0.3
+      },
+      "average_variance": 0.267
+    },
+    "variance_message": "The Kendall's W score of 0.797 shows strong agreement among the AI judges, but there was the most debate over the 'level_of_detail_elaboration' dimension, which had the highest variance.",
+    "data_quality": {
+      "total_evaluations_attempted": 9,
+      "successful_evaluations": 6,
+      "failed_evaluations": 3,
+      "failure_rate_pct": 33.3,
+      "per_provider_failures": {
+        "Claude": 3
+      },
+      "failure_details": [
+        {
+          "model_provider": "Claude",
+          "persona_name": "Emily Harper",
+          "persona_id": "1",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKR2GW15SnPtfmCwdcM'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "James Smith",
+          "persona_id": "2",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKS8Pd42okEyPPjDDBj'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Sophia Chen",
+          "persona_id": "3",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKSmGf3ftQNni38bFoP'}"
+        }
+      ],
+      "data_completeness": "partial"
+    }
+  },
+  "domain_analysis": {
+    "identified_task": "Sketch a shampoo bottle from multiple viewpoints",
+    "key_instruction_words": [
+      "sketch",
+      "focusing",
+      "views",
+      "show"
+    ],
+    "domain": "VISUAL_ARTISTIC",
+    "rationale": "The primary instruction verb is 'sketch', indicating a focus on artistic drawing skills."
+  }
+}

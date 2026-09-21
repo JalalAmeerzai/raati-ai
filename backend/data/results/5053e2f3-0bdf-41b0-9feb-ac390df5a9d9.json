@@ -1,0 +1,301 @@
+{
+  "id": "5053e2f3-0bdf-41b0-9feb-ac390df5a9d9",
+  "timestamp": "2026-08-04T10:11:38.960463",
+  "image_filename": "5053e2f3-0bdf-41b0-9feb-ac390df5a9d9.jpg",
+  "image_url": "/images/5053e2f3-0bdf-41b0-9feb-ac390df5a9d9.jpg",
+  "description": "Please sketch a simple house structure—featuring a primary rectangular volume topped with a pitched roof—from two different viewpoints. For each viewpoint, provide two distinct versions: a 'concept view' that retains all your initial perspective scaffolding, vanishing lines, bounding boxes, and center axes, and a polished 'presentation view' that uses clean, confident contour lines with all underlying construction hidden. You should deliver a total of four sketches that clearly show your underlying structural thinking right next to the final, clean presentation.",
+  "submitter_name": "Test User",
+  "creativity_score": 2.0,
+  "originality_score": 1.5,
+  "usefulness_relevance_score": 4.3,
+  "clarity_score": 3.3,
+  "level_of_detail_elaboration_score": 3.0,
+  "feasibility_score": 5.0,
+  "overall_score": 3.35,
+  "creativity_reasoning": "The design concept adheres to a standard educational exercise in perspective drawing, focusing on a simple house mass with a pitched roof. While the execution demonstrates structural thinking, it lacks additional inventive features or novel techniques that would elevate it beyond a basic exercise.",
+  "originality_reasoning": "The design replicates a common beginner-level architectural sketching task, with the originality primarily residing in the process transparency rather than the form itself. The approach and format are conventional, with no unique elements introduced.",
+  "usefulness_relevance_reasoning": "The work is highly relevant to the learning objectives, effectively demonstrating the use of construction lines and final contours in perspective sketching. It serves as a practical study artifact for understanding structural thinking and perspective fundamentals.",
+  "clarity_reasoning": "The sketches generally communicate the intended contrast between concept and presentation views. However, overlapping construction lines and inconsistent vanishing point logic in some areas reduce immediate readability and dimensional coherence.",
+  "level_of_detail_elaboration_reasoning": "The sketches provide essential scaffolding elements and a reasonable cleanup pass, but lack deeper elaboration on line-weight hierarchy, roof thickness, and dimensional consistency. Additional annotations or refined line hierarchy could enhance the final drawings.",
+  "feasibility_reasoning": "The design is fully feasible as a basic drawing exercise, with simple geometry and a standard construction method. There are no technical or economic barriers, and the concept is easily achievable with basic sketching skills.",
+  "instructor_feedback_intro": "You're finding the 'Goldilocks zone' between raw construction and clean presentation! Your work shows a solid grasp of perspective fundamentals, effectively demonstrating the transition from scaffolding to silhouette.",
+  "instructor_feedback_pivot": "Reduce the number of exploratory guide lines and commit to clearer vanishing point families. Ensure all edges align precisely to a consistent horizon to enhance dimensional coherence.",
+  "instructor_feedback_next_step": "On a new page, draw a horizon line and place two explicit vanishing points far apart. Construct a clean box using only those vanishing point rays, then build the roof planes with a single line-weight hierarchy to emphasize dimensional coherence.",
+  "expert_panel": [
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Sophia Martinez",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating technical sketching techniques.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of the perspective scaffolding and the confident execution of contour lines."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The assignment is intentionally simple (a basic house mass + pitched roof), and your solution stays within that brief. There’s some thoughtful exploration in how you rotate the form between viewpoints and how you “build” the roof from a box, but there aren’t additional inventive features (porch, overhang logic, window rhythm, material breaks) that would push the concept beyond a fundamentals exercise.",
+        "originality_score": 2,
+        "originality_reasoning": "A rectangular volume with a gable roof is a very common archetype, and your sketches read as a standard perspective practice rather than a distinct design proposition. The originality here is mainly in your process transparency (showing scaffolding vs. clean pass) rather than in the form itself.",
+        "usefulness_relevance_score": 5,
+        "usefulness_relevance_reasoning": "This is highly relevant to the stated goal: demonstrating perspective scaffolding and then translating it into confident contour lines. You clearly provide two viewpoints and, for each, a construction-heavy concept view paired with a cleaner presentation view—exactly what the prompt asks for.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The four-sketch layout communicates the intent well: top row reads as viewpoint 1 (construction then clean), bottom row as viewpoint 2 (construction then clean). The primary volumes and roof planes are understandable. Clarity drops slightly because some vanishing-line bundles are a bit noisy and a few contour edges in the presentation views wobble or taper, which can make corners feel less “locked” in space.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You show the essential scaffolding elements—bounding boxes, center/axis indications, and convergence lines—and you do a reasonable cleanup pass. However, the presentation views remain fairly minimal: limited line-weight hierarchy, no clear roof thickness/overhang, and no secondary cues (ground plane cast, eave line, ridge alignment checks) that would make the final drawings feel more resolved and intentional.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The structure is straightforward and technically plausible. The roof geometry is consistent with a simple gable, and the massing is coherent. From a drawing/implementation standpoint, nothing here suggests an unbuildable or economically unrealistic concept.",
+        "instructor_feedback": "You’re building a solid “scaffold-to-silhouette” workflow! The strongest progress here is that you’re not guessing: you’re boxing the mass, locating the roof ridge with construction logic, and then attempting a clean contour pass right beside it—this is exactly how confident industrial design sketching is trained. In the concept views, your perspective intent is clear (two-point setup with a grounded box), and the roof is derived from the box rather than pasted on. In the presentation views, the form reads, but a few edges show hesitation (slight waviness, inconsistent corner sharpness), and some verticals lean subtly, which weakens the sense of a rigid, architectural object.\n\nWhere we need to pivot: reduce scaffolding noise and increase decision-making. In the concept views, commit to fewer, more purposeful convergence lines (pick the key edges and extend them cleanly to the VPs rather than layering many near-parallel attempts). In the presentation views, avoid “hairy” restrokes—one confident stroke per edge—and introduce line-weight hierarchy: heavier on the silhouette and underside planes, lighter on interior edges. Also watch roof symmetry: ensure the ridge is centered on the top plane and that both roof slopes converge consistently to the same vanishing behavior.\n\nYour Next Step: do a 15-minute drill—draw 6 boxes in the same two-point setup, then add the gable roof using (1) a centerline on the top plane, (2) two equal divisions to place the ridge endpoints, and (3) a single clean ridge line. For each box, do one construction pass (light) and one contour pass (dark) with zero restrokes, focusing on perfectly vertical uprights and crisp corner closures.",
+        "overall_score": 3.5
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Sophia Martinez",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating technical sketching techniques.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of the perspective scaffolding and the confident execution of contour lines."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept is a standard educational exercise in perspective drawing rather than an inventive design idea.",
+        "originality_score": 1,
+        "originality_reasoning": "The house form and dual-view scaffolding approach are conventional and widely taught; no unique elements introduced.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "Directly supports learning goals of distinguishing construction lines from final contours in industrial design sketching.",
+        "clarity_score": 3,
+        "clarity_reasoning": "Scaffolding is visible in concept views, but the polished versions retain too many stray lines, reducing contrast between stages.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Four required sketches are present, yet line work remains rough and proportions inconsistent across views.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Simple geometric exercise requiring only pencil and paper; fully achievable with basic skills.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw construction and clean presentation! Your progress shows a solid grasp of two-point perspective applied to a basic volume, and the side-by-side layout effectively communicates the thinking process. Where we need to pivot: stop overworking the final contour lines—many construction marks still bleed into the presentation views, weakening the visual hierarchy. Your Next Step: redraw the two presentation views on fresh paper using a single confident stroke per edge, erasing every guideline beforehand so the clean silhouette stands alone.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "1",
+        "name": "Sophia Martinez",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating technical sketching techniques.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of the perspective scaffolding and the confident execution of contour lines."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHpcbeQyDZ9HUdk9U5m'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Jonathan Lee",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing visual clarity and communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the effectiveness of conveying structural thinking and the overall aesthetic appeal of the final presentations."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The task is intentionally foundational (a simple house mass + pitched roof), and your solution stays within that brief. The creative contribution shows up mainly in your choice of viewpoints and the disciplined separation between construction and presentation rather than in novel form-making or added architectural features.",
+        "originality_score": 2,
+        "originality_reasoning": "A rectangular volume with a gable roof is a standard perspective exercise, and the concept/presentation pairing is a common instructional format. Your work is distinct in its clear emphasis on scaffolding (lots of guide lines and axes), but the underlying object and approach are not especially unique.",
+        "usefulness_relevance_score": 5,
+        "usefulness_relevance_reasoning": "You delivered exactly what the prompt asks for: two viewpoints, each with a construction-heavy concept view and a cleaned presentation view. The drawings strongly demonstrate structural thinking—bounding boxes, vanishing direction lines, and roof centerline logic are visible and directly support the final contours.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The side-by-side relationship between rough construction and clean contour is easy to read, and the house form is immediately recognizable in all four sketches. Clarity drops slightly because some construction lines are so dense that the primary edges compete with the scaffolding, and a few contour segments in the presentation views remain a bit tentative (minor wobble/overlap).",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You show the essential perspective framework (boxes, roof planes, ridge alignment) and a coherent cleanup pass. However, the presentation views stop at silhouette/major edges—there’s limited elaboration such as consistent line-weight hierarchy, corner accuracy cleanup, roof overhang thickness, or small cues (eaves, fascia, or a ground plane) that would make the final drawings feel more resolved without adding complexity.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The construction method is technically sound and very feasible: box-first perspective, then roof planes, then cleanup. The forms are buildable and the drawing process is repeatable for other objects. Any remaining issues are execution-level (line confidence and convergence consistency), not conceptual feasibility.",
+        "instructor_feedback": "You’re building a strong “scaffold-to-silhouette” pipeline! The four-sketch set clearly communicates your structural thinking: you start with a bounding box, establish roof planes with a center/ridge logic, and then translate that into a cleaner contour drawing. The viewpoint variation is effective, and the house reads immediately in both pairs. What’s holding the presentation back is mostly graphic hierarchy—some final lines still feel similar in weight to construction, and a few edges look slightly re-traced or hesitant, which softens the crispness you’re aiming for.\n\nWhere we need to pivot: reduce construction clutter and increase decision-making in the final pass. In the concept views, keep the scaffolding but prioritize only the vanishing directions you truly need (too many guide lines makes it harder to verify convergence). In the presentation views, commit to a single, clean edge per contour (avoid “searching” lines), and introduce a simple line-weight system (outer silhouette heavier, interior/secondary edges lighter) so the form pops without adding detail.\n\nYour Next Step: do one more iteration of the same house in 2-point perspective with (1) only two sets of vanishing guides + one vertical axis in the concept view, and (2) a presentation pass using three line weights: heavy silhouette, medium primary plane breaks (roof ridge/eaves), light secondary edges. Then compare readability at thumbnail size—if it reads clearly small, your hierarchy is working.",
+        "overall_score": 3.5
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Jonathan Lee",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing visual clarity and communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the effectiveness of conveying structural thinking and the overall aesthetic appeal of the final presentations."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept follows a standard educational exercise in perspective sketching without introducing novel techniques or unexpected visual approaches.",
+        "originality_score": 1,
+        "originality_reasoning": "The house form and two-view construction-to-presentation format are conventional textbook methods with no distinctive twists or new representational strategies.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "Directly supports learning goals of revealing structural thinking and comparing process versus final line work, making it highly applicable for design education.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The four-panel layout communicates the required contrast between concept and presentation views, yet overlapping construction lines in the right-hand sketches reduce immediate readability.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Basic rectangular volume and roof are shown from two angles with visible construction, but lacks additional annotations, material indications, or refined line hierarchy.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Simple freehand sketching exercise requiring only pencil and paper; fully achievable within typical studio constraints.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw construction and clean presentation! The side-by-side layout effectively demonstrates your structural thinking process and shows clear progress in controlling perspective. Where we need to pivot: the 'presentation' views still retain too many stray construction lines, diluting the intended contrast. Your Next Step: Redraw the right-hand panels using a single confident contour weight and erase every vanishing line before finalizing the scan.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "2",
+        "name": "Jonathan Lee",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing visual clarity and communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the effectiveness of conveying structural thinking and the overall aesthetic appeal of the final presentations."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHqonsJdVcsWURXJbMa'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Emily Chen",
+        "title": "Perspective Drawing Expert",
+        "sub_text": "Focusing on perspective and dimensional accuracy.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Perspective Drawing Expert, you will focus specifically on the accuracy of the vanishing points and the coherence of the dimensional representation in both views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept (a simple house mass with a pitched roof) is intentionally basic, and your main creative move is the instructional pairing of construction vs. presentation views. Within that constraint, you show thoughtful structural thinking (boxing, centerlines, roof ridge planning), but there aren’t additional inventive features (porch, dormers, asymmetry, material logic) that would push the idea beyond a standard exercise.",
+        "originality_score": 2,
+        "originality_reasoning": "A boxed house with a gable roof is a classic perspective drill, and the four-panel layout (scaffold + clean) is a common teaching format. Your execution is solid, but the underlying idea and form language are not especially distinct from existing perspective practice examples.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "This is highly relevant to the prompt: you provide two viewpoints, and for each you show a concept/construction version and a cleaner presentation version. The drawings clearly demonstrate the intended learning objective—how bounding boxes, vanishing lines, and center axes support a clean final contour—so it’s practically useful as a study artifact.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The separation between construction and presentation is generally readable, and the house volumes are understandable. However, the vanishing-point logic is not consistently legible: several receding edges in the top set don’t convincingly converge to the same left/right VP, and in the bottom set the roof and base sometimes appear to follow slightly different VP families. That inconsistency makes the dimensional story feel a bit “wobbly,” especially around the roof overhang/eave lines and the mid-band (the horizontal trim line).",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You include substantial scaffolding (bounding boxes, diagonals, center axes, and multiple guide rays), and the presentation views simplify to confident contours. What’s missing is a clearer, more disciplined perspective diagram: explicit horizon line placement, clearly implied/consistent VP targets, and cleaner differentiation of which guides belong to the box vs. the roof. Also, the roof thickness/overhang and the relationship of ridge endpoints to the box’s centerline could be more explicitly constructed.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "As a drawing exercise and as a buildable form, this is fully feasible. The geometry is simple, the construction method is standard (box first, then roof planes), and nothing in the design implies unrealistic structure. The main issues are draftsmanship/perspective consistency rather than technical viability.",
+        "instructor_feedback": "You’re building a strong “scaffold-to-silhouette” workflow! The four sketches clearly show that you understand the box-first approach and how to derive a pitched roof from a controlled volume; your presentation views are noticeably cleaner and more confident than the construction passes. Where the work currently slips is in perspective coherence: in both viewpoints, some sets of receding edges (notably roof eaves/overhang lines and a few base/top box edges) don’t converge as a unified family to the same vanishing points, so the roof can feel like it’s rotating slightly differently than the walls beneath it. Where we need to pivot: reduce the number of exploratory guide lines and commit to two clear VP families (plus verticals), making sure every horizontal edge on the house body and every roof edge that is parallel in 3D shares the same VP; also avoid letting the mid-band/trim line “float” by ensuring it matches the box’s top/bottom plane convergence exactly. Your Next Step: on a new page, draw a horizon line and place two explicit VPs far apart; construct one clean box using only those VP rays, then locate the roof ridge by (1) finding the center of the top face with diagonals, (2) projecting that center to the near/far edges, and (3) building the two roof planes so the ridge and both eave lines each obey the correct VP—then trace a final presentation pass directly over it with only the true contour and a single line-weight hierarchy (silhouette heaviest, internal edges lighter).",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Emily Chen",
+        "title": "Perspective Drawing Expert",
+        "sub_text": "Focusing on perspective and dimensional accuracy.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Perspective Drawing Expert, you will focus specifically on the accuracy of the vanishing points and the coherence of the dimensional representation in both views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept follows a standard educational exercise for perspective drawing with minimal inventive deviation from typical house sketching tutorials.",
+        "originality_score": 1,
+        "originality_reasoning": "The design replicates a common beginner-level architectural sketching task without introducing unique elements or novel approaches.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "Highly relevant for teaching perspective fundamentals, with clear demonstration of construction lines aiding learning of vanishing points and volumes.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The four sketches effectively separate concept and presentation views, though some line overlaps in the top views reduce immediate readability of the house form.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Provides adequate visualization of bounding boxes and axes but lacks deeper elaboration on specific vanishing point accuracy or dimensional consistency across views.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Fully viable as a basic drawing exercise using standard sketching techniques with no technical or economic barriers.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' in balancing raw construction lines with emerging clean forms! The student's progress shows solid grasp of two-point perspective scaffolding for the house volumes, with the bottom sketches particularly coherent in establishing the pitched roof and rectangular base from distinct viewpoints. Where we need to pivot: avoid over-dense scribbling in the concept views that obscures vanishing line convergence, and ensure all hidden edges align precisely to a single consistent horizon. Your Next Step: Refine the top-right concept view by tracing only the primary vanishing lines to the horizon and re-draw the presentation version with bolder, confident roof ridge lines to emphasize dimensional coherence.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "3",
+        "name": "Emily Chen",
+        "title": "Perspective Drawing Expert",
+        "sub_text": "Focusing on perspective and dimensional accuracy.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Perspective Drawing Expert, you will focus specifically on the accuracy of the vanishing points and the coherence of the dimensional representation in both views."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHrP7Lkkt9XBsigL5zg'}"
+    }
+  ],
+  "stats": {
+    "overall_icc": {
+      "score": 0.927,
+      "label": "Excellent",
+      "message": "The overall ICC score of 0.927 indicates that the AI judges had a very high level of agreement in their evaluations, suggesting consistent and reliable assessments.",
+      "bg": "bg-green-50",
+      "color": "text-green-700",
+      "border": "border-green-200"
+    },
+    "per_persona_icc": [
+      {
+        "persona_id": "1",
+        "persona_name": "Sophia Martinez",
+        "icc": 0.878,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "2",
+        "persona_name": "Jonathan Lee",
+        "icc": 0.878,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "3",
+        "persona_name": "Emily Chen",
+        "icc": 0.95,
+        "label": "Excellent"
+      }
+    ],
+    "kendalls_w": {
+      "W": 0.937
+    },
+    "variance_analysis": {
+      "per_dimension": {
+        "clarity": 0.267,
+        "creativity": 0.0,
+        "feasibility": 0.0,
+        "level_of_detail_elaboration": 0.0,
+        "originality": 0.3,
+        "usefulness_relevance": 0.267
+      },
+      "average_variance": 0.139
+    },
+    "variance_message": "The AI judges showed a very strong level of agreement with a Kendall's W of 0.937, but there was the most debate over the 'originality' dimension, which had the highest variance.",
+    "data_quality": {
+      "total_evaluations_attempted": 9,
+      "successful_evaluations": 6,
+      "failed_evaluations": 3,
+      "failure_rate_pct": 33.3,
+      "per_provider_failures": {
+        "Claude": 3
+      },
+      "failure_details": [
+        {
+          "model_provider": "Claude",
+          "persona_name": "Sophia Martinez",
+          "persona_id": "1",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHpcbeQyDZ9HUdk9U5m'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Jonathan Lee",
+          "persona_id": "2",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHqonsJdVcsWURXJbMa'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Emily Chen",
+          "persona_id": "3",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHrP7Lkkt9XBsigL5zg'}"
+        }
+      ],
+      "data_completeness": "partial"
+    }
+  },
+  "domain_analysis": {
+    "identified_task": "Sketch a house from two viewpoints with concepts and presentations.",
+    "key_instruction_words": [
+      "sketch",
+      "provide",
+      "show",
+      "deliver"
+    ],
+    "domain": "VISUAL_ARTISTIC",
+    "rationale": "The task requires sketching skills to illustrate the house structure."
+  }
+}

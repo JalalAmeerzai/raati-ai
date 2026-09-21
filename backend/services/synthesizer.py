@@ -4,13 +4,13 @@ import json
 import logging
 import pandas as pd
 import pingouin as pg
-from openai import AsyncOpenAI
+import anthropic as _anthropic
 from dotenv import load_dotenv
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-api_key = os.getenv("OPENAI_API_KEY")
-client = AsyncOpenAI(api_key=api_key if api_key else "placeholder")
+_claude_api_key = os.getenv("CLAUDE_API_KEY")
+_claude_client = _anthropic.AsyncAnthropic(api_key=_claude_api_key if _claude_api_key else "placeholder")
 
 from .utils import sanitize_json_numbers
 
@@ -342,7 +342,7 @@ def _compute_statistics(expert_results: list) -> dict:
 
 
 async def _get_stat_interpretation(stats: dict) -> dict:
-    """Ask gpt-4o to translate the computed stats numbers into plain English."""
+    """Ask Claude to translate the computed stats numbers into plain English."""
     prompt = ICC_INTERPRETATION_PROMPT.format(
         overall_icc=stats.get("overall_icc", {}).get("score", "N/A"),
         overall_icc_interp=stats.get("overall_icc", {}).get("interp", "unavailable"),
@@ -351,14 +351,18 @@ async def _get_stat_interpretation(stats: dict) -> dict:
         outlier_dim=stats.get("outlier_dim", "unknown")
     )
     try:
-        response = await client.chat.completions.create(
-            model="gpt-4o",
-            response_format={"type": "json_object"},
+        response = await _claude_client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=300,
             temperature=0.2,
-            max_tokens=200,
-            messages=[{"role": "user", "content": prompt}]
+            messages=[{"role": "user", "content": prompt + "\n\nRespond with ONLY the JSON object, no other text."}]
         )
-        return json.loads(response.choices[0].message.content)
+        raw = response.content[0].text.strip()
+        if raw.startswith("```"):
+            raw = raw.strip("`").strip()
+            if raw.lower().startswith("json"):
+                raw = raw[4:].strip()
+        return json.loads(raw)
     except Exception as e:
         logger.error(f"ICC interpretation LLM call failed: {e}")
         return {
@@ -373,8 +377,36 @@ async def synthesize(expert_results: list) -> dict:
     Main entry point: runs math then LLM synthesis for the 3×3 matrix.
     Returns a dict with merged scores, feedback, and stats.
     """
-    # Step 1: Filter to only successful results
+    # Step 1: Filter to only successful results and track failures
+    total_cells = len(expert_results)  # Should be 9 for 3×3 matrix
     valid_results = [r for r in expert_results if "result" in r]
+    failed_results = [r for r in expert_results if "error" in r]
+
+    failure_rate = len(failed_results) / total_cells if total_cells > 0 else 0
+
+    # Log failure details for methods-section reporting
+    failure_details = [
+        {
+            "model_provider": r.get("model_provider", "Unknown"),
+            "persona_name": r.get("persona", {}).get("name", "Unknown"),
+            "persona_id": r.get("persona", {}).get("persona_id", "Unknown"),
+            "error": r.get("error", "Unknown error")
+        }
+        for r in failed_results
+    ]
+
+    # Per-provider failure counts
+    provider_failures = {}
+    for r in failed_results:
+        provider = r.get("model_provider", "Unknown")
+        provider_failures[provider] = provider_failures.get(provider, 0) + 1
+
+    if failure_details:
+        print(f"\n--- DATA QUALITY WARNING: {len(failed_results)}/{total_cells} evaluations failed ---")
+        for fd in failure_details:
+            print(f"  ✗ {fd['model_provider']} / {fd['persona_name']}: {fd['error'][:100]}")
+    else:
+        print(f"\n--- DATA QUALITY: All {total_cells} evaluations succeeded ---")
 
     if not valid_results:
         raise ValueError("No valid expert results to synthesize.")
@@ -391,20 +423,24 @@ async def synthesize(expert_results: list) -> dict:
         for i, r in enumerate(valid_results)
     ])
 
-    print("Starting LLM Synthesis (gpt-4o)...")
+    print("Starting LLM Synthesis (claude-sonnet-4-6)...")
     try:
-        response = await client.chat.completions.create(
-            model="gpt-4o",
-            response_format={"type": "json_object"},
+        response = await _claude_client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=1500,
             temperature=0.1,
-            max_tokens=1200,
+            system=SYNTHESIS_SYSTEM_PROMPT,
             messages=[
-                {"role": "system", "content": SYNTHESIS_SYSTEM_PROMPT},
-                {"role": "user", "content": f"Expert Evaluations:\n\n{experts_text}"}
+                {"role": "user", "content": f"Expert Evaluations:\n\n{experts_text}\n\nRespond with ONLY valid JSON matching the schema in your system prompt."}
             ]
         )
-        synthesis = json.loads(response.choices[0].message.content)
-        print("\n--- RESPONSE FROM SYNTHESIS AGENT ---")
+        raw = response.content[0].text.strip()
+        if raw.startswith("```"):
+            raw = raw.strip("`").strip()
+            if raw.lower().startswith("json"):
+                raw = raw[4:].strip()
+        synthesis = json.loads(raw)
+        print("\n--- RESPONSE FROM SYNTHESIS AGENT (Claude) ---")
         print(json.dumps(synthesis, indent=2))
     except Exception as e:
         logger.error(f"Synthesis LLM call failed: {e}")
@@ -432,6 +468,16 @@ async def synthesize(expert_results: list) -> dict:
         "kendalls_w": raw_stats.get("kendalls_w", {}),
         "variance_analysis": raw_stats.get("variance_analysis", {}),
         "variance_message": stat_text.get("variance_message", ""),
+        "data_quality": {
+            "total_evaluations_attempted": total_cells,
+            "successful_evaluations": len(valid_results),
+            "failed_evaluations": len(failed_results),
+            "failure_rate_pct": round(failure_rate * 100, 1),
+            "per_provider_failures": provider_failures,
+            "failure_details": failure_details,
+            "data_completeness": "complete" if failure_rate == 0 else
+                                 "partial" if failure_rate < 0.34 else "degraded"
+        },
     }
 
     return sanitize_json_numbers(synthesis)

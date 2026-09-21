@@ -1,0 +1,303 @@
+{
+  "id": "ba12d7f5-ea46-4854-a5cd-9e22a3b48a72",
+  "timestamp": "2026-08-04T10:33:47.306866",
+  "image_filename": "ba12d7f5-ea46-4854-a5cd-9e22a3b48a72.jpg",
+  "image_url": "/images/ba12d7f5-ea46-4854-a5cd-9e22a3b48a72.jpg",
+  "description": "Please sketch an arrangement of multiple plastic tubes—featuring varied diameters, orientations, and integrated connecting joints (like elbows, tees, and couplers)—from two different viewpoints. For each viewpoint, provide two distinct versions: a 'concept view' that retains all your initial perspective scaffolding, center axes, bounding volumes, internal cross-sections, and exploratory pencil strokes, and a polished 'presentation view' that uses clean, confident contour lines with all underlying construction hidden. You should deliver a total of four sketches arranged in a grid that clearly show your underlying structural thinking right next to the final, clean presentation.",
+  "submitter_name": "Test User",
+  "creativity_score": 2.3,
+  "originality_score": 1.8,
+  "usefulness_relevance_score": 3.3,
+  "clarity_score": 4.3,
+  "level_of_detail_elaboration_score": 3.3,
+  "feasibility_score": 4.5,
+  "overall_score": 3.25,
+  "creativity_reasoning": "The design demonstrates a basic level of creativity with some exploration of tube arrangements and joint types. However, it largely adheres to conventional configurations without introducing novel or unexpected elements that could elevate the concept to a more inventive level.",
+  "originality_reasoning": "The concept is reminiscent of standard technical exercises, lacking distinctiveness or unique structural solutions. While the educational intent is clear, the design does not differentiate itself from typical tube assembly studies.",
+  "usefulness_relevance_reasoning": "The sketches effectively demonstrate the intended educational workflow from concept to presentation, supporting learning objectives. However, the execution falls short of fully meeting the prompt's requirements for varied tube diameters and joint types, limiting its applicability beyond basic educational purposes.",
+  "clarity_reasoning": "The grid layout and separation between concept and presentation views are clear, allowing for easy comparison and understanding of the design process. However, some ambiguity remains in the joint details, which could be clarified further to enhance overall comprehension.",
+  "level_of_detail_elaboration_reasoning": "The sketches include essential construction details like axes and bounding volumes, but lack the depth of detail in joint types and internal structures. More explicit representation of wall thickness and connector specifics would improve the technical accuracy and completeness of the design.",
+  "feasibility_reasoning": "The design is feasible and manufacturable with basic sketching tools, and the depicted forms are plausible. However, the lack of detailed joint specifications leaves some uncertainty about the practical implementation of the connections.",
+  "instructor_feedback_intro": "You're on the right track with a solid foundation in construction-to-presentation sketching! The clear grid layout and perspective handling show your growing skills in visual communication.",
+  "instructor_feedback_pivot": "Focus on enhancing the complexity and specificity of your tube arrangements. Incorporate varied diameters and distinct joint types to fully meet the brief's requirements and add depth to your design.",
+  "instructor_feedback_next_step": "Redesign your assembly to include at least three distinct fitting types and two tube diameters, ensuring each concept view includes detailed cross-sections and connector specifications for clarity and technical accuracy.",
+  "expert_panel": [
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Dr. Emily Carter",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in visualizing complex designs.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of the arrangement and the effectiveness of the presentation views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The sketch demonstrates solid foundational form-building (stacked cylinders with a simple offset joint), but the arrangement stays conservative: one primary tube, one secondary tube, and a single connecting transition. There’s limited exploration of varied diameters, multiple orientations, or a richer network of joints (elbows/tees/couplers) that would push the concept into more inventive territory.",
+        "originality_score": 2,
+        "originality_reasoning": "The configuration reads as a standard cylinder-on-cylinder connection study—useful as an exercise, but not especially distinct from common perspective drills. Without additional joint typologies (tee, elbow, reducer, coupler) or a more complex routing logic, it doesn’t separate itself from typical tube-assembly sketch practice.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "You did deliver the key pedagogical intent: concept vs. presentation, and two viewpoints arranged in a clear grid. However, the prompt asked for “multiple plastic tubes” with “varied diameters, orientations, and integrated connecting joints,” and the current assembly feels like a minimal subset of that requirement—more like a single joint study than a multi-tube system.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The side-by-side pairing works well: the concept views show scaffolding, center/axis thinking, and exploratory strokes; the presentation views cleanly suppress construction and clarify the final silhouette. The forms read as cylinders in perspective, and the connection is understandable. Clarity drops slightly because the joint type is ambiguous (not clearly an elbow/tee/coupler) and internal cross-sections are only lightly implied rather than explicitly communicated.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Good separation of rough vs. clean, and you’re showing bounding/guide lines and ellipses. But the assembly lacks the requested variety (more tubes, more joint types), and the joint itself could use more descriptive detailing (wall thickness, socket depth, seam lines, or a reducer step). Cross-sections and center axes are present but not consistently emphasized across all parts.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "As a plastic tube-and-fitting concept, the geometry is plausible and manufacturable (simple cylindrical parts and a molded/formed connector). The main feasibility question is not technical but definitional: the fitting/joint language isn’t specified enough to confirm how it would actually connect (slip fit, solvent weld, clamp, threaded), though nothing shown appears impossible.",
+        "instructor_feedback": "You’re building a strong “before/after” communication rhythm! The grid layout clearly pairs your exploratory construction with a confident presentation pass, and your cylinders read convincingly in perspective—especially the ellipse control and the way you’re using light scaffolding to lock orientation before committing to contour. Where we need to pivot: the prompt is asking for an *arrangement* (a small system) with *varied diameters, orientations, and recognizable joint types* (elbow/tee/coupler/reducer). Right now it reads as a clean two-cylinder connection study, so the viewer doesn’t get the full story of a multi-tube network, nor do they immediately recognize specific fittings. Also, your “concept view” could do more work by explicitly calling out centerlines through each tube, consistent minor/major ellipse axes, and at least one clear internal cross-section/wall thickness cue to reinforce ‘plastic tube’ rather than solid cylinders. Your Next Step: redesign the assembly to include at least 4–6 tube segments with 2–3 distinct fitting types (e.g., a tee feeding a smaller branch, an elbow changing direction, and a coupler/reducer showing diameter change), then repeat your same 2-view × (concept/presentation) grid—making sure each concept sketch includes bold centerlines, ellipse axis crosses on every opening, and one intentional cutaway or thickness ring to communicate hollow construction.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Dr. Emily Carter",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in visualizing complex designs.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of the arrangement and the effectiveness of the presentation views."
+      },
+      "result": {
+        "creativity_score": 3,
+        "creativity_reasoning": "The tube arrangement shows moderate inventiveness with varied orientations and joints, but remains a fairly standard plumbing-like configuration without surprising functional or aesthetic twists.",
+        "originality_score": 2,
+        "originality_reasoning": "The concept relies on common cylindrical forms and standard fittings; little distinguishes it from existing pipe or conduit studies.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "Effectively demonstrates the requested concept-to-presentation workflow and supports learning goals for structural sketching.",
+        "clarity_score": 5,
+        "clarity_reasoning": "The 2x2 grid layout clearly juxtaposes construction lines with final contours, making the progression and viewpoints immediately legible.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Sketches include visible axes, bounding volumes, and cross-sections in concept views, with clean confident lines in presentation views.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The exercise is fully realizable with basic drawing tools and directly fulfills the brief without technical barriers.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone'! Your sketches successfully balance exploratory construction with polished presentation, showing clear progress in handling perspective and volume. Where we need to pivot: avoid letting the polished views become too generic—push the joint details and diameter contrasts further to heighten visual interest. Your Next Step: In the next iteration, exaggerate one viewpoint's angle and add a third tube diameter to amplify both the structural thinking and the final presentation impact.",
+        "overall_score": 3.83
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "1",
+        "name": "Dr. Emily Carter",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in visualizing complex designs.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of the arrangement and the effectiveness of the presentation views."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKX8SFEdrJtfwvBVZsy'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Mr. James Long",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Specializes in conveying technical designs clearly.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the accuracy of the internal cross-sections and the coherence between the concept and presentation views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept focuses on a basic multi-tube arrangement with a single perpendicular junction and two viewpoints. It demonstrates solid foundational construction practice (axes, bounding boxes, ellipses), but the configuration itself stays conservative—there’s limited exploration of varied diameters, multiple orientations, or a richer set of joints (e.g., tees, elbows, couplers) that would push the design space.",
+        "originality_score": 2,
+        "originality_reasoning": "The sketches resemble a standard pipe-intersection study (stacked cylinders with a vertical connector). While the two-view + concept/presentation pairing is a strong instructional format, the underlying object is a familiar exercise rather than a distinct or novel tube-network solution.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "The deliverable matches the core intent of showing structural thinking adjacent to a cleaned presentation: you provide a grid of four sketches with construction retained on the left and cleaner linework on the right, across two viewpoints. However, the prompt explicitly asks for multiple tubes with varied diameters/orientations and integrated connecting joints like elbows/tees/couplers; the current arrangement reads more like cylinders joined by a simple vertical segment rather than clearly articulated fittings.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The separation between concept views (visible scaffolding, exploratory strokes) and presentation views (clean contours, simplified shading) is clear and easy to compare. The two viewpoints are also distinct. Clarity drops mainly at the junction: the internal cross-section logic of how the vertical tube penetrates/merges with the larger tube is not fully resolved, so the viewer can’t confidently infer wall thickness, socket depth, or the exact fitting type.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You include perspective guides, center axes, bounding volumes, and ellipse cross-sections, and the presentation views show confident contours and basic tonal separation. What’s missing is the technical specificity expected from “integrated connecting joints”: no explicit elbow/tee geometry, no coupler sleeves, no indicated wall thickness (double-line rims), and no cutaway/section treatment at the intersection to prove the internal continuity of the tubes.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "As a physical assembly, the depicted forms are feasible (cylindrical tubes with a perpendicular connector). From a manufacturing/assembly standpoint, it would likely require a tee fitting or a saddle/branch connection; the drawing doesn’t contradict feasibility, but it under-specifies the joint design (socket vs. butt joint, adhesive clearance, interference, etc.). The overall geometry is plausible and easy to fabricate once the fitting type is defined.",
+        "instructor_feedback": "You’re building a strong “before/after” drafting story—your grid clearly demonstrates construction-to-presentation translation, and your ellipses/axes are doing real perspective work rather than being decorative. The main gap is that the object you drew doesn’t fully satisfy the brief’s promise of a tube *system* with recognizable fittings: it reads as two main cylinders plus a vertical connector, but not as elbows/tees/couplers with believable internal cross-sections. As a Technical Illustration Specialist, I’m looking for coherence between the concept scaffolding and the final view at the junction—right now the intersection is the least proven area, so the presentation feels cleaner than the underlying “how it’s actually connected” logic.\n\nWhere we need to pivot: stop spending additional time polishing shading/contours until the joint geometry is unambiguous. Add explicit fitting language (a tee body with socket depths, an elbow radius, a coupler sleeve) and make your concept-view cross-sections “explain” the connection: show wall thickness with double rims, indicate the branch cutout on the main tube, and keep ellipse degree consistent across all circular openings in the same orientation.\n\nYour Next Step: redesign the assembly to include at least three fitting types (e.g., one elbow, one tee, one straight coupler) and two tube diameters; then, in each concept view, draw one small cutaway/section at a joint (even a partial slice) that shows wall thickness + socket insertion depth, and ensure the presentation view matches that exact geometry without adding or removing intersections.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Mr. James Long",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Specializes in conveying technical designs clearly.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the accuracy of the internal cross-sections and the coherence between the concept and presentation views."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "Basic tube arrangements lack inventive configurations or novel joint integrations beyond standard elbows and tees.",
+        "originality_score": 1,
+        "originality_reasoning": "The concept closely mirrors common technical illustration exercises without introducing distinct or unexpected elements.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "Provides practical demonstration of construction-to-presentation workflow but limited applicability beyond educational sketching practice.",
+        "clarity_score": 4,
+        "clarity_reasoning": "Strong visual separation between concept scaffolding and clean presentation views with coherent perspective across the grid.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Adequate construction lines and cross-section ellipses shown, yet internal details remain superficial without deeper sectional accuracy.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Simple pencil sketching technique is fully viable with no technical or economic barriers.",
+        "instructor_feedback": "You're hitting the 'construction-to-clean' sweet spot! The sketches effectively demonstrate how initial axes and bounding volumes evolve into polished contours, showing solid progress in handling multi-viewpoint tube assemblies with varied diameters. Where we need to pivot: avoid over-relying on generic elbow/tee joints and instead emphasize precise internal cross-section hatching or cutaways to highlight wall thickness and flow paths. Your Next Step: Redraw one presentation view with explicit sectional cuts through at least two joints, adding accurate elliptical interiors and hidden-line indications for coherence.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "2",
+        "name": "Mr. James Long",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Specializes in conveying technical designs clearly.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the accuracy of the internal cross-sections and the coherence between the concept and presentation views."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKYL6zkpHowopFmN8uj'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Ms. Sarah Lee",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Focus on effective visual storytelling.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on how well the sketches communicate structural thinking and the overall aesthetic quality of the designs."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The sketches show competent spatial construction of cylindrical forms and a clear intent to contrast exploratory vs. presentation drawing. However, the tube “system” itself is fairly minimal (mostly two stacked cylinders with a single connecting segment), with limited variation in joint types (no clear tee/coupler language) or more complex routing that would push inventive arrangement.",
+        "originality_score": 2,
+        "originality_reasoning": "The concept reads as a standard perspective-cylinder exercise rather than a distinctive tube-network design. The idea of pairing construction and clean linework is strong pedagogically, but the actual configuration doesn’t introduce a unique structural solution or novel connector logic beyond a basic offset/bridge.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "You addressed the core assignment goal: two viewpoints, each with a concept (construction-visible) and a presentation (clean) version, arranged as a grid. The drawings demonstrate structural thinking (axes, ellipses, bounding guides) and a readable final contour. Relevance drops mainly because the prompt asked for multiple tubes with varied diameters/orientations and integrated joints (elbows/tees/couplers), which are only partially represented.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The grid layout is clear and the pairing of rough vs. clean is immediately understandable. The presentation views have confident silhouettes and readable overlaps. The concept views successfully show scaffolding (centerlines, perspective guides, ellipse construction). What’s less clear is the “joint” intent—connections read more like a carved/bridged block than identifiable plumbing fittings with consistent wall thickness and insertion depth.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "There is solid construction detail (multiple guide passes, ellipse minor/major axis control, some cross-contour hatching). But the system lacks the requested variety: more tube segments, clearer diameter changes, and explicit connector parts (elbow radius, tee intersection, coupler sleeve) with thickness/step details. Internal cross-sections are hinted at via ellipses, but not developed into wall thickness or cutaway logic.",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "As a physical assembly, the forms are plausible: cylinders align in perspective and the bridging connector could be manufactured as a molded joint. The main feasibility concern is functional realism of the connection geometry—real tube joints typically show consistent diameters, socket depths, fillets, and intersection rules (especially for tees), which aren’t fully specified here. Still, the concept is implementable with refinement.",
+        "instructor_feedback": "You’re building a strong “construction-to-presentation” pipeline! The grid clearly communicates process: your concept views show perspective scaffolding, ellipse searching, and bounding volumes, and your presentation views cleanly commit to a final silhouette with readable overlaps and convincing cylindrical shading. This is exactly the kind of structural thinking we want to see—your cylinders sit in space, and the two viewpoints feel consistent. Where we need to pivot: the prompt is about an arrangement of multiple tubes with varied diameters/orientations and recognizable connecting joints (elbows, tees, couplers). Right now the assembly reads like a two-cylinder study with a single connector, and the joint language isn’t yet “plumbing-specific” (no clear socket sleeves, insertion depths, wall thickness, or tee/elbow geometry). Also watch ellipse consistency: a few end-caps drift in degree/axis alignment relative to the tube centerlines, which slightly weakens the illusion of rigid parts. Your Next Step: design a 4–6 segment tube network that forces at least one elbow and one tee, then in the concept view explicitly draw (1) centerlines through every tube, (2) a consistent wall thickness via double-ellipse rims, and (3) connector details (coupler sleeve length, fillet radius at elbow, tee intersection with a defined branch diameter). After that, produce the presentation view by keeping only the final contours plus a minimal value plan (one light source, 2–3 tone bands) to make the joints read as distinct manufactured parts.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Ms. Sarah Lee",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Focus on effective visual storytelling.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on how well the sketches communicate structural thinking and the overall aesthetic quality of the designs."
+      },
+      "result": {
+        "creativity_score": 3,
+        "creativity_reasoning": "The arrangement shows moderate inventiveness through varied tube diameters and orientations with basic joints, but lacks surprising or novel structural combinations.",
+        "originality_score": 2,
+        "originality_reasoning": "The tube assembly follows conventional technical sketching exercises without introducing unique or distinct forms beyond standard piping configurations.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The sketches effectively fulfill the brief by demonstrating structural thinking through multiple viewpoints and view types, making them applicable for educational visualization purposes.",
+        "clarity_score": 5,
+        "clarity_reasoning": "The 2x2 grid layout clearly juxtaposes concept and presentation views, allowing immediate understanding of the underlying construction and final forms.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Concept sketches include visible axes, bounding volumes, and cross-sections with exploratory strokes, providing solid depth while presentation views are cleanly resolved.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The simple hand-drawn tube arrangement is highly feasible to execute with basic sketching tools and requires no advanced resources or technology.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' in balancing exploratory construction with polished results! The student's progress is evident in the top row, where perspective scaffolding and overlapping forms reveal thoughtful structural exploration of varied diameters and joints. Where we need to pivot: reduce the density of stray construction lines in the bottom-left concept view to prevent visual clutter from obscuring key connections. Your Next Step: Add subtle shading or line-weight variation to the presentation views to emphasize the integrated elbows and tees for stronger visual hierarchy.",
+        "overall_score": 3.83
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "3",
+        "name": "Ms. Sarah Lee",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Focus on effective visual storytelling.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on how well the sketches communicate structural thinking and the overall aesthetic quality of the designs."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKYpUZEQNmo1oMvtajz'}"
+    }
+  ],
+  "stats": {
+    "overall_icc": {
+      "score": 0.812,
+      "label": "Excellent",
+      "message": "The overall ICC score of 0.812 indicates that there is excellent agreement among the evaluators, suggesting that the design evaluations are highly consistent.",
+      "bg": "bg-green-50",
+      "color": "text-green-700",
+      "border": "border-green-200"
+    },
+    "per_persona_icc": [
+      {
+        "persona_id": "1",
+        "persona_name": "Dr. Emily Carter",
+        "icc": 0.706,
+        "label": "Good"
+      },
+      {
+        "persona_id": "2",
+        "persona_name": "Mr. James Long",
+        "icc": 0.878,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "3",
+        "persona_name": "Ms. Sarah Lee",
+        "icc": 0.706,
+        "label": "Good"
+      }
+    ],
+    "kendalls_w": {
+      "W": 0.922
+    },
+    "variance_analysis": {
+      "per_dimension": {
+        "clarity": 0.267,
+        "creativity": 0.267,
+        "feasibility": 0.3,
+        "level_of_detail_elaboration": 0.267,
+        "originality": 0.167,
+        "usefulness_relevance": 0.267
+      },
+      "average_variance": 0.256
+    },
+    "variance_message": "The AI judges showed strong agreement with a Kendall's W of 0.922, but there was the most debate over the feasibility dimension, which had the highest variance.",
+    "data_quality": {
+      "total_evaluations_attempted": 9,
+      "successful_evaluations": 6,
+      "failed_evaluations": 3,
+      "failure_rate_pct": 33.3,
+      "per_provider_failures": {
+        "Claude": 3
+      },
+      "failure_details": [
+        {
+          "model_provider": "Claude",
+          "persona_name": "Dr. Emily Carter",
+          "persona_id": "1",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKX8SFEdrJtfwvBVZsy'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Mr. James Long",
+          "persona_id": "2",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKYL6zkpHowopFmN8uj'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Ms. Sarah Lee",
+          "persona_id": "3",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKYpUZEQNmo1oMvtajz'}"
+        }
+      ],
+      "data_completeness": "partial"
+    }
+  },
+  "domain_analysis": {
+    "identified_task": "Sketch an arrangement of plastic tubes from two viewpoints.",
+    "key_instruction_words": [
+      "sketch",
+      "providing",
+      "version",
+      "presentation",
+      "view",
+      "concept"
+    ],
+    "domain": "VISUAL_ARTISTIC",
+    "rationale": "The instructions primarily focus on sketching and presenting design concepts."
+  }
+}

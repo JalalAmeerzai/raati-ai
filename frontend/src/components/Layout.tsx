@@ -1,6 +1,6 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, FlaskConical, Moon, Sun, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Users, FlaskConical, Moon, Sun, ChevronLeft, ChevronRight, BookUser } from 'lucide-react';
 
 /* ───── Theme Context ───── */
 interface ThemeCtx { dark: boolean; toggle: () => void; collapsed: boolean; toggleSidebar: () => void }
@@ -79,6 +79,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title }) => {
                     {[
                         { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
                         { to: '/evaluate', icon: FlaskConical, label: 'Run Evaluation' },
+                        { to: '/persona-library', icon: BookUser, label: 'Persona Library' },
                         { to: '/history', icon: Users, label: 'Submissions' },
                     ].map(({ to, icon: Icon, label }) => (
                         <NavLink

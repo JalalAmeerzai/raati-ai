@@ -18,6 +18,8 @@ load_dotenv()
 
 from services.storage import save_submission, get_history, get_result_by_id
 from services.creativity_judge import evaluate_design
+from services.persona_storage import save_personas, get_all_personas, get_personas_by_ids, delete_persona
+from services.agents import generate_personas
 
 app = FastAPI(title="raati.ai — Creativity Assessment Tool")
 
@@ -50,19 +52,102 @@ from fastapi.concurrency import run_in_threadpool
 async def evaluate_submission(
     image: UploadFile = File(...),
     description: str = Form(...),
-    submitter_name: str = Form("")
+    submitter_name: str = Form(""),
+    recruiter_mode: str = Form("dynamic"),
+    persona_file: UploadFile = File(None),
+    persona_text: str = Form(None),
+    selected_persona_ids: str = Form(None),
 ):
     """
     Receives an image and description, runs 3×3 AI evaluation, and saves the full result.
+    When recruiter_mode='saved' and selected_persona_ids is provided, skips the recruiter agent.
     """
+    # Resolve saved personas if IDs were provided
+    selected_personas = None
+    if recruiter_mode == "saved" and selected_persona_ids:
+        ids = [pid.strip() for pid in selected_persona_ids.split(",") if pid.strip()]
+        selected_personas = get_personas_by_ids(ids)
+        if len(selected_personas) < 3:
+            raise HTTPException(
+                status_code=400,
+                detail=f"At least 3 saved personas must be selected. Found {len(selected_personas)} matching IDs."
+            )
+
     # 1. Evaluate with LLM pipeline
-    ai_result = await evaluate_design(image, description)
+    ai_result = await evaluate_design(
+        image_file=image, 
+        description=description,
+        recruiter_mode=recruiter_mode,
+        persona_file=persona_file,
+        persona_text=persona_text,
+        selected_personas=selected_personas,
+    )
 
     # 2. Save full result (image + JSON + CSV index)
     await image.seek(0)
     saved_record = await run_in_threadpool(save_submission, image, description, ai_result, submitter_name)
 
     return saved_record
+
+
+@app.post("/personas/generate")
+async def generate_and_save_personas(
+    persona_file: UploadFile = File(None),
+    persona_text: str = Form(""),
+    num_personas: int = Form(3),
+    assignment_context: str = Form("General design creativity and visualization"),
+):
+    """
+    Runs the recruiter agent to generate personas from an uploaded profile or pasted text,
+    then persists them to the persona library. Returns the newly saved persona records.
+    """
+    import io
+    # Build custom context
+    custom_context = persona_text or ""
+    source_ref = "Pasted text"
+    if persona_file and persona_file.filename:
+        file_bytes = await persona_file.read()
+        filename = persona_file.filename.lower()
+        source_ref = f"Uploaded: {persona_file.filename}"
+        if filename.endswith(".pdf"):
+            from pypdf import PdfReader
+            try:
+                pdf_reader = PdfReader(io.BytesIO(file_bytes))
+                text_pages = [page.extract_text() for page in pdf_reader.pages if page.extract_text()]
+                custom_context += "\n\n" + "\n".join(text_pages)
+            except Exception as e:
+                raise HTTPException(status_code=400, detail=f"Failed to parse PDF: {e}")
+        else:
+            custom_context += "\n\n" + file_bytes.decode('utf-8', errors='replace')
+
+    if not custom_context.strip():
+        raise HTTPException(status_code=400, detail="Please provide a persona file or paste persona details.")
+
+    num_personas = max(3, min(5, num_personas))
+    recruiter_result = await generate_personas(
+        assignment_text=assignment_context,
+        recruiter_mode="saved",
+        custom_persona_context=custom_context.strip(),
+        num_personas=num_personas,
+    )
+    raw_personas = recruiter_result.get("personas", [])
+    saved = save_personas(raw_personas, source_reference=source_ref)
+    return {"saved": saved, "count": len(saved)}
+
+
+@app.get("/personas")
+def list_personas():
+    """Returns all saved personas in the library (newest first)."""
+    return {"personas": get_all_personas()}
+
+
+@app.delete("/personas/{persona_id}")
+def remove_persona(persona_id: str):
+    """Deletes a persona from the library by ID."""
+    removed = delete_persona(persona_id)
+    if not removed:
+        raise HTTPException(status_code=404, detail="Persona not found")
+    return {"success": True, "persona_id": persona_id}
 
 @app.get("/results/{result_id}")
 def get_result(result_id: str):

@@ -8,4 +8,4 @@ backend/data/images/*.jpg
 backend/data/images/*.pdf
 backend/data/images/*.jpeg
 backend/data/evaluations/*.json
-backend/data/results/
+*.zip

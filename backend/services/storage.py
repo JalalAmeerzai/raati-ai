@@ -73,9 +73,10 @@ def save_submission(image_file, description, evaluation_result, submitter_name: 
         "instructor_feedback_intro": evaluation_result.get("instructor_feedback_intro"),
         "instructor_feedback_pivot": evaluation_result.get("instructor_feedback_pivot"),
         "instructor_feedback_next_step": evaluation_result.get("instructor_feedback_next_step"),
-        # Full LLM data (expert_panel + stats)
+        # Full LLM data (expert_panel + stats + domain analysis)
         "expert_panel": evaluation_result.get("expert_panel", []),
         "stats": evaluation_result.get("stats", {}),
+        "domain_analysis": evaluation_result.get("domain_analysis", None),
     }
 
     # 4. Save full record as JSON

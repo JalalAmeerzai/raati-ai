@@ -1,0 +1,301 @@
+{
+  "id": "07f81ee0-4267-4c54-8f2a-0ef4426338a1",
+  "timestamp": "2026-08-04T10:30:59.888819",
+  "image_filename": "07f81ee0-4267-4c54-8f2a-0ef4426338a1.jpg",
+  "image_url": "/images/07f81ee0-4267-4c54-8f2a-0ef4426338a1.jpg",
+  "description": "Please sketch a potato chip—focusing on its classic, saddle-like curved geometry—from two different viewpoints. For each viewpoint, provide two distinct versions: a 'concept view' that retains all your initial perspective scaffolding, vanishing lines, enclosing bounding boxes, and internal surface contours, and a polished 'presentation view' that uses clean, confident contour lines with all underlying construction hidden. You should deliver a total of four sketches that clearly show your underlying structural thinking right next to the final, clean presentation.",
+  "submitter_name": "Test User",
+  "creativity_score": 2.3,
+  "originality_score": 1.7,
+  "usefulness_relevance_score": 4.2,
+  "clarity_score": 4.0,
+  "level_of_detail_elaboration_score": 3.5,
+  "feasibility_score": 5.0,
+  "overall_score": 3.45,
+  "creativity_reasoning": "The design demonstrates a competent exploration of saddle geometry but largely adheres to standard perspective techniques without introducing novel elements or unexpected interpretations. While there is some creative intent in the use of bounding boxes and contour sweeps, the overall approach remains within conventional boundaries.",
+  "originality_reasoning": "The sketches employ a common industrial design approach to depict a hyperbolic paraboloid form, which is a standard exercise in perspective drawing. The execution is competent, but the method and visual language do not significantly deviate from established conventions, lacking unique stylistic or conceptual twists.",
+  "usefulness_relevance_reasoning": "The sketches effectively fulfill the assignment's requirements by providing two viewpoints with both concept and presentation views. They clearly illustrate the transition from construction to clean linework, making them highly relevant for teaching structural sketching and perspective scaffolding.",
+  "clarity_reasoning": "The separation between concept and presentation views is clear, with construction lines and final contours being easily distinguishable. However, minor clarity issues arise from some construction lines not fully aligning with the chip's implied axes, which can slightly confuse the form's orientation.",
+  "level_of_detail_elaboration_reasoning": "The sketches include essential elements like vanishing lines, bounding boxes, and internal contours, providing a solid foundation. However, more explicit surface logic and a systematic contour strategy would enhance the level of detail, along with a more descriptive edge treatment.",
+  "feasibility_reasoning": "The sketches are technically feasible and align with standard practices in perspective and form-construction exercises. The approach is repeatable and does not require complex tools, making it suitable for instructional purposes.",
+  "instructor_feedback_intro": "You're finding the 'Goldilocks zone' between raw construction and clean presentation! Your sketches show a solid understanding of perspective and form construction, effectively capturing the saddle curvature of the chip.",
+  "instructor_feedback_pivot": "Focus on refining the relationship between internal contour lines and the chip's surface to ensure they feel anchored and consistent. Avoid over-relying on generic bounding boxes and push for more varied cross-contour densities to emphasize the chip's thinness and local buckling.",
+  "instructor_feedback_next_step": "Redraw one of the presentation views at the same size, using a 3-tier line system: bold silhouette, medium-weight for occluding folds, and very light for interior contours. Limit yourself to 2-3 cross-contours that are evenly spaced and clearly wrap the saddle, then compare it side-by-side with your current presentation to verify the silhouette reads first from a distance.",
+  "expert_panel": [
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Lisa Johnson",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating clarity of form and structure.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the effectiveness of the perspective scaffolding and the clarity of structural thinking in the sketches."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The assignment is a classic form-study (a saddle surface / hyperbolic-paraboloid-like chip), and your solution stays within that expected lane. You do show some creative intent in how you “wrap” the chip through a bounding box and use internal contour sweeps to imply curvature, but there aren’t additional explorations (edge waviness, thickness variation, breakage, or material cues) that would push the study beyond the baseline geometry exercise.",
+        "originality_score": 2,
+        "originality_reasoning": "Using a perspective box + contour lines to describe a Pringles-like chip is a standard industrial design sketching approach. Your two viewpoints and the concept/presentation pairing are appropriate, but the viewpoints and construction strategy are conventional rather than distinct or novel.",
+        "usefulness_relevance_score": 5,
+        "usefulness_relevance_reasoning": "This is highly relevant to the prompt: you delivered two viewpoints, each with a construction-heavy concept view and a cleaner presentation view. The sketches clearly target the saddle-like curvature and demonstrate an intent to communicate structural thinking alongside a final contour drawing.",
+        "clarity_score": 4,
+        "clarity_reasoning": "Overall, the chip reads as a saddle surface in all four sketches, and the side-by-side concept vs. presentation is easy to parse. The main clarity loss comes from a few construction issues: (1) some contour lines don’t consistently “flow” across the surface as if they belong to the same parametric direction, (2) the silhouette occasionally changes character between concept and presentation (especially the top-left set), and (3) the perspective scaffolding is sometimes heavier than necessary, competing with the form.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You include bounding boxes, vanishing lines, and internal surface contours—good core elements. What’s missing for a higher score is more explicit structural information: a clear major/minor axis on the chip, a centerline or crosshair to lock symmetry/asymmetry, consistent contour spacing to indicate curvature change, and a hint of thickness/edge roll (even minimal) to reinforce the object-ness rather than a floating surface.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The geometry is plausible and well within real chip forms. The drawing method (box-to-form, contour mapping, then clean silhouette) is technically feasible and aligns with standard perspective practice for industrial design sketching exercises.",
+        "instructor_feedback": "You’re building a solid “scaffold-to-surface” pipeline! The big win here is that you’re not guessing the chip’s curvature—you’re boxing it in, establishing a perspective context, and then carving the saddle surface with internal contours before committing to a clean presentation line. That’s exactly the right mindset for complex double-curvature. Where this needs refinement is consistency: your contour families sometimes switch logic mid-surface (they should behave like two coherent direction fields), and the silhouette in the presentation views occasionally drifts from what the construction promised—so the viewer feels a small mismatch between the engineered setup and the final read.\n\nWhere we need to pivot: (1) Avoid over-dominant perspective rays; keep scaffolding lighter and more local so it supports rather than competes. (2) Don’t let contour lines become decorative—make them obey the surface: they should compress where curvature tightens, relax where it flattens, and wrap convincingly around the rim. (3) Lock the chip’s “saddle axes” early (a centerline + perpendicular cross-axis on the mid-surface) so both viewpoints describe the same underlying form and your presentation silhouette stays faithful.\n\nYour Next Step: Do one additional pass per viewpoint where you first draw a simple mid-surface crosshair (major/minor axes), then place 5–7 evenly planned contour slices in ONE direction only (e.g., across the width), checking that each slice is perspective-consistent inside the box; only after that, add the second contour family lightly. Then trace a presentation silhouette directly from the most accurate construction (including a subtle edge thickness/roll on one side) to eliminate the concept-to-presentation drift.",
+        "overall_score": 3.5
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Lisa Johnson",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating clarity of form and structure.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the effectiveness of the perspective scaffolding and the clarity of structural thinking in the sketches."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The exercise demonstrates basic geometric exploration of a saddle surface but lacks inventive reinterpretation or novel form development beyond standard hyperbolic paraboloid representation.",
+        "originality_score": 1,
+        "originality_reasoning": "The potato chip form is a ubiquitous example in perspective exercises; the sketches do not introduce unique variations or unexpected viewpoints that distinguish them from common textbook demonstrations.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The paired concept and presentation views effectively illustrate the transition from construction to clean linework, directly supporting learning goals in structural sketching and perspective scaffolding.",
+        "clarity_score": 5,
+        "clarity_reasoning": "Each viewpoint clearly separates the retained construction lines (vanishing points, bounding boxes, contours) from the final polished contours, making the underlying thinking immediately legible.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Four sketches are provided with visible internal surface contours and multiple angles, though minor refinements in line weight hierarchy and edge definition would further enhance completeness.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The sketches are fully realizable as hand-drawn exercises; no technical or economic barriers exist for producing such instructional drawings in an industrial design context.",
+        "instructor_feedback": "You're hitting the 'Goldilocks zone' of construction visibility! The top-left and bottom-left concept views successfully retain vanishing lines and bounding boxes while still allowing the saddle curvature to read clearly, showing solid progress in balancing raw thinking with readable form. Where we need to pivot: avoid letting the polished views drift into overly organic, almost bow-tie shapes that lose the crisp saddle geometry—keep the hyperbolic twist more pronounced. Your Next Step: redraw the bottom-right presentation view using the exact same vanishing points from the bottom-left construction to ensure the final contour precisely matches the established perspective scaffold.",
+        "overall_score": 3.5
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "1",
+        "name": "Lisa Johnson",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Evaluating clarity of form and structure.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the effectiveness of the perspective scaffolding and the clarity of structural thinking in the sketches."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKJeoVppC6iYxaHvMsw'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Mark Stevens",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing visual storytelling in sketches.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the communication of form and how the sketches represent the potato chip's geometry from different viewpoints."
+      },
+      "result": {
+        "creativity_score": 3,
+        "creativity_reasoning": "The concept demonstrates solid creative thinking in how you translate an organic, saddle-like chip into a controllable 3D construction: using a bounding box, perspective rays, and internal contour “flow lines” shows an inventive approach to making a tricky surface drawable and repeatable. The two viewpoints also add variety and show you’re exploring the form rather than copying a single silhouette.",
+        "originality_score": 2,
+        "originality_reasoning": "Using perspective scaffolding + a clean presentation pass is a common industrial-design/figure-drawing workflow, and the chip-as-hyperbolic-paraboloid/saddle is a standard interpretation. Your execution is competent, but the underlying method and visual language are not especially distinct from established sketching conventions.",
+        "usefulness_relevance_score": 5,
+        "usefulness_relevance_reasoning": "This directly answers the prompt: two viewpoints, each with a concept view (construction visible) and a presentation view (construction hidden). The sketches focus on the chip’s key geometric behavior—opposing curvatures and twisting—so they are highly relevant for communicating the chip’s 3D form.",
+        "clarity_score": 4,
+        "clarity_reasoning": "The pairing is clear: left sketches read as construction-heavy concept views; right sketches read as cleaned presentation views. The saddle/twist is legible in both viewpoints, and the internal contour lines help communicate surface direction. Minor clarity loss comes from some construction lines not fully aligning to the chip’s implied major/minor axes (a few contours feel slightly “floated” rather than locked to the surface), which can confuse the exact orientation of the form.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "You include vanishing lines, bounding boxes, and multiple internal contours, which is the right level of structural elaboration for this task. The presentation views are simplified appropriately. What’s missing for a higher score is more explicit surface logic: e.g., a clearer center “saddle point,” more consistent cross-contour spacing to indicate curvature change, and a slightly more descriptive edge treatment (chips often have subtle waviness/thickness cues even in clean line).",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "As a drawing/communication method, this is very feasible and repeatable. The construction approach (box + perspective + cross-contours) is technically sound and can be applied quickly to generate additional views or iterations without requiring complex tools.",
+        "instructor_feedback": "You’re building a “see-through 3D logic” that makes an organic chip feel engineered! The strongest progress here is the disciplined separation between concept and presentation: your left-side drawings clearly show perspective scaffolding and a bounding volume, and your right-side drawings successfully preserve the same saddle-like twist with confident outer contours. Visually, the chip reads as a doubly-curved surface (one direction up, the other down), and the two viewpoints help confirm the geometry rather than relying on a single silhouette. Where we need to pivot: tighten the relationship between your internal contour lines and the chip’s surface so they feel anchored (consistent minor/major axis behavior, smoother continuity across the “saddle point,” and less ambiguity about which direction is the primary bend vs. the secondary twist). Also avoid letting the bounding box dictate the chip’s edge too literally—use it to orient the form, but keep the rim’s ellipse/edge flow consistent with the surface curvature. Your Next Step: do one additional pass on each viewpoint where you (1) mark the saddle’s center point, (2) draw one clear ‘U’ contour and one clear ‘∩’ contour crossing at that center, then (3) add 2–3 evenly spaced cross-contours that wrap the surface and visibly change spacing where curvature tightens—this will lock the chip’s geometry and make the presentation view even more convincing.",
+        "overall_score": 3.83
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "Mark Stevens",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing visual storytelling in sketches.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the communication of form and how the sketches represent the potato chip's geometry from different viewpoints."
+      },
+      "result": {
+        "creativity_score": 3,
+        "creativity_reasoning": "The sketches demonstrate competent exploration of saddle geometry but rely on standard perspective techniques without novel interpretive twists or unexpected visual metaphors.",
+        "originality_score": 2,
+        "originality_reasoning": "The approach follows conventional industrial-design construction methods; the hyperbolic paraboloid form is rendered accurately yet remains close to textbook examples rather than offering a distinctive visual language.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The side-by-side concept and presentation views effectively communicate structural thinking and are directly applicable to teaching or documenting complex surface geometry.",
+        "clarity_score": 4,
+        "clarity_reasoning": "Vanishing lines, bounding boxes, and contour overlays are legible, allowing viewers to trace the progression from construction to final contour with minimal ambiguity.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "While the four required views are present, surface texture, edge variation, and material thickness receive only minimal treatment, leaving the description somewhat schematic.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Hand-sketching with basic perspective tools is immediately executable at negligible cost, requiring no specialized equipment or advanced fabrication.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw construction and clean presentation! The four sketches successfully capture the potato chip's saddle curvature from two viewpoints and clearly separate the thinking process from the final line work. Where we need to pivot: avoid over-relying on generic bounding boxes; instead, push the concept views to explore more varied cross-contour densities that emphasize the chip's thinness and local buckling. Your Next Step: redraw one viewpoint at twice the size, adding three additional internal contour families that describe both the primary saddle and the secondary edge ripples before cleaning it up for the presentation view.",
+        "overall_score": 3.5
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "2",
+        "name": "Mark Stevens",
+        "title": "Visual Communication Specialist",
+        "sub_text": "Assessing visual storytelling in sketches.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Visual Communication Specialist, you will focus specifically on the communication of form and how the sketches represent the potato chip's geometry from different viewpoints."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKKuud5AD9ximPMWnfc'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Emily Taylor",
+        "title": "Drawing & Rendering Specialist",
+        "sub_text": "Focusing on line quality and presentation.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Drawing & Rendering Specialist, you will focus specifically on the quality of contour lines in the presentation views and the overall polish of the sketches."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The subject (a classic saddle-shaped potato chip) is intentionally constrained, and your solution stays within the expected formal exploration: two viewpoints with construction vs. presentation. The creative lift shows up in the second viewpoint where the twist/“hourglass” read is more dynamic, but overall it’s more an exercise in disciplined form construction than an inventive concept.",
+        "originality_score": 2,
+        "originality_reasoning": "Using perspective boxes, centerlines, and cross-contours to describe a Pringles-like hyperbolic paraboloid is a standard drawing approach. Your particular silhouettes are pleasant and slightly varied between views, but the method and outcome are broadly conventional for this prompt.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "You delivered the requested four sketches (two viewpoints, each with a concept/construction view and a cleaned presentation view). The construction drawings clearly demonstrate structural thinking (bounding boxes, vanishing lines, and internal contour cues), and the presentation drawings do read as a chip-like saddle form.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The overall intent is understandable and the pairing of construction vs. clean views is clear. However, the presentation views still contain some faint internal lines that read like leftover construction rather than intentional surface contouring, and the outer contour line weight is not consistently prioritized—so the silhouette sometimes competes with interior curves.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You include perspective scaffolding, bounding volumes, and a few cross-contours that help describe curvature. What’s missing is a more systematic contour strategy (e.g., a consistent U/V contour network or evenly spaced section curves) and more deliberate line hierarchy (primary silhouette, secondary feature/contour, tertiary construction). The chip edge thickness/irregularity is also not explored, which would add realism and completeness.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The drawings are technically achievable and align with standard perspective and form-construction practices. Nothing in the depiction suggests an unbuildable or incoherent geometry; the saddle surfaces are plausible and readable from both viewpoints.",
+        "instructor_feedback": "You’re building a solid “scaffold-to-silhouette” workflow! The concept views show you understand how to cage the chip in perspective and then carve the saddle surface with cross-contours—especially in the second viewpoint where the twist reads convincingly in 3D. Where the work is currently held back is polish: your presentation contours aren’t yet decisively separated from construction, and the silhouette line doesn’t consistently dominate, so the form can look a bit tentative rather than crisp and intentional.\n\nWhere we need to pivot: (1) Commit to line hierarchy—make the outer contour a single, confident pass (or a controlled second pass only where overlap/occlusion occurs), keep interior surface contours lighter and fewer, and remove/avoid any “ghost” construction in the presentation views. (2) Watch contour logic—some interior curves flatten because they don’t clearly wrap around the surface; aim for contours that visibly change curvature and spacing as they move toward/away from the viewer.\n\nYour Next Step: Redraw one of the presentation views at the same size, but use a 3-tier line system: bold silhouette (one continuous stroke per edge), medium-weight only for the occluding fold/overlap, and very light (or none) for interior contours—limit yourself to 2–3 cross-contours that are evenly spaced and clearly wrap the saddle. Then compare it side-by-side with your current presentation to verify the silhouette reads first from 2–3 meters away.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Emily Taylor",
+        "title": "Drawing & Rendering Specialist",
+        "sub_text": "Focusing on line quality and presentation.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Drawing & Rendering Specialist, you will focus specifically on the quality of contour lines in the presentation views and the overall polish of the sketches."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The exercise demonstrates basic geometric exploration but lacks inventive reinterpretation of the potato chip form.",
+        "originality_score": 1,
+        "originality_reasoning": "Saddle-shaped chip sketches follow standard perspective tutorials without unique stylistic or conceptual twists.",
+        "usefulness_relevance_score": 3,
+        "usefulness_relevance_reasoning": "Useful for practicing contour and construction line techniques in industrial design sketching.",
+        "clarity_score": 4,
+        "clarity_reasoning": "Clear separation between concept views with scaffolding and polished presentation views aids understanding.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Strong visualization of vanishing lines, bounding boxes, and surface contours in each viewpoint.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "Simple hand-sketch exercise requiring no special tools or resources beyond paper and pen.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw construction and clean presentation! Your progress shows solid command of perspective scaffolding on the left views while the right-side polished contours already convey confident saddle geometry. Where we need to pivot: avoid over-relying on generic chip shapes—push the internal surface contours further to emphasize material thinness and irregular edges. Your Next Step: redraw the bottom viewpoint's presentation view using a single continuous confident line weight that varies only at overlaps to heighten polish.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "3",
+        "name": "Emily Taylor",
+        "title": "Drawing & Rendering Specialist",
+        "sub_text": "Focusing on line quality and presentation.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Drawing & Rendering Specialist, you will focus specifically on the quality of contour lines in the presentation views and the overall polish of the sketches."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKLMfREA8YN3Z4zASFj'}"
+    }
+  ],
+  "stats": {
+    "overall_icc": {
+      "score": 0.832,
+      "label": "Excellent",
+      "message": "The overall ICC score of 0.832 indicates that there is excellent agreement among the evaluators, suggesting that the design evaluation is highly reliable.",
+      "bg": "bg-green-50",
+      "color": "text-green-700",
+      "border": "border-green-200"
+    },
+    "per_persona_icc": [
+      {
+        "persona_id": "1",
+        "persona_name": "Lisa Johnson",
+        "icc": 0.851,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "2",
+        "persona_name": "Mark Stevens",
+        "icc": 0.868,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "3",
+        "persona_name": "Emily Taylor",
+        "icc": 0.804,
+        "label": "Excellent"
+      }
+    ],
+    "kendalls_w": {
+      "W": 0.833
+    },
+    "variance_analysis": {
+      "per_dimension": {
+        "clarity": 0.4,
+        "creativity": 0.267,
+        "feasibility": 0.0,
+        "level_of_detail_elaboration": 0.3,
+        "originality": 0.267,
+        "usefulness_relevance": 0.567
+      },
+      "average_variance": 0.3
+    },
+    "variance_message": "The Kendall's W score of 0.833 shows strong agreement among the judges, but there was the most debate over the 'usefulness_relevance' dimension, which had the highest variance.",
+    "data_quality": {
+      "total_evaluations_attempted": 9,
+      "successful_evaluations": 6,
+      "failed_evaluations": 3,
+      "failure_rate_pct": 33.3,
+      "per_provider_failures": {
+        "Claude": 3
+      },
+      "failure_details": [
+        {
+          "model_provider": "Claude",
+          "persona_name": "Lisa Johnson",
+          "persona_id": "1",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKJeoVppC6iYxaHvMsw'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Mark Stevens",
+          "persona_id": "2",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKKuud5AD9ximPMWnfc'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Emily Taylor",
+          "persona_id": "3",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhKLMfREA8YN3Z4zASFj'}"
+        }
+      ],
+      "data_completeness": "partial"
+    }
+  },
+  "domain_analysis": {
+    "identified_task": "Sketch a potato chip from multiple viewpoints",
+    "key_instruction_words": [
+      "sketch",
+      "focusing",
+      "provide",
+      "show"
+    ],
+    "domain": "VISUAL_ARTISTIC",
+    "rationale": "The task emphasizes sketching and visual representation skills."
+  }
+}

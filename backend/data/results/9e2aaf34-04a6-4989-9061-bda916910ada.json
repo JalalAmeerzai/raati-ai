@@ -1,0 +1,301 @@
+{
+  "id": "9e2aaf34-04a6-4989-9061-bda916910ada",
+  "timestamp": "2026-08-04T10:08:08.044146",
+  "image_filename": "9e2aaf34-04a6-4989-9061-bda916910ada.jpg",
+  "image_url": "/images/9e2aaf34-04a6-4989-9061-bda916910ada.jpg",
+  "description": "Please sketch a mechanical flange—featuring a stepped cylindrical body and a circular pattern of bolt holes—from two different viewpoints, such as a 3/4 perspective and a side elevation. For each viewpoint, provide two distinct versions: a 'concept view' that retains all your initial construction lines, center axes, bounding ellipses, and structural scaffolding, and a polished 'presentation view' that uses clean, confident contour lines with all underlying construction hidden. You should deliver a total of four sketches that clearly show your underlying structural thinking right next to the final, clean presentation.",
+  "submitter_name": "Test User",
+  "creativity_score": 2.0,
+  "originality_score": 1.5,
+  "usefulness_relevance_score": 4.2,
+  "clarity_score": 3.2,
+  "level_of_detail_elaboration_score": 3.7,
+  "feasibility_score": 4.8,
+  "overall_score": 3.23,
+  "creativity_reasoning": "The design concept is rooted in a conventional mechanical form, which inherently limits creative exploration. While the approach of using construction lines and presentation views shows a disciplined process, the design itself does not introduce novel features or inventive reinterpretations.",
+  "originality_reasoning": "The design follows a standard industrial archetype with a stepped cylindrical body and bolt-hole pattern, lacking distinctive differentiation. The originality lies more in the method of presentation rather than in the design itself.",
+  "usefulness_relevance_reasoning": "The sketches effectively fulfill the brief by demonstrating technical illustration skills relevant to mechanical design. The clear depiction of the flange's key elements makes it a useful tool for teaching and discussing engineering concepts.",
+  "clarity_reasoning": "While the presentation views are generally clear, the concept views suffer from excessive line density, which can obscure the intended forms. The clarity is improved in the presentation views, but further refinement is needed to enhance readability across all sketches.",
+  "level_of_detail_elaboration_reasoning": "The sketches show a good level of detail with clear construction lines and polished contours. However, there is room for improvement in depicting edge breaks, hole depths, and consistent thickness cues to enhance the technical feel.",
+  "feasibility_reasoning": "The design is mechanically plausible and manufacturable, with no apparent technical barriers. The geometry is consistent with common flange constructions, ensuring its feasibility in real-world applications.",
+  "instructor_feedback_intro": "You're finding the 'Goldilocks zone' between raw ideation and refined presentation! Your sketches demonstrate a solid understanding of mechanical design principles and effective use of construction lines.",
+  "instructor_feedback_pivot": "The main area for improvement is reducing the line density in your concept views to enhance clarity and ensure that the primary forms are not obscured by excessive scaffolding.",
+  "instructor_feedback_next_step": "Redraw the 3/4 concept view with 30-40% fewer construction lines, focusing on maintaining clear center axes and bounding ellipses, then produce a polished overlay to heighten visual contrast and impact.",
+  "expert_panel": [
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Rebecca Chen",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in technical sketching methods.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of structural elements and the effectiveness of the construction lines."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The subject (a stepped mechanical flange with a bolt-circle) is a standard mechanical form, so the creative latitude is naturally limited. Within that constraint, you did explore two viewpoints and the “concept vs. presentation” pairing, which is a solid instructional/communication choice, but the form itself stays conventional.",
+        "originality_score": 2,
+        "originality_reasoning": "A flange with a stepped cylindrical boss and bolt holes is a common archetype. Your depiction doesn’t introduce a notably distinct feature set (e.g., keyed indexing, asymmetric lugs, weight-relief pockets, gasket groove callouts), so it reads as a familiar solution rather than a unique one.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "You met the brief well: two viewpoints (3/4 and side elevation) and two versions per view (construction-heavy concept and cleaner presentation). The bolt-hole pattern, stepped body, and overall flange proportions are communicated clearly enough to be useful for discussion and iteration.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The presentation views are readable and the primary volumes are clear. However, the 3/4 concept view is so dense with repeated ellipses and scratchy searching lines that it obscures the intended edges and makes it harder to verify symmetry, bolt-circle accuracy, and step transitions. In the side views, some tangency/edge hierarchy is still ambiguous (where the fillet ends vs. where the step begins).",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You show the major structural elements: base flange, raised shoulder, top boss, and bolt holes/lugs. What’s missing for a more complete mechanical read are clearer thickness cues (flange thickness vs. boss wall), consistent depiction of through-holes/counterbores, and a more explicit centerline/bolt-circle construction in the 3/4 view (so the hole spacing feels engineered rather than approximate).",
+        "feasibility_score": 4,
+        "feasibility_reasoning": "The geometry is manufacturable (turned/lathed steps plus drilled bolt circle; lugs could be cast or machined). Nothing suggests an impossible undercut or unrealistic assembly. Minor feasibility questions remain only because hole features and section depths aren’t fully specified (through vs. blind, counterbore depth, fillet radii).",
+        "instructor_feedback": "You’re building the right “scaffold-to-surface” workflow! The set clearly demonstrates intent: you’re thinking in primary volumes (base flange → shoulder → boss) and you’re using center axes and ellipses to keep the part rotationally symmetric. The strongest progress is in the side elevation pair—your step hierarchy reads, and the presentation version is noticeably cleaner. The main issue is that your 3/4 concept view has so much line noise that the construction stops functioning as a guide and starts competing with the final edges; it becomes difficult to confirm the bolt-circle, symmetry, and tangencies because the viewer can’t tell which ellipses are the “truth set.” Where we need to pivot: reduce redundant ellipse passes, commit to one bounding ellipse per major diameter, and use lighter-weight construction (single, confident ghosted strokes) so the structural logic is visible without turning into a scribble cloud; also, tighten edge hierarchy in the presentation views (silhouette darkest, secondary edges lighter, interior details lightest) and make the bolt holes read as consistent cylinders (same minor axis, same perspective, clear through/counterbore decision). Your Next Step: redraw only the 3/4 concept view as a 3-stage build—(1) centerline + one bounding box/cylinder, (2) one ellipse per diameter + one bolt-circle ellipse with 6 evenly spaced hole centers, (3) final contour pass—then place the cleaned presentation directly beside it and check that every final edge can be traced back to a single, unambiguous construction line.",
+        "overall_score": 3.0
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "1",
+        "name": "Rebecca Chen",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in technical sketching methods.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of structural elements and the effectiveness of the construction lines."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The flange concept follows a conventional mechanical form without inventive features or novel functional elements.",
+        "originality_score": 1,
+        "originality_reasoning": "The stepped cylindrical body and bolt pattern are standard industry solutions with no distinctive differentiation.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The exercise effectively demonstrates construction-line methodology for teaching industrial design sketching of mechanical parts.",
+        "clarity_score": 3,
+        "clarity_reasoning": "Concept views retain visible scaffolding but the top-left sketch is overly scribbled, reducing readability; presentation views are clean yet lack annotation.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Four sketches clearly juxtapose construction and final lines across two viewpoints, showing good process depth.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The depicted flange is a proven, manufacturable component with no technical barriers to realization.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw construction and polished presentation! The side elevations show strong axis alignment and ellipse control, while the 3/4 views successfully reveal the stepped body and bolt circle. Where we need to pivot: reduce the chaotic overlapping strokes in the top-left concept view so the underlying cylinders and axes remain legible rather than obscured. Your Next Step: redraw the 3/4 concept view using lighter, fewer construction lines (center axes first, then bounding ellipses, then final contours) and add light shading only on the presentation pair to emphasize form.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "1",
+        "name": "Rebecca Chen",
+        "title": "Industrial Design Sketching Professor",
+        "sub_text": "Expert in technical sketching methods.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Industrial Design Sketching Professor, you will focus specifically on the clarity of structural elements and the effectiveness of the construction lines."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHZNHWAKy1nyYweBMPB'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "David Patel",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Focused on clarity and detail in drawings.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the precision of the presentation view and the overall cohesiveness of the two different viewpoints."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The subject (a stepped mechanical flange with a bolt-circle) is a standard mechanical form, and the drawing approach follows conventional construction-to-clean workflow. Creativity shows mainly in the disciplined separation of concept vs. presentation and the choice to emphasize scaffolding, rather than in novel form features or functional twists.",
+        "originality_score": 2,
+        "originality_reasoning": "Flanges with stepped cylinders and bolt-hole patterns are common, and the two-view (3/4 + side elevation) depiction is typical of technical illustration practice. The deliverable structure (four sketches: concept/presentation for each view) is a solid pedagogical format but not especially unique.",
+        "usefulness_relevance_score": 5,
+        "usefulness_relevance_reasoning": "The drawings directly satisfy the prompt: two viewpoints, each with a construction-heavy concept view and a cleaned presentation view. The flange’s key communicative elements—stepped body, base plate, and bolt-hole pattern—are present and readable, making the work highly relevant for demonstrating structural thinking and technical sketching process.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The presentation views are generally clear and legible, and the concept views successfully reveal underlying ellipses/axes. However, the 3/4 concept view is very dense and scratchy, which obscures some edges and makes it harder to parse which contours are final vs. exploratory. In the side elevation, the bolt-hole/slot features read a bit ambiguously (depth and exact cut geometry are not fully resolved).",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "Major forms are established (base flange, stepped hub, top bore) and the bolt-circle is indicated. Detail is moderate: hole geometry is suggested but not consistently constructed (e.g., countersink/counterbore not specified, hole centers not clearly indexed on a bolt circle in elevation), and line-weight hierarchy is minimal, which limits the “finished” technical feel of the presentation views.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The depicted part is mechanically plausible and manufacturable (turned/lathed stepped cylinder with a flanged base and drilled bolt pattern). Nothing in the geometry appears impossible; proportions and transitions are consistent with common flange/hub components.",
+        "instructor_feedback": "You’re building a strong “process-to-polish” pipeline! The set clearly demonstrates the intended pedagogy: your concept views show center axes, bounding ellipses, and iterative construction, and your presentation views successfully simplify the read into clean primary forms. The two viewpoints are broadly cohesive—the stepped hub and base flange match across 3/4 and elevation—and the bolt pattern is communicated as a circular array rather than random holes. The main technical-illustration gap is precision in the presentation view: some ellipses don’t share a consistent minor-axis alignment, the bolt-hole features vary slightly in placement/shape between views, and the line hierarchy doesn’t fully separate silhouette, feature edges, and secondary seams.\n\nWhere we need to pivot: reduce “hairball” density in the 3/4 concept view and increase geometric discipline in the presentation view. In concept, keep construction lines, but make them lighter and more purposeful (one ellipse per decision, fewer repeated strokes). In presentation, commit to a clear line-weight system (silhouette heaviest, primary feature edges medium, interior/hidden or secondary edges light) and ensure all coaxial cylinders share the same centerline and ellipse orientation. Also, explicitly lock the bolt circle: show hole centers evenly spaced on a single guiding ellipse in the 3/4 concept view, then transfer that spacing consistently to the clean view.\n\nYour Next Step: do one more pass of the 3/4 presentation view using a strict checklist—(1) draw a single vertical center axis and a single bolt-circle guide ellipse, (2) place 6 hole centers by equal angular spacing before drawing any hole contours, (3) redraw all coaxial ellipses with the same minor-axis direction, and (4) apply three-tier line weight (silhouette/primary/secondary). Then compare the side elevation to confirm heights/diameters match (top hub OD, shoulder OD, base thickness, and hole/slot positions).",
+        "overall_score": 3.33
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "2",
+        "name": "David Patel",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Focused on clarity and detail in drawings.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the precision of the presentation view and the overall cohesiveness of the two different viewpoints."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The flange design is a conventional mechanical component with no novel features or inventive reinterpretation.",
+        "originality_score": 1,
+        "originality_reasoning": "The stepped cylinder and circular bolt pattern are standard industry solutions with no unique differentiation.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The exercise effectively practices technical illustration skills relevant to engineering communication.",
+        "clarity_score": 3,
+        "clarity_reasoning": "Presentation views are readable, but the overly dense concept sketches reduce immediate comprehension and viewpoint cohesion.",
+        "level_of_detail_elaboration_score": 4,
+        "level_of_detail_elaboration_reasoning": "Construction lines, axes, and ellipses are well retained in concept views, showing structural thinking clearly.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The depicted flange is a standard, manufacturable part with no technical or economic barriers.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone'! Your sketches show solid progress in capturing both the 3/4 perspective and side elevation of a stepped flange while preserving visible construction scaffolding. The polished presentation views successfully clean up the forms, yet the top-left concept remains excessively scribbled, weakening the side-by-side comparison. Where we need to pivot: reduce chaotic overlapping strokes in the concept views and ensure the two viewpoints share consistent proportions and axis alignment. Your Next Step: redraw the 3/4 concept view with lighter, more deliberate construction lines that mirror the clarity of the side elevation before finalizing the presentation pair.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "2",
+        "name": "David Patel",
+        "title": "Technical Illustration Specialist",
+        "sub_text": "Focused on clarity and detail in drawings.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Technical Illustration Specialist, you will focus specifically on the precision of the presentation view and the overall cohesiveness of the two different viewpoints."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHaZYx78AQjXu9hMMBP'}"
+    },
+    {
+      "model_provider": "OpenAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Laura Kim",
+        "title": "Design Presentation Coach",
+        "sub_text": "Guiding effective visual communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Design Presentation Coach, you will focus specifically on the visual impact of the final presentation and the smooth integration of construction lines in the concept view."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The subject (a stepped mechanical flange with a bolt-circle) is a fairly standard mechanical form, and your solution focuses on correct construction rather than novel form exploration. Creativity shows up mainly in how you stage the four-panel comparison (concept vs. presentation across two views) and in the confident use of scaffolding to build the geometry.",
+        "originality_score": 2,
+        "originality_reasoning": "The flange geometry and the two-view requirement are conventional, so the concept itself isn’t aiming for uniqueness. What feels more distinctive is your explicit “thinking-on-the-page” approach—especially the heavy perspective construction and ellipse stacking in the 3/4 concept view—though the final presentation look remains typical of technical sketching.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "You directly satisfy the prompt: two viewpoints (3/4 and side elevation) and two versions per viewpoint (construction-heavy concept view and clean presentation view). The bolt-hole pattern, stepped cylindrical body, and overall flange proportions read clearly enough to be useful for communicating intent in an early mechanical design context.",
+        "clarity_score": 3,
+        "clarity_reasoning": "The presentation 3/4 view is readable and communicates the main volumes and bolt pattern well. Clarity drops in the 3/4 concept view because the construction lines are so dense and similar in weight that the primary silhouette competes with scaffolding. In the side elevation pair, the difference between concept and presentation is subtler than it could be—some construction remains visible and line hierarchy is not fully separated.",
+        "level_of_detail_elaboration_score": 3,
+        "level_of_detail_elaboration_reasoning": "You include key structural elements: center axes, bounding ellipses, stepped diameters, and bolt-hole indications. However, the presentation views could elaborate more on edge breaks/fillets, hole depth/countersink cues, and consistent thickness cues for the flange plate. The side elevation especially could benefit from clearer depiction of the bolt holes (hidden/center marks) and more decisive contour cleanup.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The form is mechanically plausible and consistent with common flange constructions: a base plate, a raised boss, and a top cylinder with a central bore. The bolt-circle layout appears evenly distributed and manufacturable. Nothing in the geometry suggests an unrealistic feature or an unbuildable transition.",
+        "instructor_feedback": "You’re building a strong “before/after” story—your 3/4 presentation view already reads like a real part, and the underlying ellipse stacking shows you understand how to construct rotational geometry in perspective. The main opportunity is presentation impact: in the concept view, the scaffolding is so visually loud that it obscures the intended primary forms, and in the side elevation the separation between concept vs. presentation isn’t dramatic enough to showcase your cleanup skills. Where we need to pivot: prioritize line hierarchy and intentional construction—keep the construction lines, but make them lighter, fewer, and more structural (major axes, bounding boxes/ellipses, and key step transitions) while avoiding repeated scratchy passes that create a “hairball” around the silhouette. Also, in the presentation views, commit to a single confident outer contour, then selectively add secondary edges (step breaks, inner bore ellipse, bolt-hole ellipses) with a clear weight drop so the silhouette remains dominant. Your Next Step: redo the same four panels with a strict 3-tier line system—(1) ultra-light construction (one pass only), (2) medium-weight secondary edges, (3) bold final silhouette—and in the side elevation add explicit centerlines and either hidden lines or center marks for the bolt holes so the elevation communicates the bolt-circle logic as clearly as the 3/4 view.",
+        "overall_score": 3.17
+      }
+    },
+    {
+      "model_provider": "xAI",
+      "persona": {
+        "persona_id": "3",
+        "name": "Laura Kim",
+        "title": "Design Presentation Coach",
+        "sub_text": "Guiding effective visual communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Design Presentation Coach, you will focus specifically on the visual impact of the final presentation and the smooth integration of construction lines in the concept view."
+      },
+      "result": {
+        "creativity_score": 2,
+        "creativity_reasoning": "The concept follows a standard mechanical flange design without novel features or inventive reinterpretation of form or function.",
+        "originality_score": 1,
+        "originality_reasoning": "The stepped cylindrical body with bolt-hole pattern is a ubiquitous industrial component; no unique or distinct elements are introduced.",
+        "usefulness_relevance_score": 4,
+        "usefulness_relevance_reasoning": "The sketches effectively demonstrate engineering visualization skills applicable to mechanical design and documentation.",
+        "clarity_score": 4,
+        "clarity_reasoning": "Two viewpoints with paired concept and presentation versions clearly communicate structural thinking and final form.",
+        "level_of_detail_elaboration_score": 5,
+        "level_of_detail_elaboration_reasoning": "Construction lines, axes, and ellipses are retained in concept views while polished versions show clean contours, providing thorough visual elaboration.",
+        "feasibility_score": 5,
+        "feasibility_reasoning": "The depicted flange is a standard, manufacturable part with no technical or economic barriers to realization.",
+        "instructor_feedback": "You are finding the 'Goldilocks zone' between raw ideation and refined presentation! Your progress shows strong command of orthographic-to-perspective translation and deliberate retention of scaffolding in the concept views, which nicely reveals the underlying structural thinking next to the clean final lines. Where we need to pivot: avoid overworking the initial construction layer (the top-left 3/4 view is excessively scribbled and risks obscuring key proportions). Your Next Step: in the next exercise, limit construction strokes to 30-40% fewer lines while still preserving all center axes and bounding ellipses, then immediately produce the polished overlay to heighten visual contrast and impact.",
+        "overall_score": 3.5
+      }
+    },
+    {
+      "model_provider": "Claude",
+      "persona": {
+        "persona_id": "3",
+        "name": "Laura Kim",
+        "title": "Design Presentation Coach",
+        "sub_text": "Guiding effective visual communication.",
+        "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Design Presentation Coach, you will focus specifically on the visual impact of the final presentation and the smooth integration of construction lines in the concept view."
+      },
+      "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHbPffCD7qEAyEtXfjs'}"
+    }
+  ],
+  "stats": {
+    "overall_icc": {
+      "score": 0.867,
+      "label": "Excellent",
+      "message": "The overall ICC score of 0.867 indicates that the AI judges had a high level of agreement in their evaluations, suggesting consistent and reliable assessments.",
+      "bg": "bg-green-50",
+      "color": "text-green-700",
+      "border": "border-green-200"
+    },
+    "per_persona_icc": [
+      {
+        "persona_id": "1",
+        "persona_name": "Rebecca Chen",
+        "icc": 0.828,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "2",
+        "persona_name": "David Patel",
+        "icc": 0.874,
+        "label": "Excellent"
+      },
+      {
+        "persona_id": "3",
+        "persona_name": "Laura Kim",
+        "icc": 0.75,
+        "label": "Excellent"
+      }
+    ],
+    "kendalls_w": {
+      "W": 0.87
+    },
+    "variance_analysis": {
+      "per_dimension": {
+        "clarity": 0.167,
+        "creativity": 0.0,
+        "feasibility": 0.167,
+        "level_of_detail_elaboration": 0.667,
+        "originality": 0.3,
+        "usefulness_relevance": 0.167
+      },
+      "average_variance": 0.244
+    },
+    "variance_message": "The Kendall's W value of 0.87 shows strong agreement among the AI judges, but there was some debate over the 'level_of_detail_elaboration' dimension, which had the highest variance.",
+    "data_quality": {
+      "total_evaluations_attempted": 9,
+      "successful_evaluations": 6,
+      "failed_evaluations": 3,
+      "failure_rate_pct": 33.3,
+      "per_provider_failures": {
+        "Claude": 3
+      },
+      "failure_details": [
+        {
+          "model_provider": "Claude",
+          "persona_name": "Rebecca Chen",
+          "persona_id": "1",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHZNHWAKy1nyYweBMPB'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "David Patel",
+          "persona_id": "2",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHaZYx78AQjXu9hMMBP'}"
+        },
+        {
+          "model_provider": "Claude",
+          "persona_name": "Laura Kim",
+          "persona_id": "3",
+          "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CdhHbPffCD7qEAyEtXfjs'}"
+        }
+      ],
+      "data_completeness": "partial"
+    }
+  },
+  "domain_analysis": {
+    "identified_task": "Sketch a mechanical flange with different viewpoints",
+    "key_instruction_words": [
+      "sketch",
+      "featuring",
+      "provide",
+      "show"
+    ],
+    "domain": "VISUAL_ARTISTIC",
+    "rationale": "The primary instruction verbs focus on sketching and visual presentation."
+  }
+}

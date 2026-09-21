@@ -24,7 +24,7 @@ else:
 SYSTEM_PROMPT = """
 You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description.
 
-You must evaluate the design on 6 dimensions using a 0-5 scale (0=Low, 5=High):
+You must evaluate the design on 6 dimensions using a 1-5 scale (1=Low, 5=High):
 
 1. CREATIVITY: The general inventiveness and ingenuity of the concept.
 2. ORIGINALITY: The extent to which the idea is unique and distinct from existing solutions.
@@ -44,29 +44,53 @@ Do NOT include an "overall_score" field. It will be computed automatically.
 
 OUTPUT FORMAT (JSON ONLY):
 {
-  "creativity_score": 0,
+  "creativity_score": 1,
   "creativity_reasoning": "string",
-  "originality_score": 0,
+  "originality_score": 1,
   "originality_reasoning": "string",
-  "usefulness_relevance_score": 0,
+  "usefulness_relevance_score": 1,
   "usefulness_relevance_reasoning": "string",
-  "clarity_score": 0,
+  "clarity_score": 1,
   "clarity_reasoning": "string",
-  "level_of_detail_elaboration_score": 0,
+  "level_of_detail_elaboration_score": 1,
   "level_of_detail_elaboration_reasoning": "string",
-  "feasibility_score": 0,
+  "feasibility_score": 1,
   "feasibility_reasoning": "string",
   "instructor_feedback": "string"
 }
 """
 
-async def evaluate_design(image_file, description: str):
+async def evaluate_design(
+    image_file, 
+    description: str,
+    recruiter_mode: str = "dynamic",
+    persona_file=None,
+    persona_text: str = None,
+    selected_personas: list = None,
+):
     """
     Calls Recruiter Agent -> 3×3 Expert Panel (3 personas × 3 LLMs = 9 evaluations).
     """
     # 1. Read Image
     await image_file.seek(0)
     image_bytes = await image_file.read()
+    
+    # Parse custom persona if provided
+    custom_persona_context = persona_text or ""
+    if persona_file:
+        file_bytes = await persona_file.read()
+        filename = persona_file.filename.lower()
+        if filename.endswith(".pdf"):
+            import io
+            from pypdf import PdfReader
+            try:
+                pdf_reader = PdfReader(io.BytesIO(file_bytes))
+                text_pages = [page.extract_text() for page in pdf_reader.pages if page.extract_text()]
+                custom_persona_context += "\n\n" + "\n".join(text_pages)
+            except Exception as e:
+                logger.warning(f"Failed to parse PDF persona file: {e}")
+        else:
+            custom_persona_context += "\n\n" + file_bytes.decode('utf-8', errors='replace')
     
     try:
         from PIL import Image
@@ -94,11 +118,21 @@ async def evaluate_design(image_file, description: str):
     base64_image = base64.b64encode(image_bytes).decode('utf-8')
 
     try:
-        # 2. Recruiter Agent
-        print("Starting Recruiter Agent...")
-        recruiter_response = await generate_personas(description)
-        personas = recruiter_response.get("personas", [])
-        print("Recruiter Agent finished successfully.")
+        # 2. Recruiter Agent — skipped if saved personas are pre-selected
+        if selected_personas and len(selected_personas) >= 3:
+            print(f"Skipping Recruiter Agent — using {len(selected_personas)} saved personas.")
+            personas = selected_personas
+            domain_analysis = None
+        else:
+            print(f"Starting Recruiter Agent... (Mode: {recruiter_mode})")
+            recruiter_response = await generate_personas(
+                assignment_text=description,
+                recruiter_mode=recruiter_mode,
+                custom_persona_context=custom_persona_context.strip()
+            )
+            personas = recruiter_response.get("personas", [])
+            domain_analysis = recruiter_response.get("domain_analysis", None)
+            print("Recruiter Agent finished successfully.")
 
         # 3. Fan-Out Expert Panel Evaluation
         print("Starting Fan-Out Expert Evaluation...")
@@ -110,9 +144,11 @@ async def evaluate_design(image_file, description: str):
         synthesis = await synthesize(expert_results)
         print("Synthesis finished successfully.")
 
-        # Shallow copy to avoid circular reference, then attach panel + stats
+        # Shallow copy to avoid circular reference, then attach panel + stats + domain analysis
         return_result = dict(synthesis)
         return_result["expert_panel"] = expert_results
+        if domain_analysis:
+            return_result["domain_analysis"] = domain_analysis
 
         return return_result
         

@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Evaluate from './pages/Evaluate';
 import Results from './pages/Results';
 import History from './pages/History';
+import PersonaLibrary from './pages/PersonaLibrary';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/evaluate" element={<Evaluate />} />
+            <Route path="/persona-library" element={<PersonaLibrary />} />
             <Route path="/results/:id" element={<Results />} />
             <Route path="/history" element={<History />} />
           </Routes>

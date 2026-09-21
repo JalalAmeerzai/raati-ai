@@ -22,6 +22,21 @@ interface AgentResult {
     }; error?: string;
 }
 interface PerPersonaICC { persona_id: string; persona_name: string; icc: number | null; label: string }
+interface DataQuality {
+    total_evaluations_attempted: number;
+    successful_evaluations: number;
+    failed_evaluations: number;
+    failure_rate_pct: number;
+    per_provider_failures: Record<string, number>;
+    failure_details: { model_provider: string; persona_name: string; persona_id: string; error: string }[];
+    data_completeness: 'complete' | 'partial' | 'degraded';
+}
+interface DomainAnalysis {
+    identified_task: string;
+    key_instruction_words: string[];
+    domain: string;
+    rationale: string;
+}
 interface ResultData {
     id: string; submitter_name?: string; image_url: string; description: string;
     creativity_score: number; originality_score: number; usefulness_relevance_score: number;
@@ -30,12 +45,14 @@ interface ResultData {
     clarity_reasoning: string; level_of_detail_elaboration_reasoning: string; feasibility_reasoning: string;
     instructor_feedback_intro: string; instructor_feedback_pivot: string; instructor_feedback_next_step: string;
     expert_panel?: AgentResult[];
+    domain_analysis?: DomainAnalysis;
     stats?: {
         overall_icc: { score: number | null; label: string; message: string; bg: string; color: string; border: string };
         per_persona_icc: PerPersonaICC[];
         kendalls_w?: { W: number | null };
         variance_analysis?: { per_dimension: Record<string, number>; average_variance: number };
         variance_message: string;
+        data_quality?: DataQuality;
     };
 }
 
@@ -840,13 +857,43 @@ const Results: React.FC = () => {
                     {/* Expert Panel (8/12) */}
                     <div className="lg:col-span-8 flex flex-col">
                         <div className={`${cardBg} border rounded-xl shadow-sm overflow-hidden flex-1 flex flex-col`}>
-                            <div className={`${subBg} px-4 py-3 border-b ${divider2} flex items-center justify-between`}>
-                                <h3 className={`text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 ${txt}`}>
-                                    <Users size={13} className="text-indigo-500" /> Expert Panel
-                                </h3>
-                                <span className={`text-[9px] rounded-full px-2.5 py-1 font-bold uppercase tracking-widest border ${dark ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-indigo-50 text-indigo-600 border-indigo-100'}`}>
-                                    {personaGroups.length} Personas × 3 LLMs
-                                </span>
+                            <div className={`${subBg} px-4 py-3 border-b ${divider2}`}>
+                                <div className="flex items-center justify-between">
+                                    <h3 className={`text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 ${txt}`}>
+                                        <Users size={13} className="text-indigo-500" /> Expert Panel
+                                    </h3>
+                                    <span className={`text-[9px] rounded-full px-2.5 py-1 font-bold uppercase tracking-widest border ${dark ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30' : 'bg-indigo-50 text-indigo-600 border-indigo-100'}`}>
+                                        {personaGroups.length} Personas × 3 LLMs
+                                    </span>
+                                </div>
+                                {/* Domain Analysis — shows how the recruiter classified this assignment */}
+                                {data.domain_analysis && (
+                                    <div className={`mt-3 rounded-lg border px-3 py-2.5 ${dark ? 'bg-[#12141c] border-gray-700/50' : 'bg-gray-50 border-gray-100'}`}>
+                                        <div className="flex items-center gap-2 mb-1.5">
+                                            <span className={`text-[9px] font-bold uppercase tracking-wider ${sub2}`}>Recruiter Domain Analysis</span>
+                                            <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold border ${
+                                                data.domain_analysis.domain === 'VISUAL_ARTISTIC' ? 'bg-purple-500/10 text-purple-400 border-purple-500/30' :
+                                                data.domain_analysis.domain === 'ENGINEERING_TECHNICAL' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30' :
+                                                'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                                            }`}>
+                                                {data.domain_analysis.domain.replace(/_/g, ' ')}
+                                            </span>
+                                        </div>
+                                        <p className={`text-[10px] leading-relaxed mb-1 ${dark ? 'text-gray-300' : 'text-gray-700'}`}>
+                                            <span className="font-semibold">Task: </span>{data.domain_analysis.identified_task}
+                                        </p>
+                                        <p className={`text-[10px] leading-relaxed ${sub}`}>
+                                            <span className="font-semibold">Rationale: </span>{data.domain_analysis.rationale}
+                                        </p>
+                                        <div className="flex flex-wrap gap-1 mt-1.5">
+                                            {data.domain_analysis.key_instruction_words.map((word, i) => (
+                                                <span key={i} className={`text-[8px] px-1.5 py-0.5 rounded font-medium ${dark ? 'bg-gray-700 text-gray-400' : 'bg-gray-200 text-gray-600'}`}>
+                                                    {word}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         {personaGroups.length > 0 ? (
                             <>
@@ -974,7 +1021,7 @@ const Results: React.FC = () => {
                             )}
 
                             {data.stats?.per_persona_icc && data.stats.per_persona_icc.length > 0 && (
-                                <div className="p-4 flex-1">
+                                <div className={`p-4 ${data.stats?.data_quality ? `border-b ${divider}` : ''} flex-1`}>
                                     <div className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${sub}`}>Per-Persona ICC3</div>
                                     <div className="space-y-2">
                                         {data.stats.per_persona_icc.map((item) => (
@@ -992,6 +1039,39 @@ const Results: React.FC = () => {
                                             </div>
                                         ))}
                                     </div>
+                                </div>
+                            )}
+
+                            {/* Data Quality — shows how many of the 9 evaluations succeeded */}
+                            {data.stats?.data_quality && (
+                                <div className="p-4 flex-1">
+                                    <div className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${sub}`}>Data Quality</div>
+                                    <div className={`flex items-center justify-between rounded-lg px-3 py-2.5 border ${dark ? 'bg-[#12141c] border-gray-700/50' : 'bg-gray-50 border-gray-100'}`}>
+                                        <div>
+                                            <div className={`text-[11px] font-semibold ${txt}`}>
+                                                {data.stats.data_quality.successful_evaluations}/{data.stats.data_quality.total_evaluations_attempted} Evaluations
+                                            </div>
+                                            <div className={`text-[9px] ${sub}`}>completed successfully</div>
+                                        </div>
+                                        <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold border ${
+                                            data.stats.data_quality.data_completeness === 'complete' ? 'bg-green-500/10 text-green-400 border-green-500/30' :
+                                            data.stats.data_quality.data_completeness === 'partial' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' :
+                                            'bg-red-500/10 text-red-400 border-red-500/30'
+                                        }`}>
+                                            {data.stats.data_quality.data_completeness === 'complete' ? 'Complete' :
+                                             data.stats.data_quality.data_completeness === 'partial' ? 'Partial' : 'Degraded'}
+                                        </span>
+                                    </div>
+                                    {data.stats.data_quality.failed_evaluations > 0 && (
+                                        <div className="mt-2 space-y-1">
+                                            {data.stats.data_quality.failure_details.map((fd, i) => (
+                                                <div key={i} className={`text-[9px] flex items-center gap-1 ${dark ? 'text-red-400' : 'text-red-600'}`}>
+                                                    <span className="font-semibold">✗ {fd.model_provider}</span>
+                                                    <span className={sub}>/ {fd.persona_name}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
