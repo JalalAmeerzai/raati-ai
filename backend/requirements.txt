@@ -11,3 +11,4 @@ pypdf
 aiosqlite
 pytest
 pytest-asyncio
+httpx
