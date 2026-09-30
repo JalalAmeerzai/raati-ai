@@ -68,7 +68,7 @@ const History: React.FC = () => {
 
     const filteredAndSortedHistory = useMemo(() => {
         // 1. Filter
-        let result = history.filter(item => {
+        const result = history.filter(item => {
             if (searchQuery.trim()) {
                 const q = searchQuery.toLowerCase();
                 const matchesName = (item.submitter_name || '').toLowerCase().includes(q);
@@ -85,6 +85,7 @@ const History: React.FC = () => {
             }
 
             if (dateFilter !== 'all') {
+                // eslint-disable-next-line react-hooks/purity
                 const now = Date.now();
                 const ts = new Date(item.timestamp).getTime();
                 const days = dateFilter === '7d' ? 7 : dateFilter === '30d' ? 30 : 90;

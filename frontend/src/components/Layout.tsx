@@ -5,6 +5,7 @@ import { LayoutDashboard, Users, FlaskConical, Moon, Sun, ChevronLeft, ChevronRi
 /* ───── Theme Context ───── */
 interface ThemeCtx { dark: boolean; toggle: () => void; collapsed: boolean; toggleSidebar: () => void }
 const ThemeContext = createContext<ThemeCtx>({ dark: false, toggle: () => {}, collapsed: false, toggleSidebar: () => {} });
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => useContext(ThemeContext);
 
 /* ───── Global Theme Provider (wrap once in App) ───── */
@@ -16,7 +17,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     const toggle = () => setDark(d => {
         const next = !d;
-        try { localStorage.setItem('raati-dark-mode', String(next)); } catch {}
+        try { localStorage.setItem('raati-dark-mode', String(next)); } catch { /* ignore */ }
         return next;
     });
     const toggleSidebar = () => setCollapsed(c => !c);

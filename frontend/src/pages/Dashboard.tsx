@@ -99,7 +99,7 @@ const Dashboard: React.FC = () => {
     useEffect(() => {
         if (!gridRef.current) return;
         const observer = new ResizeObserver((entries) => {
-            for (let entry of entries) {
+            for (const entry of entries) {
                 const width = entry.contentRect.width;
                 // grid auto-fill logic: minmax 240px + gap 20px (1.25rem = 20px)
                 const cols = Math.floor((width + 20) / 260) || 1;
@@ -189,24 +189,7 @@ const Dashboard: React.FC = () => {
         return dark ? colorsDark[index % 4] : colorsLight[index % 4];
     };
 
-    const DistributionTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload;
-            return (
-                <div className={`p-4 rounded-xl shadow-2xl border backdrop-blur-md ${dark ? 'bg-[#181b23]/95 border-[#2a2e3d]' : 'bg-white/95 border-gray-200'} animate-in fade-in zoom-in-95 duration-200`}>
-                    <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${dark ? 'text-gray-400' : 'text-gray-500'}`}>{data.range}</p>
-                    <div className="flex items-end gap-3">
-                        <p className={`text-3xl font-black leading-none ${dark ? 'text-white' : 'text-gray-900'}`}>{data.count}</p>
-                        <div className="flex flex-col pb-0.5">
-                            <span className={`text-[11px] font-bold ${dark ? 'text-blue-400' : 'text-blue-600'}`}>{data.percentage ?? 0}% of total</span>
-                            <span className={`text-[10px] ${dark ? 'text-gray-500' : 'text-gray-400'}`}>platform volume</span>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
-        return null;
-    };
+
 
     return (
         <Layout title="Dashboard">
@@ -240,7 +223,24 @@ const Dashboard: React.FC = () => {
                                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={dark ? '#374151' : '#eee'} />
                                     <XAxis dataKey="range" axisLine={false} tickLine={false} tick={{ fill: dark ? '#9ca3af' : '#888', fontSize: 11 }} dy={8} />
                                     <YAxis hide />
-                                    <Tooltip content={<DistributionTooltip />} cursor={{ fill: dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
+                                    <Tooltip content={({ active, payload }: any) => {
+                                        if (active && payload && payload.length) {
+                                            const data = payload[0].payload;
+                                            return (
+                                                <div className={`p-4 rounded-xl shadow-2xl border backdrop-blur-md ${dark ? 'bg-[#181b23]/95 border-[#2a2e3d]' : 'bg-white/95 border-gray-200'} animate-in fade-in zoom-in-95 duration-200`}>
+                                                    <p className={`text-[10px] font-bold uppercase tracking-widest mb-3 ${dark ? 'text-gray-400' : 'text-gray-500'}`}>{data.range}</p>
+                                                    <div className="flex items-end gap-3">
+                                                        <p className={`text-3xl font-black leading-none ${dark ? 'text-white' : 'text-gray-900'}`}>{data.count}</p>
+                                                        <div className="flex flex-col pb-0.5">
+                                                            <span className={`text-[11px] font-bold ${dark ? 'text-blue-400' : 'text-blue-600'}`}>{data.percentage ?? 0}% of total</span>
+                                                            <span className={`text-[10px] ${dark ? 'text-gray-500' : 'text-gray-400'}`}>platform volume</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    }} cursor={{ fill: dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' }} />
                                     <Bar dataKey="count" radius={[6, 6, 0, 0]} barSize={48} animationDuration={1500}>
                                         {analytics.distribution.map((_entry, index) => (
                                             <Cell key={`cell-${index}`} fill={getBarColor(index)} />
