@@ -1,0 +1,7 @@
+comparison_pair,provider,comparison_type,jaccard_similarity,sequence_matcher_ratio
+Mercer_r1 vs Mercer_r2,OpenAI,within_persona_repeat,0.286,0.634
+Mercer(Acad) vs Marin(Ind),OpenAI,between_panel_cross,0.286,0.622
+Mercer_r1 vs Mercer_r2,Anthropic,within_persona_repeat,0.481,0.665
+Mercer(Acad) vs Marin(Ind),Anthropic,between_panel_cross,0.119,0.038
+Mercer_r1 vs Mercer_r2,xAI,within_persona_repeat,0.267,0.438
+Mercer(Acad) vs Marin(Ind),xAI,between_panel_cross,0.171,0.252

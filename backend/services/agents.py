@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 import anthropic
 from dotenv import load_dotenv
 from typing import Optional
+from .design_recruiter import DEFAULT_FURNITURE_PANEL, get_default_panel_for_assignment
 
 logger = logging.getLogger(__name__)
 load_dotenv()
@@ -141,6 +142,26 @@ async def generate_personas(
     Returns a dict with domain_analysis and personas list.
     """
     num_personas = max(3, min(5, num_personas))  # clamp to 3-5
+
+    # Raati v2: For furniture/chair assignments or explicit v2 mode without custom override,
+    # use the source-grounded panel from professional_profiles (spec §4).
+    is_chair_or_v2 = (
+        recruiter_mode in ("v2", "published") or
+        ("chair" in assignment_text.lower() or "furniture" in assignment_text.lower() or "itb" in assignment_text.lower())
+    )
+    if is_chair_or_v2 and not (recruiter_mode in ("custom", "saved") and custom_persona_context):
+        panel = DEFAULT_FURNITURE_PANEL
+        logger.info("Using source-grounded design-professional panel (Raati v2 spec §4).")
+        return {
+            "domain_analysis": {
+                "identified_task": "Develop an easy-chair concept communicating user-facing design decisions.",
+                "key_instruction_words": ["design", "easy chair", "concept", "support", "activities"],
+                "domain": "PRODUCT_DESIGN",
+                "rationale": "Grounded in published assignment contract and source-grounded professional profiles."
+            },
+            "personas": panel.to_legacy_personas()
+        }
+
     try:
         user_content = f'Assignment Instructions: "{assignment_text}"'
         # Resolve the {num_personas} placeholders in the prompt template

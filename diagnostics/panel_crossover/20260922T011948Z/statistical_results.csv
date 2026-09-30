@@ -1,0 +1,4 @@
+provider,chair_sample_size,mean_D_within,mean_D_between,net_excess_effect,snr_ratio,interpretation
+OpenAI,3 chairs (18 comparisons),0.139,0.120,-0.019,0.867,"Repeat noise equals or exceeds panel effect"
+Anthropic,3 chairs (18 comparisons),0.222,0.204,-0.019,0.917,"Repeat noise equals or exceeds panel effect"
+xAI,3 chairs (18 comparisons),0.222,0.185,-0.037,0.833,"Repeat noise equals or exceeds panel effect"

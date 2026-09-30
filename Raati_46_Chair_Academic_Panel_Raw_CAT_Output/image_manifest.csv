@@ -1,0 +1,47 @@
+design_index,image_basename,exact_filename,dataset_chair_name,normalized_chair_name,file_extension,MIME_type,byte_length,pixel_width,pixel_height,color_mode,image_sha256,deterministic_file_check_status
+1,design_1,design_1.png,"Tumpuan Chair","Tumpuan Chair",.png,image/png,1091455,1766,1002,RGBA,9e5a0228c98a2037d28cecb5544f4d93e81a091e0f7e4625247e2ed4838ce304,PASS
+2,design_2,design_2.png,"Shizuku Chair","Shizuku Chair",.png,image/png,946719,2025,1251,RGBA,f5f1973889edbb1aaf3494dd45f24f72d66c733a5ef1ded0912f758b40199375,PASS
+3,design_3,design_3.png,"Cayi Chair","Cayi Chair",.png,image/png,2610192,2019,1258,RGBA,04979bd43eb5ba08109d7d1551209ff0a3d17d8af9b8e2f9d78a6f5e61da92f8,PASS
+4,design_4,design_4.png,"Sluma Chair","Sluma Chair",.png,image/png,523247,1685,845,RGBA,6c17aeb5574e33fa230f8f8c137cc9251e1555337c49b4335f1ddb37068b6859,PASS
+5,design_5,design_5.png,"Gee Chair","Gee Chair",.png,image/png,1141940,1327,850,RGBA,b9eae68395177e1deeec31b6f194bfe622398742edbc8dda4af63f968079c617,PASS
+6,design_6,design_6.png,"Molten Chair","Molten Chair",.png,image/png,681144,1658,826,RGBA,dc807b9435a0941cf9576f0204158dc6e45513a51d55c15b77caae01c067fb51,PASS
+7,design_7,design_7.png,"Para Chair","Para Chair",.png,image/png,1304344,1743,1199,RGBA,2a74d4ac2ac650ee87b280d5796a6f5452ee4a9ecc4852e576447d19400b5ea7,PASS
+8,design_8,design_8.png,"Crescent Chair","Crescent Chair",.png,image/png,747527,1814,1086,RGBA,0467237ba673391199ea67d79a08dd6d201c110c3335d342c494900b413df317,PASS
+9,design_9,design_9.png,"Fingie Chair","Fingie Chair",.png,image/png,628915,1495,983,RGBA,8f12ff37399a4a5cfc8b9b3b2e0b1061c242d1e1b7556ea249b4df9bd89e85a8,PASS
+10,design_10,design_10.png,"LikaLiku Chair","LikaLiku Chair",.png,image/png,999012,1540,1073,RGBA,b42a67b6e104496650ba916a0bf91799c92cf7e991a53420626917616e05371c,PASS
+11,design_11,design_11.png,"Levica Chair","Levica Chair",.png,image/png,930347,1516,1071,RGBA,722d95e95ac6d33e431df0d87a4411781a8a7ec0788af3b564ce72e65a78498e,PASS
+12,design_12,design_12.png,"PariPari Chair","PariPari Chair",.png,image/png,1489843,1729,1013,RGBA,d0adfe829e6a1f10df728face990b4782bad7efce0dfd927ffb3281f181b51e7,PASS
+13,design_13,design_13.png,"Lipat Chair","Lipat Chair",.png,image/png,767264,1415,1135,RGBA,35653e7756cfc3b8b9aef6b10e1003a5b8001e55a73a03acefe49a831ad4b8d3,PASS
+14,design_14,design_14.png,"Mazico Chair","Mazico Chair",.png,image/png,350117,928,1034,RGBA,a2c9526bee91aa675b015ac60c0ff685d4c0b7b95c220fa85122c1ac0b5e5895,PASS
+15,design_15,design_15.png,"Flow Chair","Flow Chair",.png,image/png,419372,1240,602,RGBA,2e027fa53eb5644ecfea6cfe7d8a3085dd441cb2f91635439da294ab91a2ef98,PASS
+16,design_16,design_16.png,"Escadafer Chair","Escadafer Chair",.png,image/png,1107296,1482,914,RGBA,4cd2e420cfcc750a27eb9e01115fbb737485e3c8594c04131167843da5716e1c,PASS
+17,design_17,design_17.png,"Slant Ease Chair","Slant Ease Chair",.png,image/png,1225839,1430,975,RGBA,f38596b3261ef482c8cfcc21f4dbd2c714cdccb4e433b7fde575ef78be5909bc,PASS
+18,design_18,design_18.png,"Tanged Chair","Tanged Chair",.png,image/png,1342649,1445,1082,RGBA,336ea3d1e3a2c610ec7f495f3e2a5e82fc7cfc1f53f25b5319e50ec0bc5d3c9f,PASS
+19,design_19,design_19.png,"Twistair Chair","Twistair Chair",.png,image/png,720286,1476,932,RGBA,70d2c9533702135378a28b0d8aee829957416c7c8c92c1c879c89f95f4d5e750,PASS
+20,design_20,design_20.png,"Kurusu Chair","Kurusu Chair",.png,image/png,907374,1361,980,RGBA,ae0657532aae7eea5481e6e172d9b39fbd15ced77ccfe1985f35d67cbd9cb828,PASS
+21,design_21,design_21.png,"Orocha Chair","Orocha Chair",.png,image/png,686319,1404,891,RGBA,824052d593a0b7dc5cd195013de86c71c5041d1557795ff8c1c2c9a7033b523b,PASS
+22,design_22,design_22.png,"Nine Chair","Nine Chair",.png,image/png,649027,1247,932,RGBA,8345e7f96de15e9339c68fcdd83e7ca78580cc15e470e20209b01608eb4d9a9b,PASS
+23,design_23,design_23.png,"Caprice Chair","Caprice Chair",.png,image/png,560120,1385,758,RGBA,7aeac47f07291646867ace731e5fb3524a55fee67a5867ad6be47f18bad64735,PASS
+24,design_24,design_24.png,"Zaft Chair","Zaft Chair",.png,image/png,642374,1886,1238,RGBA,48ceddcfd29cede917244af64b2c9959bca786671c48b838ad3a94c177fb7a81,PASS
+25,design_25,design_25.png,"Petal Chair","Petal Chair",.png,image/png,924797,1416,871,RGBA,8b1f483d2b9607351e5c014db6767015b5c36b0e7312b1a89b1f72130f48e250,PASS
+26,design_26,design_26.png,"Onda Chiar","Onda Chair",.png,image/png,1078608,1511,999,RGBA,8ca5f5848cf76e1428887074bf1bc7682ec23a13f03d0ef96ce4fe78b4703ec4,PASS
+27,design_27,design_27.png,"Winx Chair","Winx Chair",.png,image/png,951919,1463,904,RGBA,b48a8ba0adda6c91624eb023015829db34725f83d53d3f768a3b48505ffb2e2a,PASS
+28,design_28,design_28.png,"Marlow Chair","Marlow Chair",.png,image/png,544749,1713,1204,RGBA,25da7cd339c2262f46e38398e63e4ba7ecd951c8ba055975d205f8c9682d27b3,PASS
+29,design_29,design_29.png,"Bean Chair","Bean Chair",.png,image/png,420868,1818,955,RGBA,d834db674e75b0165defc2d00d94e5d6e47da3c51b73f7738d0fd8044a135f02,PASS
+30,design_30,design_30.png,"Rest n Tea Chair","Rest n Tea Chair",.png,image/png,1103946,1818,886,RGBA,0599e70c67c74783cd9e95f22bded60f70031f06d816ee25b54f81b824ab629d,PASS
+31,design_31,design_31.png,"Sawala Chair","Sawala Chair",.png,image/png,500849,1386,797,RGBA,4d62f31459404de0e0965eb31c9924694ecb3d6c8174aac2f5184768d5b71159,PASS
+32,design_32,design_32.png,"Milin Chair","Milin Chair",.png,image/png,1547000,1396,930,RGBA,56f858ece60a18e094da01d759a8d3abe071e04dbeb035ebc79fbd89eccfbdb9,PASS
+33,design_33,design_33.png,"Riris Chair","Riris Chair",.png,image/png,652807,1299,990,RGBA,21af6c7bacbd2b45d38c46ca27edb78548eec4e7d7d8d8a31e4614cae92c6df4,PASS
+34,design_34,design_34.png,"Biram Chair","Biram Chair",.png,image/png,322691,1513,657,RGBA,42b74a49d4de2bb59db37afa6f04afdbd45c01e211c9d410fafd13d3ffcc178a,PASS
+35,design_35,design_35.png,"Pistache Chair","Pistache Chair",.png,image/png,681179,1480,914,RGBA,318c5366ac0d0e77957fc329837d8dc6c127dfe26e27a64f5eb13d76c602feb4,PASS
+36,design_36,design_36.png,"Mobi Chair","Mobi Chair",.png,image/png,582935,1585,840,RGBA,677eef563362fbd4b3fef37de8007aa03865bed03dc51b701fc55abca38ccae8,PASS
+37,design_37,design_37.png,"Bloom Chair","Bloom Chair",.png,image/png,1132947,1491,922,RGBA,f38c09bbb15ba5207eefbde226a4064afffb582c5df1abc3b388f2ec2672a203,PASS
+38,design_38,design_38.png,"Cervidae Chair","Cervidae Chair",.png,image/png,739589,1431,922,RGBA,16f61b7a072e9fe511ee627df52858b27f06f12db0091547f7e3da0d6badb90e,PASS
+39,design_39,design_39.png,"Sucro Chair","Sucro Chair",.png,image/png,675837,846,851,RGBA,7b5fc7d8cfc26ca585a154c659128469ac302ab6d2aed2a19daef3eb05e7b2e4,PASS
+40,design_40,design_40.png,"Pingoo Chair","Pingoo Chair",.png,image/png,1750960,1586,1016,RGBA,b8e37cbf21b899064e35411800e72c186f33f2206eae9389d7f490c5ecc85d0b,PASS
+41,design_41,design_41.png,"Bloma Chair","Bloma Chair",.png,image/png,1197695,971,679,RGBA,1615e81ed5acbeaa08a311e0c076d21d8d8e6d63ae119b2cd66ba44711bf19a7,PASS
+42,design_42,design_42.png,"Nuve Chair","Nuve Chair",.png,image/png,661856,1352,763,RGBA,9b86a661a1a50008333474c3a0239e323a7f5097e90d70c1f67e759aa7a01f70,PASS
+43,design_43,design_43.png,"Liku Chair","Liku Chair",.png,image/png,1486423,1434,890,RGBA,95c245d20fe6b93e8421670269f88a32b4bd6a45ffe23546b054534760fdf0ac,PASS
+44,design_44,design_44.png,"Ropie Chair","Ropie Chair",.png,image/png,1789459,1963,1196,RGBA,bcc807591b632e63fa008063222c824306d4c4bbdea08973abaa87a2e40d2e2f,PASS
+45,design_45,design_45.png,"Tilage Chair","Tilage Chair",.png,image/png,740335,1318,902,RGBA,7b497ebe8e4a46e959fc8559e70fa8eb5e6c99a62c7d3b472119df7870b2ab74,PASS
+46,design_46,design_46.png,"Tana Chair","Tana Chair",.png,image/png,3739432,1761,1188,RGBA,98abd592a7462aae80de4f2ca2bb56347cfa736e860242c3be71211874d0bd49,PASS

@@ -1,0 +1,99 @@
+{
+  "persona_id": "panel_academic_fsrd_v1",
+  "persona_version": "v1",
+  "panel_id": "Panel_A",
+  "panel_version": "panel_academic_fsrd_v1",
+  "persona_canary": "ACADEMIC_MERCER_A01",
+  "primary_professional_lens": "Design creativity research, cognitive innovation, and conceptual depth in furniture ideation — assessing originality of idea generation, structural thinking, and user-centered synthesis at concept stage.",
+  "visible_evidence_items": [
+    {
+      "observed_feature": "Bifurcated central spine visible on seat and backrest surfaces — a vertical split running along the centerline of both the seat pan and backrest panel, visible in front and top orthographic views",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The central split suggests a 'Lipat' (fold/hinge) concept where the seat and backrest are composed of two mirrored panels meeting at a central ridge. This implies a structural and conceptual logic rooted in bilateral symmetry and possibly flat-pack or folded-sheet construction. The cognitive move here — treating the seating surface as two angled planes rather than one continuous surface — is a meaningful departure from conventional upholstered or monolithic seat pans.",
+      "relevant_CAT_criteria": ["creativity", "originality"],
+      "confidence": "high"
+    },
+    {
+      "observed_feature": "Dark-toned monolithic side panels forming armrests and lateral structural walls, appearing as thick slab-like volumes with angular cutouts at the base",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The dark lateral slabs serve dual structural and formal roles — they are simultaneously the armrests, side walls, and leg system. The angular negative space at the base creates a visually dynamic silhouette. This integrated structural logic reduces part count and reflects a material-efficient design thinking approach, though it raises questions about weight and ergonomic armrest height calibration.",
+      "relevant_CAT_criteria": ["feasibility", "creativity"],
+      "confidence": "high"
+    },
+    {
+      "observed_feature": "Reclined backrest angle visible in the side-view orthographic rendering, approximately 100–110 degrees relative to seat plane",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The backrest recline angle is appropriate for a 1–3 hour seated use context as described in the brief. It supports passive listening postures (leaning back during lectures) while the forward-leaning posture for note-taking is less clearly accommodated given the rigid, non-adjustable geometry.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "feasibility"],
+      "confidence": "medium"
+    },
+    {
+      "observed_feature": "Two-tone material palette: light natural wood grain on seat/backrest panels versus dark charred or ebonized wood on structural side frames",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The deliberate chromatic contrast between structural and seating elements communicates a clear tectonic hierarchy — distinguishing 'support' from 'surface.' This is a cognitively sophisticated material communication strategy that elevates the concept beyond purely aesthetic choices into structural legibility.",
+      "relevant_CAT_criteria": ["clarity", "creativity"],
+      "confidence": "high"
+    },
+    {
+      "observed_feature": "Seat width appears generous relative to the overall chair scale, visible in the front orthographic view showing armrests positioned well beyond shoulder width",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The wider seat envelope responds to the brief's requirement for accommodating diverse sitting postures including crossed legs and wider leg positions. This is a direct and competent response to the user diversity requirement (ages 18–65, varied body types and sitting behaviors).",
+      "relevant_CAT_criteria": ["usefulness_relevance", "level_of_detail_elaboration"],
+      "confidence": "medium"
+    },
+    {
+      "observed_feature": "No visible cushioning, upholstery, or surface softening elements on seat or backrest panels",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The absence of cushioning on a chair intended for 1–3 hour use is a significant ergonomic concern. Hard wood surfaces, even with appropriate angles, will create pressure point discomfort over extended periods. This gap between the formal concept and the functional brief requirement is the most critical unresolved tension in the submission.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "feasibility"],
+      "confidence": "high"
+    },
+    {
+      "observed_feature": "Central vertical ridge formed by the meeting of the two seat-pan panels, creating a raised spine along the seat centerline",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "While conceptually interesting as a formal device, a raised central ridge on the seat surface would create direct perineal pressure and discomfort, particularly for extended sitting. This is a critical ergonomic flaw that undermines the 'Lipat' concept's translation from formal idea to functional seating.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "feasibility"],
+      "confidence": "high"
+    }
+  ],
+  "criterion_explanations": {
+    "creativity": {
+      "score": 4,
+      "reasoning": "The 'Lipat' concept demonstrates genuine creative ambition by treating both the seat and backrest as folded bilateral planes rather than conventional flat or curved surfaces. The integration of structural side walls as armrests, legs, and lateral enclosure in a single formal gesture shows design synthesis thinking. The two-tone tectonic language adds a layer of conceptual intentionality. However, the concept does not yet reach paradigm-shifting territory — folded/split panel furniture has precedents (e.g., Donald Judd furniture, various plywood chair traditions), and the creative leap, while clear, is not entirely unprecedented."
+    },
+    "originality": {
+      "score": 3,
+      "reasoning": "The bilateral split panel motif is a recognizable formal strategy in contemporary wood furniture design, and the slab-sided armrest-as-structure approach has clear precedents in minimalist furniture. The 'Lipat' naming suggests a cultural or linguistic conceptual anchor (Indonesian: 'fold'), which is a promising originality vector, but this conceptual narrative is not sufficiently developed in the visual submission to distinguish it from existing folded-wood chair typologies. The concept is fresh within a student studio context but does not represent a significant departure from known archetypes at a broader design discourse level."
+    },
+    "usefulness_relevance": {
+      "score": 2,
+      "reasoning": "The chair's generous width and reclined backrest angle respond to some brief requirements. However, the absence of any cushioning or surface softening for a 1–3 hour use scenario is a major functional gap. The central seat ridge is ergonomically problematic. The rigid, non-adjustable geometry does not clearly accommodate the forward-leaning note-taking posture. The armrest height and depth are not verifiable from the renders. These are not minor refinements — they represent fundamental misalignments between the formal concept and the stated functional brief."
+    },
+    "clarity": {
+      "score": 4,
+      "reasoning": "The four-view orthographic presentation (front, side, top/front, rear) combined with the perspective render provides strong spatial legibility. The tectonic hierarchy between dark structural elements and light seating surfaces is immediately readable. The central split is clearly visible across multiple views. The overall form reads coherently as an easy chair. Minor ambiguity exists around the exact joinery between the seat panels and the side structural walls, and the base/floor contact geometry is slightly unclear in the perspective view."
+    },
+    "level_of_detail_elaboration": {
+      "score": 3,
+      "reasoning": "The submission presents a 3D-rendered model with four orthographic views and a perspective, which is appropriate for concept-stage elaboration. However, no dimensions, material specifications, joinery details, or ergonomic annotations are provided. The concept is visually resolved at a surface level but lacks the structural and material depth that would elevate it to strong craft. The central split mechanism — the conceptual core of 'Lipat' — is not explained or detailed in terms of how the panels meet, are joined, or whether they have any functional articulation."
+    },
+    "feasibility": {
+      "score": 3,
+      "reasoning": "The overall structural logic — thick side slabs supporting a seat and backrest — is inherently stable and buildable. The use of what appears to be plywood or solid wood in two finishes is materially plausible. However, the central ridge joint between the two seat panels requires careful engineering to avoid being a structural weak point under dynamic loading. The absence of cushioning raises questions about whether the seat panels would need to be shaped/contoured. The angular base cutouts in the side slabs reduce material at the floor contact zone, which may create stress concentration issues depending on material thickness."
+    }
+  },
+  "uncertainties": [
+    "The exact joinery mechanism between the two bifurcated seat panels at the central ridge is not shown — it is unclear whether this is a butt joint, a mitered fold, a living hinge, or a separate spine element, each of which has significantly different structural implications.",
+    "Material thickness of the dark side slab panels is not specified — this is critical for assessing whether the angular base cutouts leave sufficient material for structural integrity under load.",
+    "It is unclear whether the 'Lipat' concept implies any kinetic or folding functionality (i.e., whether the chair folds flat for storage), or whether 'Lipat' refers purely to the formal folded-plane aesthetic.",
+    "The seat pan angle relative to horizontal is ambiguous in the side view — it is unclear whether the seat tilts slightly backward (ergonomically supportive) or is horizontal (less supportive for extended sitting).",
+    "No information is provided about whether cushions or surface treatments are intended as a separate layer — the renders show bare wood surfaces throughout."
+  ],
+  "recommendations": [
+    "Resolve the central seat ridge as an ergonomic priority: either recess the joint below the seat surface plane, introduce a shaped groove, or add a cushion layer that bridges the two panels — the current raised ridge is a critical comfort failure point for 1–3 hour use.",
+    "Develop a joinery detail drawing for the panel-to-panel connection at the central split, showing how structural continuity is maintained across the seat and backrest bifurcation — this is the conceptual and structural heart of 'Lipat' and deserves explicit resolution.",
+    "Introduce a cushion or surface treatment strategy that preserves the formal identity of the folded-panel concept while meeting the extended-use comfort requirement — consider a thin removable cushion that follows the bifurcated geometry as a design opportunity rather than a compromise.",
+    "Annotate the submission with key ergonomic dimensions (seat height, seat depth, backrest angle, armrest height) referenced against anthropometric data for the 18–65 user range to demonstrate that the formal concept has been calibrated against human factors.",
+    "Develop the 'Lipat' conceptual narrative more explicitly — if the name references Indonesian cultural or linguistic meaning, this should be articulated as a design rationale that distinguishes the concept from generic folded-wood furniture precedents and grounds it in a specific cultural and institutional context appropriate to FSRD ITB."
+  ]
+}

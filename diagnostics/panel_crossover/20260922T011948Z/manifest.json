@@ -1,0 +1,36 @@
+{
+  "experiment_id": "exp_panel_crossover_20260922T011948Z",
+  "phase": "Phase_2_Three_Chair_Replication",
+  "timestamp_utc": "20260922T021747Z",
+  "total_calls": 108,
+  "call_budget": 108,
+  "chairs_evaluated": [
+    "design_1",
+    "design_7",
+    "design_13"
+  ],
+  "assignment_sha256": "d6b33c221db13d8bdcd4c0e8b07ca9fd3b096d8bf271cc5e88bae2c6f4d082b6",
+  "models": {
+    "OpenAI": "gpt-4o",
+    "Anthropic": "claude-sonnet-4-6",
+    "xAI": "grok-4-1-fast-reasoning"
+  },
+  "panel_a": {
+    "version": "panel_academic_fsrd_v1",
+    "personas": [
+      "Dr. Jonathan Mercer",
+      "Dr. Serena Voss",
+      "Dr. Haruto Nakamura"
+    ]
+  },
+  "panel_b": {
+    "version": "panel_industry_craft_v1",
+    "personas": [
+      "Sofia Marin",
+      "Marco Delacroix",
+      "Yuki Tanaka"
+    ]
+  },
+  "repeat_equality_pct": 72.2,
+  "crossover_equality_pct": 70.4
+}

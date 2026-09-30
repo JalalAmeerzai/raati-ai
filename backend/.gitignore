@@ -9,3 +9,4 @@ backup_and_reset.py
 # Runtime data — keep directory structure but ignore images
 data/images/*
 !data/images/.gitkeep
+*.db

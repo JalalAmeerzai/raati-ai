@@ -32,35 +32,32 @@ DIMENSION_LABELS = [
     "feasibility",
 ]
 
+# ── Slice 1: Score fields REMOVED from synthesis prompt ─────────────────────
+# The LLM must NOT calculate or return any score fields.
+# Server-side score_aggregator.py owns all arithmetic.
+# Any score field returned by this prompt is rejected and overwritten.
 SYNTHESIS_SYSTEM_PROMPT = """
 You are a Chief Assessment Officer synthesizing multiple expert evaluations of a design concept into a single authoritative report.
 
 You will receive 9 expert evaluations in JSON format (3 expert personas × 3 AI models each). Your task is:
 
-1. For each of the 6 dimensions, compute the MEAN score across ALL evaluations (round to 1 decimal place) and write a single synthesized reasoning paragraph (2-3 sentences max) that captures the key insights from across all evaluators.
+1. For each of the 6 dimensions, write a single synthesized reasoning paragraph (2-3 sentences max) that captures the key insights from across all evaluators. Do NOT compute or include any scores — scores are computed server-side.
 
 2. Write 3-part instructor feedback:
    - intro: A single paragraph starting with a catchy memorable phrase that summarizes the overall performance.
    - pivot: Specific, actionable advice on what area needs the most attention.
    - next_step: A single concrete, immediate action the student can take.
 
-3. The overall_score must be the mathematical mean of ALL experts' dimension scores (round to 2 decimal places).
+Do NOT include any score fields in your response. Do NOT calculate means or return numbers.
 
-Return ONLY valid JSON in this exact schema:
+Return ONLY valid JSON in this exact schema (no score fields — only reasoning and feedback text):
 {
-  "creativity_score": 0.0,
   "creativity_reasoning": "string",
-  "originality_score": 0.0,
   "originality_reasoning": "string",
-  "usefulness_relevance_score": 0.0,
   "usefulness_relevance_reasoning": "string",
-  "clarity_score": 0.0,
   "clarity_reasoning": "string",
-  "level_of_detail_elaboration_score": 0.0,
   "level_of_detail_elaboration_reasoning": "string",
-  "feasibility_score": 0.0,
   "feasibility_reasoning": "string",
-  "overall_score": 0.0,
   "instructor_feedback_intro": "string",
   "instructor_feedback_pivot": "string",
   "instructor_feedback_next_step": "string"
@@ -374,8 +371,11 @@ async def _get_stat_interpretation(stats: dict) -> dict:
 
 async def synthesize(expert_results: list) -> dict:
     """
-    Main entry point: runs math then LLM synthesis for the 3×3 matrix.
-    Returns a dict with merged scores, feedback, and stats.
+    Main entry point: runs Python statistics then LLM synthesis for the 3×3 matrix.
+
+    Slice 1 change: LLM synthesis no longer produces score fields.
+    Scores are computed server-side by score_aggregator and injected after synthesis.
+    The synthesis dict returned here contains only reasoning text, feedback, and stats.
     """
     # Step 1: Filter to only successful results and track failures
     total_cells = len(expert_results)  # Should be 9 for 3×3 matrix

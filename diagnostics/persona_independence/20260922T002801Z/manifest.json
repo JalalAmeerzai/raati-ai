@@ -1,0 +1,78 @@
+{
+  "experiment_id": "exp_persona_independence_20260922T002801Z",
+  "started_at": "20260922T002801Z",
+  "completed_at": "20260922T004413Z",
+  "git_commit": "7f0bb137e617f7179dfff373bf046a81001c7648",
+  "assignment_sha256": "d6b33c221db13d8bdcd4c0e8b07ca9fd3b096d8bf271cc5e88bae2c6f4d082b6",
+  "assignment_length_chars": 1120,
+  "total_provider_calls": 38,
+  "call_cap": 60,
+  "providers": [
+    {
+      "name": "OpenAI",
+      "model": "gpt-4o",
+      "temperature": 0.1
+    },
+    {
+      "name": "Anthropic",
+      "model": "claude-sonnet-4-6",
+      "temperature": 0.1
+    }
+  ],
+  "personas": [
+    {
+      "persona_id": "design_creativity",
+      "display_name": "Design Creativity and Cognition Professor",
+      "canary": "COGNITIVE_B24",
+      "lens": "Novelty, expectation, conceptual departure, or cognitive interpretation"
+    },
+    {
+      "persona_id": "furniture_craft",
+      "display_name": "Furniture Design Researcher and Craft Design Educator",
+      "canary": "FURNITURE_A17",
+      "lens": "Structure, joint, component transition, material, ergonomics, or manufacturing"
+    },
+    {
+      "persona_id": "human_centered_design",
+      "display_name": "Human-Centered Product Design Professor",
+      "canary": "HCD_C31",
+      "lens": "User activity, posture, interaction, access, inclusion, or prolonged use"
+    }
+  ],
+  "images_evaluated": [
+    {
+      "image_key": "design_1",
+      "canonical_name": "Tumpuan Chair",
+      "sha256": "9e5a0228c98a2037d28cecb5544f4d93e81a091e0f7e4625247e2ed4838ce304",
+      "size_bytes": 1091455
+    },
+    {
+      "image_key": "design_2",
+      "canonical_name": "Shizuku Chair",
+      "sha256": "f5f1973889edbb1aaf3494dd45f24f72d66c733a5ef1ded0912f758b40199375",
+      "size_bytes": 946719
+    },
+    {
+      "image_key": "design_3",
+      "canonical_name": "Cayi Chair",
+      "sha256": "04979bd43eb5ba08109d7d1551209ff0a3d17d8af9b8e2f9d78a6f5e61da92f8",
+      "size_bytes": 2610192
+    },
+    {
+      "image_key": "diagnostic_blank_control",
+      "canonical_name": "Synthetic Solid Grey Control",
+      "sha256": "b9538a90c91783340d309eadb6db2111a94a6aac1917acb079bd6119ddc3a135",
+      "size_bytes": 5334
+    }
+  ],
+  "metrics_summary": {
+    "total_slots_attempted": 38,
+    "canary_accuracy_pct": 100.0,
+    "exact_raw_response_duplicates": 0,
+    "between_persona_exact_vector_match_pct": 13.9,
+    "within_persona_repeatability_pct": 33.3,
+    "between_image_identical_vector_pct": 25.0,
+    "average_token_jaccard_similarity": 0.298,
+    "average_sequence_matcher_ratio": 0.059
+  }
+}

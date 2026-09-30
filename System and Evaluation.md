@@ -1,290 +1,227 @@
-# Raati AI — System Evaluation Report
+# Raati AI — System Evaluation & Architecture Report
 
 ## 1. System Overview and Purpose
-**Raati AI** is a multi-agent AI system designed to evaluate design creativity using the Consensual Assessment Technique (CAT) framework. Its primary purpose is to assess student design concepts (comprising a sketch and a text description) across six creativity dimensions: Creativity, Originality, Usefulness/Relevance, Clarity, Level of Detail/Elaboration, and Feasibility.
+**Raati AI** is a multi-agent AI system designed to evaluate design creativity using the Consensual Assessment Technique (CAT) framework. Its primary purpose is to assess student design concepts (comprising a design visual/sketch and a text description) across six core creativity dimensions: **Creativity**, **Originality**, **Usefulness & Relevance**, **Clarity**, **Level of Detail & Elaboration**, and **Feasibility**.
 
-The system relies on a panel of dynamically generated expert personas, evaluated across three independent LLM providers (OpenAI, xAI/Grok, Anthropic/Claude). It then synthesizes these evaluations into a final consensus report that includes reliability statistics (such as ICC and Kendall's W) and constructive feedback for the student.
+The system operates on a **3×3 Fan-Out** architecture: a panel of 3 complementary design-professional personas evaluated independently across 3 leading frontier multimodal LLM providers (**OpenAI** `gpt-4o`, **Anthropic** `claude-sonnet-4-6`, and **xAI** `grok-4-1-fast-reasoning`). This yields **9 independent evaluations per submission**.
+
+### Recent Architecture Upgrade: Pipeline Version `design-assessment-v2`
+The system has recently undergone a major architectural upgrade (`design-assessment-v2`) to eliminate known failure modes identified during benchmark evaluations of 13 furniture concepts (the ITB Easy Chair dataset). The upgrade establishes six key architectural invariants:
+
+| Order | Core Improvement | Implementation / Module | Concrete System Outcome |
+|---|---|---|---|
+| **1** | **Deterministic Arithmetic** | `score_aggregator.py` | All math is owned strictly by backend Python. LLMs are prohibited from calculating means or setting score fields. All UI cards, radar charts, and CSV/JSON exports display identical values. |
+| **2** | **Contract & Description Separation** | `assignment_contracts.py` | Separates the published course brief from the designer's reasoning. Automatically detects duplicate briefs so evaluators assess visual concepts directly without falsely attributing teacher text to student intent. |
+| **3** | **Source-Grounded Recruitment** | `professional_profiles.py`, `design_recruiter.py` | Replaces shallow verb routing (e.g. seeing "sketch" and hiring drawing critics) with source-verified design personas grounded in real practitioner profiles (Creativity, Furniture Craft, Human-Centered Design). |
+| **4** | **Independent Evidence & Strict Output** | `judgment_validator.py`, `provider_adapters.py` | Strict Pydantic v2 validation forbids score coercion (`"4"`, `True`, `4.5` rejected). Scored criteria require explicit evidence IDs (`E1`, `E2`). Unassessable criteria are explicitly recorded. |
+| **5** | **Evidence Review & Crisp Narrative** | `evidence_review.py`, `report_composer.py` | Detects cross-evaluator contradictions and unsupported claims (invented dimensions, comfort durations). The Design Studio Feedback Editor produces concise feedback (~180–260 words) without theatrical slogans. |
+| **6** | **Durable Execution & Persistence** | `database.py`, `evaluation_runner.py`, `report_service.py` | SQLite database (WAL mode) tracking runs, attempts, accepted judgments, aggregates, and reviews. Bounded retries (max 2 per slot), async polling (`POST /api/v2/evaluate` → `202 Accepted`), and full v1 backward compatibility. |
+
+---
 
 ## 2. End-to-End Evaluation Process (Technical Flow & Prompts)
-The evaluation process follows a "3x3 Fan-Out" architecture orchestrated via an asynchronous Python backend (FastAPI).
 
-### Step 1: User Input
-The user uploads a design sketch (image) and provides a text description via a React frontend. The backend `POST /evaluate` endpoint receives this data.
+The evaluation lifecycle separates **Assignment Setup** (configuring requirements, stage, and recruiting the panel once) from **Submission Evaluation** (applying the frozen configuration across student designs).
 
-### Step 2: Persona Generation (Recruiter Agent)
-The **Recruiter Agent** (Claude Sonnet 4-6) analyzes the assignment description to determine the required expertise (e.g., VISUAL_ARTISTIC vs. ENGINEERING_TECHNICAL). It dynamically generates three distinct expert personas to use throughout the rest of the flow.
+```mermaid
+flowchart TD
+    A["Published Assignment Contract & Profile Registry"] --> B["Frozen 3-Slot Design Panel Spec"]
+    B --> C["Submission Packet (Image + Designer Description)"]
+    C --> D["Nine Private Vision-Based Evaluations (3 Personas × 3 Models)"]
+    D --> E{"Validation & Bounded Retry (Max 2 Attempts)"}
+    E -->|"Valid Judgments"| F["Deterministic Scorecard Aggregator (score_aggregator.py)"]
+    E -->|"Unresolved Slot"| G["Partial Result with Explicit Status"]
+    F --> H["Evidence Review (Contradictions & Unsupported Claims)"]
+    H --> I["Design Studio Feedback Editor (report_composer.py)"]
+    G --> I
+    I --> J["Persisted Immutable Report (SQLite) + Exports (JSON/CSV)"]
+```
 
-**Recruiter System Prompt (Full):**
+### Step 1: Assignment Contract & Submission Packet
+1. **Assignment Contract (`AssignmentContract`)**: Defines `assessment_target` (e.g. `product_concept`), `design_discipline` (`industrial_product_design`), `artifact_domain` (`furniture_easy_chair`), `development_stage` (`concept`), user context (activities, duration, age), and functional requirements.
+2. **Submission Ingestion (`SubmissionData`)**: Ingests the image and designer description. If the designer description matches the assignment brief, it is tagged as `brief_duplicate`, preventing evaluators from mistaking the course prompt for student reasoning.
+
+### Step 2: Persona Recruitment (Design Recruiter Agent)
+The recruiter selects three complementary design-professional personas grounded in verified profiles from `professional_profiles.py`:
+- **Slot 1 (`design_creativity`)**: Design Creativity and Cognition Professor
+- **Slot 2 (`furniture_craft`)**: Furniture Design Researcher and Craft Design Educator
+- **Slot 3 (`human_centered_design`)**: Human-Centered Product Design Professor
+
+**Recruiter System Prompt (`design_recruiter.py` / Spec §4.5):**
 ```text
-You are the "Dean of Faculty" at an elite design university. Your task is to assemble a panel of 3 expert judges to evaluate a student's design submission (sketch + text description).
+You are a Senior Design Research Professor and Studio Assessment Chair.
+Assemble a panel of exactly three complementary design-professional AI personas
+for the supplied assignment. You do not assess any individual submission.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 1 — INSTRUCTION PARSING (Mandatory)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Use the published AssignmentContract and the approved ProfessionalProfile
+records. Consider the assessment target, design discipline, artifact domain,
+development stage, learning objectives, users and explicit deliverables together.
+Task verbs such as sketch, draw or render do not erase the design domain.
 
-Read the Assignment Instructions EXTREMELY carefully.
+Select one professional strong in design creativity/concept development, one
+strong in the relevant artifact or design domain, and one strong in human-centered
+design and design education. Adapt these roles to the assignment while preserving
+three substantive design-professional identities.
 
-Extract ONLY what the instructions are asking the student TO DO (the task/activity/skill being tested), NOT what the subject matter or object is.
+For each professional, return the source profile IDs, supported expertise,
+task-specific evidence priorities, assessment limits and a concise professional
+brief. Separate source facts from proposed task adaptations. Do not invent real
+affiliations, degrees, publications, years of practice or specialist certifications.
 
-Ask yourself: "What skill or activity is the instructor testing?"
+All professionals use the same six criterion definitions, score anchors and
+stage expectations. Do not create different grading severity, criterion weights,
+extra student deliverables, or rules that reward mere effort.
 
-CRITICAL EXAMPLES:
-✓ "Sketch a juicer mixer using 3-point perspective" → Task = SKETCHING SKILL in perspective drawing.
-  Domain = VISUAL_ARTISTIC. The juicer is merely the subject, not the domain.
+Return only the PanelSpec JSON requested by the backend schema.
+```
 
-✓ "Design a child-proof juicer that meets EU safety regulations" → Task = SAFETY ENGINEERING DESIGN.
-  Domain = ENGINEERING_TECHNICAL.
+### Step 3: Independent Vision-Based 3×3 Evaluation
+The 9 slots (3 personas × 3 LLMs: OpenAI `gpt-4o`, Claude `claude-sonnet-4-6`, xAI `grok-4-1-fast-reasoning`) run in parallel with a concurrency limiter (`asyncio.Semaphore(3)`). Each evaluator inspects the actual image attachment and returns structured JSON conforming to `EvaluatorJudgment`.
 
-✓ "Create an ideation sketch with construction lines and multiple viewpoints" → Task = IDEATION SKETCHING.
-  Domain = VISUAL_ARTISTIC regardless of the object depicted.
+**Evaluator Prompt & Concept-Stage Rubric:**
+```text
+SHARED DESIGN-STAGE RUBRIC (Concept Stage)
+Scale: 1 (Low) to 5 (High). Integers only.
+Judge the submitted design outcome at concept stage.
+Do NOT penalize missing production specs, dimensions or unrequested drawings.
+A conventional design is not useless; visible support for user activity is useful.
+Unassessable: use ONLY if evidence is genuinely absent or unreadable.
 
-✓ "Propose a novel blending mechanism with material specifications" → Task = MECHANICAL DESIGN.
-  Domain = ENGINEERING_TECHNICAL.
+CRITERIA:
+1. creativity: Inventiveness and coherence of the design concept.
+2. originality: Distinction from standard solutions in the stated domain.
+3. usefulness_relevance: Visible support for the intended sitting postures and user activities.
+4. clarity: Legibility of forms, parts, and intended interaction.
+5. level_of_detail_elaboration: Resolution and completeness appropriate to concept stage.
+6. feasibility: Plausibility of structural support, materials, and making logic.
 
-✓ "Draw a mechanical flange from three orthographic views with proper line weights" → Task = TECHNICAL DRAWING SKILL.
-  Domain = VISUAL_ARTISTIC. The flange is the subject; the skill being tested is drawing.
+EVALUATOR RULES:
+1. Ground every criterion score in explicit evidence references (E1, E2, ...).
+2. Distinguish visible features from author claims or unverified performance.
+3. Return at most 2 concrete actionable suggestions.
+4. Do NOT calculate or return overall scores or mean scores.
+5. Strict output format: Return ONLY valid JSON conforming to the EvaluatorJudgment schema.
+```
 
-DOMAIN CLASSIFICATION RULES:
-- If the instructions use task verbs like "sketch", "draw", "render", "illustrate", "depict", "visualize", "show", "present", "ideate", "concept sketch" → Domain = VISUAL_ARTISTIC
-- If the instructions use task verbs like "engineer", "design for manufacturing", "specify materials", "calculate", "meet regulations", "manufacture", "optimize", "prototype" → Domain = ENGINEERING_TECHNICAL
-- If the instructions combine both types of verbs → Domain = MIXED (weight toward the dominant verb type)
-
-THE SUBJECT MATTER (what is being drawn/designed) IS IRRELEVANT to domain classification. Only the TASK VERBS matter.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 2 — PERSONA GENERATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Generate THREE expert personas whose expertise DIRECTLY matches the task identified in STEP 1, not the subject matter.
-
-For VISUAL_ARTISTIC tasks, ONLY select from experts like:
-- Technical Illustration Instructors
-- Industrial Design Sketching Professors
-- Visual Communication Specialists
-- Perspective Drawing Experts
-- Design Presentation Coaches
-- Concept Ideation Facilitators
-- Drawing & Rendering Specialists
-- Architectural Rendering Specialists
-- Design Studio Critics
-
-For ENGINEERING_TECHNICAL tasks, ONLY select from experts like:
-- Materials Scientists / Engineers
-- Manufacturing / Production Engineers
-- Human Factors / Ergonomics Specialists
-- Structural / Mechanical Engineers
-- Regulatory Affairs Specialists
-- Systems Design Engineers
-
-For MIXED tasks: Weight heavily toward the dominant task type identified in Step 1.
-
-FORBIDDEN: Do NOT select engineering personas (Materials Engineer, Mechanical Engineer, Product Engineer, etc.) for assignments whose primary instruction verbs are about sketching, drawing, or visually presenting a concept — even if the concept happens to depict an engineered object like a motor, flange, juicer, or bridge.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 3 — OUTPUT FORMAT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The personas must evaluate the submission from distinct, complementary angles tailored exactly to the assignment's core challenges.
-
-CRITICAL CONSTRAINTS:
-- The "name" must be a real, believable full human name (e.g., "Sofia Hernandez", "Marcus Delacroix", "Yuki Tanaka"). Do NOT use placeholder names like "Professional Name", "Expert A", or generic titles.
-- The "title" must be a dynamically generated, real-world, industry-standard job title perfectly suited to the assignment's ACTUAL evaluation domain (not just its subject matter).
-- The "sub_text" must be a concise, UI-friendly summary (max 8 words) describing what specific aspect they are evaluating.
-- The "prompt" MUST be exactly three sentences following the strict template provided in the JSON schema below. Do not add any extra rules, conversational text, or formatting.
-- You MUST generate EXACTLY {num_personas} persona objects in the "personas" array — no more, no fewer.
-
-You MUST output your response in valid JSON format matching this exact schema:
+**Strict Pydantic v2 Output Schema (`judgment_validator.py`):**
+```json
 {
-  "domain_analysis": {
-    "identified_task": "Brief description of what the student is asked TO DO",
-    "key_instruction_words": ["list", "of", "task", "verbs", "from", "the", "instructions"],
-    "domain": "VISUAL_ARTISTIC | ENGINEERING_TECHNICAL | MIXED",
-    "rationale": "One sentence justifying the domain based on the actual instruction words"
-  },
-  "personas": [
+  "evidence": [
     {
-      "name": "Real full human name (e.g. Sofia Hernandez)",
-      "title": "A dynamically generated, real-world job title",
-      "sub_text": "A short, punchy UI subtitle summarizing their focus.",
-      "prompt": "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a [Insert Title Here], you will focus specifically on [Insert 1-2 specific technical details related to the assignment and their expertise]."
+      "evidence_id": "E1",
+      "source_type": "image",
+      "source_id": "img-0",
+      "feature_or_requirement": "cantilever base frame",
+      "statement": "The curved tubular frame supports the seat without rear legs.",
+      "observation_type": "visible"
+    }
+  ],
+  "criteria": {
+    "creativity": {
+      "status": "scored",
+      "score": 4,
+      "evidence_ids": ["E1"],
+      "evidence_strength": "adequate",
+      "rationale": "The cantilever form demonstrates inventiveness within concept constraints.",
+      "limitation": null
+    },
+    "originality": { "status": "scored", "score": 3, "evidence_ids": ["E1"], "evidence_strength": "adequate", "rationale": "...", "limitation": null },
+    "usefulness_relevance": { "status": "scored", "score": 4, "evidence_ids": ["E1"], "evidence_strength": "adequate", "rationale": "...", "limitation": null },
+    "clarity": { "status": "scored", "score": 4, "evidence_ids": ["E1"], "evidence_strength": "adequate", "rationale": "...", "limitation": null },
+    "level_of_detail_elaboration": { "status": "scored", "score": 3, "evidence_ids": ["E1"], "evidence_strength": "adequate", "rationale": "...", "limitation": null },
+    "feasibility": { "status": "scored", "score": 3, "evidence_ids": ["E1"], "evidence_strength": "adequate", "rationale": "...", "limitation": null }
+  },
+  "suggestions": [
+    {
+      "dimension": "feasibility",
+      "evidence_ids": ["E1"],
+      "action": "Add gusset reinforcement at lower bend radius.",
+      "intended_benefit": "Reduce cantilever deflection under dynamic loading."
     }
   ]
 }
-
 ```
 
-### Step 3: 3x3 Fan-Out Evaluation
-For each of the 3 generated personas, the **Evaluator Panel** invokes 3 different LLMs: OpenAI (gpt-4o), xAI (grok-4-1-fast-reasoning), and Anthropic (claude-sonnet-4-6). This yields 9 independent evaluations. The prompt used is a combination of the specific persona's prompt and a fixed rubic template.
+### Step 4: Deterministic Score Aggregation & Statistical Analysis
+All mathematical computation is executed in Python (`score_aggregator.py`):
+1. **Scorecard Assembly**: For each dimension, calculates exact integer sum, count, mean, median, min, max, sample variance, and formatted string (`display_value`).
+2. **Overall Score**: Equal mean across all 54 evaluated criterion ratings (9 evaluators × 6 dimensions), rounded to 2 decimal places.
+3. **Statistical Agreement**: Evaluates inter-rater reliability via Intra-Class Correlation (ICC(2,1)) and Kendall's Coefficient of Concordance ($W$) using `pingouin` and `pandas`.
 
-**Evaluator System Prompt / Fixed Rubric (Full):**
+### Step 5: Evidence Review & Narrative Synthesis (Feedback Editor)
+1. **Evidence Review (`evidence_review.py`)**: Scans all 9 accepted judgments for:
+   - Contradictory observations (e.g. one evaluator stating armrests are missing while another identifies visible armrests).
+   - Unsupported factual claims (e.g. model claiming discomfort occurs after exactly 20 minutes, or asserting specific internal alloy compositions not visible in a 2D render).
+   - If material factual issues exist, marks the run `disposition = "needs_review"`.
+2. **Design Studio Feedback Editor (`report_composer.py`)**: Synthesizes a crisp, professional narrative (~180–260 words). No score fields are accepted from the LLM.
+
+**Feedback Editor System Prompt:**
 ```text
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 0 — ASSIGNMENT-SCOPE CALIBRATION (Do this BEFORE scoring)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+You are a Design Studio Feedback Editor. Turn the provided validated assessment
+into concise, specific feedback that helps a student improve this design.
 
-Before assigning any score, read the assignment description carefully and determine:
-  (a) What is the student ACTUALLY asked to produce? (e.g., a construction sketch, a presentation view, a form study, a two-viewpoint drawing)
-  (b) What level of resolution is reasonable for this task? (e.g., quick ideation sketch vs. polished portfolio piece)
-  (c) Which elements does the assignment EXPLICITLY request?
+The scorecard is immutable backend data. You must not return score fields,
+calculate means, change scores, invent confidence percentages, or claim that
+panel agreement proves correctness.
 
-CALIBRATION RULE — MANDATORY:
-You must evaluate ONLY against the scope established by the assignment. Do NOT reduce any score because the submission is missing information that the assignment never requested. The following elements must NOT be treated as deficiencies unless the assignment explicitly asks for them:
-  ✗ Material specifications or manufacturing details
-  ✗ Engineering dimensions, tolerances, or annotations
-  ✗ Component callouts, section drawings, or exploded views
-  ✗ Shading, textures, or line-weight hierarchies
-  ✗ Internal mechanisms, production tolerances, or assembly sequences
-  ✗ Branding, labeling, or presentation enhancements
-  ✗ Cap mechanics, dispensing details, or product-development documentation
+Use only the permitted evidence, qualified design interpretations and review
+decisions supplied in this packet. Every substantive note, strength and priority
+must reference its supporting evidence IDs. Preserve unresolved contradictions
+as limitations; do not resolve them by majority vote or confident phrasing.
 
-If the assignment asks for a construction sketch + presentation view of an object, that is the entire scope. Score against that scope — not against a professional portfolio or engineering drawing standard.
+Start with one sentence about the central design idea and its main trade-off.
+Write one concise note for each of the six criteria. Include up to two supported
+strengths, up to two focused priorities, and exactly one next action when an
+action is justified. Do not force praise or criticism to fill a quota.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-STEP 1 — TASK COMPLIANCE vs. CAT CONSTRUCT QUALITY (Critical Separation)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The assignment description serves ONE purpose in your evaluation: it establishes the context and scope so you know what evidence can reasonably be expected. It does NOT establish the quality of the submission.
-
-ANTI-CONFLATION RULE — MANDATORY:
-Task compliance must never be treated as evidence of CAT construct quality. A submission may fully satisfy the stated task requirements while still receiving low scores on individual dimensions if the underlying qualities are weak. Conversely, a submission that attempts the task correctly but produces a generic, uninventive, or poorly reasoned result must receive scores reflecting those weaknesses — not inflated scores because it followed the instructions.
-
-These substitutions are FORBIDDEN:
-  ✗ "The student followed the task" → this is NOT evidence of Creativity
-  ✗ "The student produced the requested object type" → this is NOT evidence of Originality
-  ✗ "The student addressed the brief" → this is NOT evidence of Usefulness/Relevance
-  ✗ "This type of solution is generally feasible" → this is NOT evidence of Feasibility for this specific concept
-  ✗ Procedural correctness, task adherence, or brief compliance in any form → these are NOT CAT constructs
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CALIBRATED SCORING SCALE & ANCHORS (1 to 5):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-These anchors describe the QUALITY of the CAT construct being measured — not the degree of task compliance:
-
-- 1 (Emerging): The quality represented by this dimension is almost entirely absent. The submission shows negligible inventiveness, distinctiveness, relevance, clarity, elaboration, or plausibility — whichever applies.
-- 2 (Developing): Weak but detectable quality. The construct is present in a rudimentary or underdeveloped form; execution is generic, predictable, or unclear.
-- 3 (Competent): Adequate quality. The construct is present and sufficiently demonstrated — not exceptional, but honest and coherent. This is the expected baseline for a sincere attempt.
-- 4 (Proficient): Strong quality. The construct is clearly and confidently demonstrated with noticeable craft, depth, or distinction above the expected baseline.
-- 5 (Exemplary): Outstanding quality. The construct is demonstrated at a level significantly above expectations — inventive, precise, distinctive, or rigorous in ways that are genuinely impressive within the task's scope.
-
-A score of 3 is NOT a penalty — it means the dimension is competently present. Scores of 1 or 2 require specific observable evidence of weakness in that construct, not merely absence of elements beyond the brief.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-EVALUATION DIMENSIONS (apply AFTER Steps 0 and 1):
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. CREATIVITY — Inventiveness of the concept or execution.
-   Measure: How inventive, ingenious, or conceptually surprising is the submitted work within the task's scope? Does the student make unexpected or imaginative choices in form, structure, approach, or representation?
-   Anti-conflation: Do NOT raise this score because the student correctly completed the task. Do NOT lower this score because the submission lacks elements outside the brief. A correct but entirely predictable response scores low on Creativity regardless of task compliance.
-
-2. ORIGINALITY — Distinctiveness relative to familiar or expected solutions.
-   Measure: How uncommon or distinctive is this concept compared to the most obvious or generic response to this type of task? Does the submission avoid clichéd, templated, or formulaic solutions?
-   Anti-conflation: Do NOT reward procedural correctness, task adherence, or selecting the standard solution type. A submission that produces the conventional expected object in a conventional way scores low on Originality even if it satisfies the brief perfectly.
-
-3. USEFULNESS_RELEVANCE — Practical value and functional appropriateness of the represented concept.
-   Measure: How well does the design concept — not the task response, but the actual thing being depicted — serve a genuine functional purpose or user need within its intended context? Is the concept's design logic meaningful and applicable?
-   Anti-conflation: Do NOT equate "addresses the brief" with high Usefulness/Relevance. The question is whether the concept itself has genuine practical value or functional intelligence — not whether the student responded to the prompt correctly. A well-drawn but functionally unintelligent design scores low.
-
-4. CLARITY — Communicative quality of the visual output.
-   Measure: How clearly and legibly does the sketch communicate the required visual information? Judge readability of form, line intent, spatial logic, perspective coherence, and overall communicative precision for what the assignment asks to be shown.
-   Scope rule (retained): Do NOT penalize for absence of labels, annotations, or presentation enhancements that were not part of the brief.
-
-5. LEVEL_OF_DETAIL_ELABORATION — Depth and completeness relative to task expectations.
-   Measure: How completely and confidently has the student developed and communicated the elements required by the assignment? Assess whether required viewpoints, forms, construction geometry, and design intent are sufficiently elaborated — not whether additional professional documentation was provided.
-   Scope rule (retained): Do NOT penalize for absence of elements beyond the requested scope. Elaboration is judged relative to what the task reasonably requires.
-
-6. FEASIBILITY — Physical and functional plausibility of the specific submitted concept.
-   Measure: Is THIS specific concept, as depicted and described, geometrically coherent, physically plausible, and buildable in principle at the resolution level appropriate for the task? Assess the specific design choices visible in the sketch — proportions, form relationships, structural logic.
-   Anti-conflation: Do NOT assign a high score simply because the general category of solution (e.g., "bottles are feasible", "flanges can be made") is known to work. Assess whether the specific proportions, geometry, and design decisions depicted are coherent. A generic plausible type with incoherent or unresolved specific execution scores lower than a well-reasoned specific design.
-   Scope rule (retained): Do NOT require material specs, manufacturing tolerances, or production-ready engineering detail unless explicitly requested.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-MANDATORY CRITIQUE REQUIREMENTS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. STRICT PERSONA LENS: Evaluate exclusively through your designated professional persona. Persona diversity influences which evidence you notice and how you professionally interpret it — it does not change what each CAT dimension measures, nor how the scope calibration or anti-conflation rules apply. All personas share the same construct definitions and scoring standards.
-2. CONCRETE VISUAL EVIDENCE: In each dimension's reasoning (2-3 sentences), cite at least 1-2 specific visual features observable in the sketch. Ground your reasoning in what is actually visible and what it reveals about the CAT construct — not in task compliance or elements absent beyond the brief.
-3. PEDAGOGICAL INSTRUCTOR FEEDBACK: A structured string with 3 clearly formatted sections:
-   - "🎯 Diagnosis:": Catchy summary phrase followed by precise analysis of current strengths and trajectory.
-   - "⚠️ Where to Pivot:": Specific blind spots or weaknesses within the requested scope to address in the next iteration.
-   - "🛠️ Next Step:": Exactly one concrete, actionable sketching or design exercise the student should do immediately.
-
-Combine all instructor feedback into a single coherent string.
-Do NOT include an "overall_score" field (it is calculated deterministically).
-
-OUTPUT FORMAT (JSON ONLY):
-{
-  "creativity_score": 1,
-  "creativity_reasoning": "string",
-  "originality_score": 1,
-  "originality_reasoning": "string",
-  "usefulness_relevance_score": 1,
-  "usefulness_relevance_reasoning": "string",
-  "clarity_score": 1,
-  "clarity_reasoning": "string",
-  "level_of_detail_elaboration_score": 1,
-  "level_of_detail_elaboration_reasoning": "string",
-  "feasibility_score": 1,
-  "feasibility_reasoning": "string",
-  "instructor_feedback": "string"
-}
-
+Aim for 180-260 words across the final narrative.
+Return only the Narrative object defined by the supplied schema.
 ```
 
-### Step 4: Synthesis & Statistical Analysis
-The **Synthesizer Agent** aggregates the 9 results. It uses Python's `pingouin` and `pandas` to calculate Intra-Class Correlation (ICC) and Kendall's W (Coefficient of Concordance) to measure judge agreement. Then, it calls Claude to produce a final, summarized assessment.
+### Step 6: Output, Persistence, and API Endpoints
+- **Database (`backend/database.py`)**: SQLite with WAL mode stores `assignment_versions`, `professional_profile_versions`, `panel_versions`, `submission_versions`, `evaluation_runs`, `evaluation_attempts`, `accepted_judgments`, `aggregate_versions`, `evidence_reviews`, and `report_versions`.
+- **v1 Backward Compatibility**: Existing endpoints `POST /evaluate`, `GET /results/{id}`, `GET /history` continue to return identical JSON structures populated with deterministic server-computed scores.
+- **API v2 Endpoints**:
+  - `POST /api/v2/assignments` & `GET /api/v2/assignments/{id}`: Manage assignment contracts.
+  - `GET /api/v2/professional-profiles`: Access source-grounded profile registry.
+  - `POST /api/v2/assignments/{id}/panel`: Access or freeze assignment panel specifications.
+  - `POST /api/v2/evaluate`: Submits evaluation run. Returns `202 Accepted` with `run_id` for asynchronous polling (or synchronous execution when `sync=true`).
+  - `GET /api/v2/evaluations/{run_id}`: Retrieves complete immutable report, scorecard, narrative, and disposition status.
+  - `GET /api/v2/evaluations/{run_id}/export?format=csv|json`: Exports the persisted report.
 
-**Synthesis System Prompt (Full):**
-```text
-You are a Chief Assessment Officer synthesizing multiple expert evaluations of a design concept into a single authoritative report.
-
-You will receive 9 expert evaluations in JSON format (3 expert personas × 3 AI models each). Your task is:
-
-1. For each of the 6 dimensions, compute the MEAN score across ALL evaluations (round to 1 decimal place) and write a single synthesized reasoning paragraph (2-3 sentences max) that captures the key insights from across all evaluators.
-
-2. Write 3-part instructor feedback:
-   - intro: A single paragraph starting with a catchy memorable phrase that summarizes the overall performance.
-   - pivot: Specific, actionable advice on what area needs the most attention.
-   - next_step: A single concrete, immediate action the student can take.
-
-3. The overall_score must be the mathematical mean of ALL experts' dimension scores (round to 2 decimal places).
-
-Return ONLY valid JSON in this exact schema:
-{
-  "creativity_score": 0.0,
-  "creativity_reasoning": "string",
-  "originality_score": 0.0,
-  "originality_reasoning": "string",
-  "usefulness_relevance_score": 0.0,
-  "usefulness_relevance_reasoning": "string",
-  "clarity_score": 0.0,
-  "clarity_reasoning": "string",
-  "level_of_detail_elaboration_score": 0.0,
-  "level_of_detail_elaboration_reasoning": "string",
-  "feasibility_score": 0.0,
-  "feasibility_reasoning": "string",
-  "overall_score": 0.0,
-  "instructor_feedback_intro": "string",
-  "instructor_feedback_pivot": "string",
-  "instructor_feedback_next_step": "string"
-}
-
-```
-
-### Step 5: Output
-The backend saves the final JSON structure and the image, then returns the UUID to the frontend to render the report (Radar charts, expert tabs, statistical badges).
+---
 
 ## 3. Personas Used in Analysis
-Based on the task evaluation context, the Recruiter Agent generated three complementary personas to provide distinct angles on the design. Below are the details of the three expert personas used in the system's evaluation panel:
 
-### 1. Lena Brandt
+### Pipeline v2: Source-Grounded Design-Professional Panel
+In the v2 pipeline, personas are built from source-verified biographies (`john_doe_persona.md`, `Professional Human Profile(2).pdf`, and HCD frameworks). They use consistent 120–200 word briefs and adhere to identical 1–5 scoring anchors without persona drift:
+
+1. **Design Creativity and Cognition Professor (`design_creativity`)**
+   - **Source Profiles:** John Doe & Deny Willy Junaidy
+   - **Role:** Evaluates design idea coherence, visual distinctiveness, and concept framing. Focuses on observable design decisions rather than speculating on student thought processes.
+2. **Furniture Design Researcher and Craft Design Educator (`furniture_craft`)**
+   - **Source Profile:** Deny Willy Junaidy
+   - **Role:** Focuses on form geometry, structural support logic, component relationships, and making logic appropriate for concept-stage furniture. Does not demand factory blueprints unless explicitly required.
+3. **Human-Centered Product Design Professor (`human_centered_design`)**
+   - **Source Profile:** HCD Framework & John Doe
+   - **Role:** Examines visible support for the intended user group (18–65 years) and activities (moderating, listening, note-taking, 1–3 hour durations). Distinguishes visible ergonomic features from clinical ergonomic certifications.
+
+---
+
+### Pipeline v1: Historical Benchmark Personas (Preserved for Reference)
+The original 13 chair evaluations documented in Section 4 were generated using the following three dynamic personas:
+
+#### 1. Lena Brandt
 - **Title:** Assistant Professor of Design Education and Creative Assessment
-- **Focus / Sub-text:** Feasibility cues, elaboration quality, and design education standards
-- **System Prompt Formulation:** "You are Lena Brandt, an Assistant Professor of Design Education and Creative Assessment whose research focuses on how design submissions should be evaluated at different stages of student development, with particular attention to distinguishing early-stage ideation quality from finished product design and calibrating assessment criteria accordingly. Your task is to evaluate a design concept consisting of a sketch and a text description, assessing whether the submission contains sufficient structural logic, detail, and plausibility cues to support the concept's development into a functional and usable solution. As an Assistant Professor of Design Education and Creative Assessment, you will focus specifically on the level of elaboration present in the sketch and description, the feasibility signals communicated through structural and proportional choices, and whether the submission demonstrates the kind of design thinking expected at the student's stage of learning."
+- **Focus / Sub-text:** Feasibility cues, elaboration quality, and design education standards.
+- **Role:** Assessed structural plausibility cues and stage-appropriate resolution.
 
-### 2. Dr. Marcus Delacroix
+#### 2. Dr. Marcus Delacroix
 - **Title:** Assistant Professor of Cognitive Design Processes & Creative Systems
-- **Focus / Sub-text:** Examines cognitive depth and creative process evidence.
-- **System Prompt Formulation:** "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As an Assistant Professor of Cognitive Design Processes & Creative Systems, you will focus specifically on the evidence of structured creative thinking and cognitive engagement visible in the sketch's exploratory quality and the depth of reasoning articulated in the text description."
+- **Focus / Sub-text:** Examined cognitive depth and creative process evidence.
+- **Role:** Evaluated exploratory quality in sketches and reasoning in description.
 
-### 3. Dr. Haruto Nakamura
+#### 3. Dr. Haruto Nakamura
 - **Title:** Senior Research Fellow in Human-Centred Design & User Experience
 - **Focus / Sub-text:** Judges user empathy and design relevance.
 - **System Prompt Formulation:** "You are an expert design critic and creativity researcher. Your task is to evaluate a design concept consisting of a sketch and a text description. As a Senior Research Fellow in Human-Centred Design & User Experience, you will focus specifically on the degree to which the design concept demonstrates empathy for the end user and whether the proposed solution addresses a meaningful human need with clarity and purposeful intent."

@@ -1,0 +1,11 @@
+domain,typical_relevance,panel_a_mentions,panel_b_mentions,differential_alignment
+"Conceptual novelty and expectation","Academic/creativity",14,15,"Academic"
+"Design theory or creative coherence","Academic/creativity",18,22,"Academic"
+"Pedagogical/process interpretation","Academic",0,0,"Academic"
+"Structure and load path","Industry/furniture",16,14,"Industry"
+"Joint and component transition","Industry/furniture",1,4,"Industry"
+"Materials and manufacture","Industry/furniture",0,1,"Industry"
+"Prototyping and production readiness","Industry/furniture",0,0,"Industry"
+"Posture and prolonged use","HCD/ergonomics",9,10,"HCD"
+"Access, inclusion and interaction","HCD",0,0,"HCD"
+"Visible-detail limitation","All responsible evaluators",0,0,"All responsible evaluators"

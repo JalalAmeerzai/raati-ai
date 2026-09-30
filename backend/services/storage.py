@@ -7,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 from .utils import sanitize_json_numbers
+from .score_aggregator import build_scorecard_from_expert_panel, scorecard_to_flat_fields
 
 # Define paths
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +31,10 @@ class _SafeEncoder(json.JSONEncoder):
 def save_submission(image_file, description, evaluation_result, submitter_name: str = ""):
     """
     Saves the uploaded image, the full evaluation result (JSON), and a CSV index row.
+
+    Slice 1 change: Scores are assembled server-side from score_aggregator.
+    Old flat score fields (creativity_score, etc.) are mapped explicitly from the
+    scorecard — never taken from LLM synthesis output directly.
     """
     # 1. Generate unique ID
     unique_id = str(uuid.uuid4())
@@ -46,7 +51,26 @@ def save_submission(image_file, description, evaluation_result, submitter_name: 
     with open(image_path, "wb") as buffer:
         shutil.copyfileobj(image_file.file, buffer)
 
-    # 3. Build the full record (including expert_panel + stats)
+    # 3. Compute server-owned scorecard from expert panel (Slice 1)
+    expert_panel = evaluation_result.get("expert_panel", [])
+    scorecard = build_scorecard_from_expert_panel(expert_panel)
+
+    # Map scorecard → flat fields (compatibility with v1 frontend)
+    if scorecard:
+        flat_scores = scorecard_to_flat_fields(scorecard)
+    else:
+        # Partial panel fallback: use LLM-reported values but mark as provisional
+        flat_scores = {
+            "creativity_score": evaluation_result.get("creativity_score"),
+            "originality_score": evaluation_result.get("originality_score"),
+            "usefulness_relevance_score": evaluation_result.get("usefulness_relevance_score"),
+            "clarity_score": evaluation_result.get("clarity_score"),
+            "level_of_detail_elaboration_score": evaluation_result.get("level_of_detail_elaboration_score"),
+            "feasibility_score": evaluation_result.get("feasibility_score"),
+            "overall_score": evaluation_result.get("overall_score"),
+        }
+
+    # 4. Build the full record (including expert_panel + stats)
     full_record = {
         "id": unique_id,
         "timestamp": timestamp,
@@ -54,43 +78,45 @@ def save_submission(image_file, description, evaluation_result, submitter_name: 
         "image_url": f"/images/{saved_filename}",
         "description": description,
         "submitter_name": submitter_name,
-        # Synthesised consensus scores
-        "creativity_score": evaluation_result.get("creativity_score"),
-        "originality_score": evaluation_result.get("originality_score"),
-        "usefulness_relevance_score": evaluation_result.get("usefulness_relevance_score"),
-        "clarity_score": evaluation_result.get("clarity_score"),
-        "level_of_detail_elaboration_score": evaluation_result.get("level_of_detail_elaboration_score"),
-        "feasibility_score": evaluation_result.get("feasibility_score"),
-        "overall_score": evaluation_result.get("overall_score"),
-        # Synthesised consensus reasoning
+        # ── Server-computed scores (Slice 1: from scorecard, not LLM) ──
+        "creativity_score": flat_scores.get("creativity_score"),
+        "originality_score": flat_scores.get("originality_score"),
+        "usefulness_relevance_score": flat_scores.get("usefulness_relevance_score"),
+        "clarity_score": flat_scores.get("clarity_score"),
+        "level_of_detail_elaboration_score": flat_scores.get("level_of_detail_elaboration_score"),
+        "feasibility_score": flat_scores.get("feasibility_score"),
+        "overall_score": flat_scores.get("overall_score"),
+        # ── Scorecard (v2 aggregate) ──
+        "scorecard": scorecard,
+        # ── Synthesised consensus reasoning (text only from LLM) ──
         "creativity_reasoning": evaluation_result.get("creativity_reasoning"),
         "originality_reasoning": evaluation_result.get("originality_reasoning"),
         "usefulness_relevance_reasoning": evaluation_result.get("usefulness_relevance_reasoning"),
         "clarity_reasoning": evaluation_result.get("clarity_reasoning"),
         "level_of_detail_elaboration_reasoning": evaluation_result.get("level_of_detail_elaboration_reasoning"),
         "feasibility_reasoning": evaluation_result.get("feasibility_reasoning"),
-        # Instructor feedback
+        # ── Instructor feedback ──
         "instructor_feedback_intro": evaluation_result.get("instructor_feedback_intro"),
         "instructor_feedback_pivot": evaluation_result.get("instructor_feedback_pivot"),
         "instructor_feedback_next_step": evaluation_result.get("instructor_feedback_next_step"),
-        # Full LLM data (expert_panel + stats + domain analysis)
-        "expert_panel": evaluation_result.get("expert_panel", []),
+        # ── Full LLM data (expert_panel + stats + domain analysis) ──
+        "expert_panel": expert_panel,
         "stats": evaluation_result.get("stats", {}),
         "domain_analysis": evaluation_result.get("domain_analysis", None),
     }
 
-    # 4. Save full record as JSON
+    # 5. Save full record as JSON
     json_path = RESULTS_DIR / f"{unique_id}.json"
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(full_record, f, cls=_SafeEncoder, default=str, ensure_ascii=False, indent=2)
 
-    # 5. Also append lightweight row to CSV (for quick listing)
+    # 6. Also append lightweight row to CSV (for quick listing)
     csv_row = {
         "id": unique_id,
         "timestamp": timestamp,
         "image_filename": saved_filename,
         "description": description,
-        "overall_score": evaluation_result.get("overall_score"),
+        "overall_score": flat_scores.get("overall_score"),
         "submitter_name": submitter_name,
     }
 

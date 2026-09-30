@@ -1,0 +1,7 @@
+panel_id,slot,persona_id,persona_name,persona_version,profile_hash,primary_expertise,canary
+Panel_A,1,50cc7244,Dr. Jonathan Mercer,1.0,94aab99eddf5d73e3f1b55987fde4f44023ba93b32ca057a53ce3d7e50858ee4,"Design Creativity, Cognitive Innovation, Ideation Depth",ACADEMIC_MERCER_A01
+Panel_A,2,07f495bd,Dr. Serena Voss,1.0,d7f7f66237c603726dd5ce9b261f76e0df6afaab185a96b7fe030b0d53b3e72e,"Visual Communication, Design Representation, Visual Storytelling",ACADEMIC_VOSS_A02
+Panel_A,3,d6ab8aa8,Dr. Haruto Nakamura,1.0,d0406389b4f07ce3462253ce4116b97434b2cbe7dfbe2b6f83fa32063364a6f2,"Human-Centred Design, User Experience, Ergonomic Empathy",ACADEMIC_NAKAMURA_A03
+Panel_B,1,32f3d6c5,Sofia Marin,1.0,5c711c51c6383208b15b3c2ce34b527c980cb2622e3ba07d2a2ccf8b18f77d61,"Furniture Design, Seating Product Development, Material-Construction Logic",INDUSTRY_MARIN_B01
+Panel_B,2,e27dc9a6,Marco Delacroix,1.0,3ee0df9dfed63f3bec28cf24513159e5fe8bdad4d91104d3dbef490ef3bb88a3,"Industrial Design Sketching, Visual Spatial Craft, Form Clarity",INDUSTRY_DELACROIX_B02
+Panel_B,3,abb2af01,Yuki Tanaka,1.0,18912b84b3b80f3e4acc7b5565bbf14782e1c773245c374ba9bda0648014f7ed,"Design Concept Development, Creative Strategy, Inventive Direction",INDUSTRY_TANAKA_B03

@@ -1,0 +1,4 @@
+persona_slot,persona_id,persona_name,persona_version,full_profile_sha256,primary_academic_domain,panel_version_id,activated_at,canary
+ACADEMIC_1,50cc7244,"Dr. Jonathan Mercer",1.0,f3610cf7e6fde640604a2193884eac10a6e6febecff956c437bf8e020898c861,"Design Creativity & Cognitive Innovation",panel_academic_fsrd_v1,2026-09-22T00:00:00Z,ACADEMIC_MERCER_A01
+ACADEMIC_2,07f495bd,"Dr. Serena Voss",1.0,6bdb5721af4c11c45c29bbe085b1ba9359663b73528b6f52c582099c9d9eacf6,"Visual Communication & Design Representation",panel_academic_fsrd_v1,2026-09-22T00:00:00Z,ACADEMIC_VOSS_A02
+ACADEMIC_3,d6ab8aa8,"Dr. Haruto Nakamura",1.0,aa34d71a291adeaea71e8374756c1a168e7749251834bf314b50e9a18f8b998a,"Human-Centred Design & User Experience",panel_academic_fsrd_v1,2026-09-22T00:00:00Z,ACADEMIC_NAKAMURA_A03

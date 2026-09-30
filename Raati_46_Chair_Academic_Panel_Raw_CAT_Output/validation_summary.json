@@ -1,0 +1,23 @@
+{
+  "image_manifest_rows": 46,
+  "persona_manifest_rows": 3,
+  "provider_manifest_rows": 3,
+  "visual_evidence_records": 138,
+  "raw_cat_scores_wide_rows": 414,
+  "raw_cat_scores_long_rows": 2484,
+  "run_status_rows": 414,
+  "checks": {
+    "image_manifest_is_46": true,
+    "persona_manifest_is_3": true,
+    "provider_manifest_is_3": true,
+    "visual_evidence_is_138": true,
+    "wide_rows_is_414": true,
+    "long_rows_is_2484": true,
+    "status_rows_is_414": true,
+    "canonical_criteria_order": true,
+    "all_scores_integers_1_to_5_or_null": true,
+    "no_synthesizer_invoked": true,
+    "no_overall_score_generated": true
+  },
+  "all_passed": true
+}

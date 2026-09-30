@@ -1,0 +1,57 @@
+```json
+{
+  "persona_id": "furniture_craft",
+  "persona_canary": "FURNITURE_A17",
+  "primary_lens": "Structure, joint, component transition, material, ergonomics, or manufacturing",
+  "lens_observation": "The submitted image is a uniform mid-grey field with no discernible lines, forms, joints, or structural geometry present; no chair frame, seat plane, backrest angle, armrest connection, or material indication can be read. Without any visible constructive evidence, it is impossible to assess how loads would be transferred through the frame or how component transitions would be resolved.",
+  "criteria": {
+    "creativity": {
+      "score": 1,
+      "rationale": "No design concept is visible in the submitted image. A blank or failed image upload provides zero evidence of inventiveness or conceptual coherence."
+    },
+    "originality": {
+      "score": 1,
+      "rationale": "With no visual content present, there is no basis to distinguish this submission from any standard or non-standard solution. No distinguishing formal or conceptual choices can be identified."
+    },
+    "usefulness_relevance": {
+      "score": 1,
+      "rationale": "The brief specifies multiple seated postures including upright, reclined, forward-leaning, and cross-legged positions for sessions of 1–3 hours. The blank image provides no geometry, seat depth, backrest angle, or armrest configuration that could be evaluated against these requirements."
+    },
+    "clarity": {
+      "score": 1,
+      "rationale": "No forms, parts, labels, or interaction cues are legible. The image is entirely uninformative as a design communication artifact."
+    },
+    "level_of_detail_elaboration": {
+      "score": 1,
+      "rationale": "Even at concept stage, a minimum expectation is a readable sketch showing the chair's overall silhouette and primary components. The submission contains none of this; it is a featureless grey field."
+    },
+    "feasibility": {
+      "score": 1,
+      "rationale": "No structural system, material choice, joint strategy, or making logic is present to evaluate. Feasibility cannot be assessed from a blank image."
+    }
+  },
+  "evidence": [
+    {
+      "evidence_id": "E1",
+      "feature": "Image content",
+      "observation": "The submitted file renders as a solid, uniform grey rectangle (approximately RGB 128/128/128) with no variation in tone, line work, or form. It appears to be a blank placeholder, a failed image export, or an incorrectly attached file."
+    },
+    {
+      "evidence_id": "E2",
+      "feature": "Chair silhouette",
+      "observation": "No chair silhouette, seat plane, backrest, armrest, or leg geometry is discernible at any scale or contrast level within the image."
+    },
+    {
+      "evidence_id": "E3",
+      "feature": "Structural or material indication",
+      "observation": "No frame members, joint nodes, upholstery boundaries, or material texture are present, making structural and material assessment entirely impossible."
+    },
+    {
+      "evidence_id": "E4",
+      "feature": "Ergonomic intent",
+      "observation": "No dimensional proportions, seat-to-back angle, armrest height, or seat width cues are readable, so alignment with the brief's posture and user-duration requirements cannot be evaluated."
+    }
+  ],
+  "instructor_feedback": "This submission cannot be assessed as a design concept because the attached image contains no visible content — it appears as a blank grey field. Please verify that the correct file was uploaded and that the sketch was properly exported or photographed before resubmitting. At minimum, a concept-stage submission for this brief should show: (1) the overall chair silhouette in at least one view, (2) the primary structural components — seat, backrest, armrests, and legs — with readable proportions, (3) some indication of the backrest angle and seat depth intended to support the 1–3 hour sitting periods described, and (4) a brief annotation or title identifying your design concept. Once a legible sketch is submitted, it can be assessed against all six rubric criteria. No score above 1 can be awarded for any criterion in the current state."
+}
+```

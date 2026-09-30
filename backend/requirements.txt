@@ -8,3 +8,6 @@ pandas
 pingouin
 Pillow
 pypdf
+aiosqlite
+pytest
+pytest-asyncio

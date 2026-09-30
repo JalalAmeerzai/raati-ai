@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from .agents import generate_personas
 from .evaluators import run_expert_panel
 from .synthesizer import synthesize
+from .score_aggregator import build_scorecard_from_expert_panel, scorecard_to_flat_fields
+from .assignment_contracts import detect_brief_duplicate, get_default_itb_assignment
 
 logger = logging.getLogger(__name__)
 
@@ -149,6 +151,12 @@ async def evaluate_design(
         return_result["expert_panel"] = expert_results
         if domain_analysis:
             return_result["domain_analysis"] = domain_analysis
+
+        # Attach server-computed scorecard and flat scores (Slice 1 & Slice 2)
+        scorecard = build_scorecard_from_expert_panel(expert_results)
+        if scorecard:
+            return_result["scorecard"] = scorecard
+            return_result.update(scorecard_to_flat_fields(scorecard))
 
         return return_result
         

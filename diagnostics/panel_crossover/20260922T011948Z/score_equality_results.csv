@@ -1,0 +1,9 @@
+chair,comparison_type,total_comparisons,identical_score_vectors,identical_vector_pct,identical_criteria_scores,identical_criteria_pct
+Tumpuan Chair,Within-Panel Repetition,18,6,33.3%,84,77.8%
+Tumpuan Chair,Between-Panel Crossover,18,4,22.2%,83,76.9%
+Para Chair,Within-Panel Repetition,18,3,16.7%,77,71.3%
+Para Chair,Between-Panel Crossover,18,3,16.7%,79,73.1%
+Lipat Chair,Within-Panel Repetition,18,2,11.1%,73,67.6%
+Lipat Chair,Between-Panel Crossover,18,2,11.1%,66,61.1%
+ALL_3_CHAIRS_POOLED,Within-Panel Repetition,54,11,20.4%,234,72.2%
+ALL_3_CHAIRS_POOLED,Between-Panel Crossover,54,9,16.7%,228,70.4%

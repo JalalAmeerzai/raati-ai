@@ -1,0 +1,111 @@
+```json
+{
+  "persona_id": "panel_academic_fsrd_v1",
+  "persona_version": "panel_academic_fsrd_v1",
+  "panel_id": "Panel_A",
+  "panel_version": "panel_academic_fsrd_v1",
+  "persona_canary": "ACADEMIC_NAKAMURA_A03",
+  "primary_professional_lens": "Human-Centred Design & User Experience — evaluating empathy for end users, ergonomic responsiveness, and purposeful design intent in addressing meaningful human needs across diverse sitting behaviours and extended-use contexts.",
+  "visible_evidence_items": [
+    {
+      "observed_feature": "Woven/interlocking grid lattice forming both the seat surface and backrest panel, constructed from square-section timber members",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The lattice seat surface raises immediate ergonomic concern: a rigid, open grid of square timber members without cushioning or contouring will create significant pressure-point discomfort for 1–3 hour sitting durations. From a human-centred lens, this is a critical empathy gap — the material language prioritises visual concept over sustained bodily comfort.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "feasibility"],
+      "confidence": "high"
+    },
+    {
+      "observed_feature": "Backrest panel composed of the same interlocking grid lattice, appearing to extend at a slight recline angle from the seat plane",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The backrest angle appears relatively upright-to-slightly-reclined, which could support both upright and lean-back postures as specified in the brief. However, the open grid surface provides no lumbar contouring or support zone differentiation, which is a meaningful gap for users sitting 1–3 hours across diverse postures.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "creativity"],
+      "confidence": "medium"
+    },
+    {
+      "observed_feature": "Asymmetric backrest silhouette — the left side of the backrest extends irregularly beyond the grid boundary with protruding members creating a fragmented, pixelated edge",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The irregular, deconstructed left edge of the backrest is the most distinctive conceptual gesture. It reads as an intentional design language — possibly referencing incompleteness, growth, or a cultural/craft metaphor. While visually arresting, from a user-experience perspective this asymmetry offers no functional benefit and may create a perception of instability or incompleteness that undermines user confidence in the object.",
+      "relevant_CAT_criteria": ["originality", "creativity", "clarity"],
+      "confidence": "high"
+    },
+    {
+      "observed_feature": "Solid timber armrests integrated into a rectangular frame structure on the right side, with vertical slat detailing visible on the right armrest panel",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The right armrest appears as a solid, flat horizontal surface supported by a vertical frame — this is functionally appropriate for resting arms, holding a microphone, or supporting a laptop. However, only one side appears to have a clearly resolved armrest, raising questions about bilateral symmetry and whether both armrests are equally supportive.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "feasibility"],
+      "confidence": "medium"
+    },
+    {
+      "observed_feature": "Four-legged base with square-section timber legs, two rear legs visible and two front legs, with the front-left leg appearing to have a protruding cross-member at the base",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The structural base appears conventionally resolved with four legs, which is appropriate for stability. The protruding cross-member at the front-left leg base is ambiguous — it may be a joinery detail, a foot, or a rendering artefact. Structurally, the lattice seat frame's connection to the leg structure is not clearly articulated, which raises feasibility questions.",
+      "relevant_CAT_criteria": ["feasibility", "clarity"],
+      "confidence": "medium"
+    },
+    {
+      "observed_feature": "Seat width appears generous — the chair reads as a two-seater or wide single-seat form",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The generous seat width is a positive empathic response to the brief's requirement to accommodate diverse sitting positions including crossed legs and wider leg positioning. This demonstrates awareness of postural diversity, which is a meaningful human-centred design decision.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "creativity"],
+      "confidence": "medium"
+    },
+    {
+      "observed_feature": "Title 'TUMPUAN' displayed in the lower left corner",
+      "visible_or_supplied_basis": "explicitly stated in brief",
+      "professional_interpretation": "'Tumpuan' translates from Malay/Indonesian as 'focus', 'support', or 'point of reliance' — a conceptually resonant title for a chair intended for speakers and moderators who are the focal point of academic events. This naming suggests intentional conceptual framing, though the connection between the name and the design language could be more explicitly communicated.",
+      "relevant_CAT_criteria": ["originality", "clarity"],
+      "confidence": "high"
+    },
+    {
+      "observed_feature": "Uniform natural wood tone throughout — no upholstery, cushioning, or surface treatment variation visible",
+      "visible_or_supplied_basis": "visible in sketch",
+      "professional_interpretation": "The absence of any cushioning or ergonomic surface treatment is the most significant human-centred design concern in this concept. For a 1–3 hour sitting duration across diverse users aged 18–65, an entirely rigid timber lattice surface is likely to cause discomfort and fatigue, particularly for older users or those with back sensitivity.",
+      "relevant_CAT_criteria": ["usefulness_relevance", "feasibility"],
+      "confidence": "high"
+    }
+  ],
+  "criterion_explanations": {
+    "creativity": {
+      "score": 4,
+      "reasoning": "The Tumpuan chair demonstrates genuine creative ambition in its application of an interlocking timber lattice system as both structural and aesthetic language. The decision to extend this grammar across seat, backrest, and the asymmetric fragmented edge creates a coherent — if challenging — design world. The concept moves beyond standard upholstered easy chair conventions and proposes a material and structural logic that is genuinely inventive. The shadow cast by the lattice, visible in the render, suggests the designer is aware of the chair's spatial and atmospheric presence, which reflects creative intentionality. The score is held at 4 rather than 5 because the creative gesture does not yet fully resolve the tension between visual concept and human comfort — a resolution that would elevate this to exemplary work."
+    },
+    "originality": {
+      "score": 4,
+      "reasoning": "The lattice-as-primary-form approach, combined with the deliberately irregular, pixelated backrest edge, represents a meaningful departure from conventional easy chair archetypes. The visual language evokes associations with traditional woven craft, digital pixel aesthetics, and architectural screen walls simultaneously — a layered originality that is culturally situated and conceptually fresh within the FSRD ITB academic design context. The name 'Tumpuan' adds a further layer of conceptual identity. The concept avoids the most common student design tropes (organic curves, minimalist Scandinavian references, or direct historical pastiche). A score of 5 is withheld because the lattice-grid chair is not without precedent in contemporary furniture design, and the asymmetric edge, while striking, risks reading as unresolved rather than intentionally deconstructed without supporting narrative."
+    },
+    "usefulness_relevance": {
+      "score": 2,
+      "reasoning": "This is the most critical area of concern from a human-centred design perspective. The brief explicitly requires comfort for 1–3 hour sitting durations across users aged 18–65, with diverse postures including leaning forward, leaning back, crossing legs, and holding objects. The rigid timber lattice seat surface, without any cushioning, contouring, or ergonomic surface differentiation, is likely to cause significant discomfort within 20–30 minutes for most users — well below the 1-hour minimum. The generous seat width is a positive response to postural diversity, and the armrest presence addresses the brief's requirement. However, the fundamental absence of comfort provision for extended sitting is a major empathic gap that substantially undermines the chair's fitness for purpose in the Design Center context. The score of 2 reflects early promise in spatial generosity and armrest inclusion, but acknowledges that the core human need — sustained comfortable seating — is not adequately addressed."
+    },
+    "clarity": {
+      "score": 3,
+      "reasoning": "The 3D render provides reasonable spatial legibility of the overall form, material, and structural logic. The lattice system is clearly readable, the four-leg base is identifiable, and the general proportions of seat, backrest, and armrest are discernible. However, several elements remain ambiguous: the connection between the lattice seat and the structural frame is not clearly articulated; the asymmetric left backrest edge is visually prominent but its structural logic is unclear; the left armrest resolution is less legible than the right; and the protruding cross-member at the front-left leg base is unexplained. The render quality is competent but the single viewpoint limits full spatial understanding. Orthographic or exploded views would significantly improve clarity."
+    },
+    "level_of_detail_elaboration": {
+      "score": 3,
+      "reasoning": "The submission presents a resolved 3D render rather than a hand sketch, which represents a higher investment in visualisation than typical early concept ideation. The lattice geometry is consistently applied across seat and backrest, suggesting the designer has thought through the system logic. However, the concept lacks supporting documentation that would be expected even at concept stage: there is no indication of dimensions, no ergonomic reference points, no material specification beyond implied solid timber, no joinery detail, and no explanation of the conceptual narrative behind 'Tumpuan' or the asymmetric edge. The render alone, without these supporting elements, limits the elaboration score to competent baseline."
+    },
+    "feasibility": {
+      "score": 3,
+      "reasoning": "The basic structural proposition — a timber lattice seat and backrest on a four-legged frame — is plausible and makeable. Timber lattice furniture has established craft and manufacturing precedents. However, several feasibility questions remain unresolved: the joinery method for the interlocking lattice members (mortise and tenon, dowel, or mechanical fastener) is not specified; the structural adequacy of the asymmetric, cantilevered backrest edge members is questionable under dynamic loading; the connection between the lattice seat plane and the supporting leg frame is not detailed; and the long-term durability of the open lattice seat under repeated use without cushioning or surface protection is uncertain. The concept is feasible in principle but requires significant structural resolution before it could be confidently taken to prototype."
+    }
+  },
+  "uncertainties": [
+    "The joinery method connecting the interlocking lattice members is entirely unspecified — it is unclear whether these are mortise-and-tenon, half-lap, dowelled, or mechanically fastened joints, each of which has significantly different structural and craft implications.",
+    "The structural logic of the asymmetric, fragmented left backrest edge is ambiguous — it is unclear whether these protruding members are load-bearing, decorative, or represent an intentional deconstructive gesture, and whether they are adequately supported against lateral forces.",
+    "The connection detail between the lattice seat frame and the four timber legs is not visible or explained — this is a critical structural node that determines the overall rigidity and safety of the chair.",
+    "It is unclear whether the chair is intended for a single user or two users — the seat width appears generous enough for two, but the single backrest panel and armrest configuration suggest a single-seat easy chair, creating dimensional ambiguity.",
+    "The left armrest resolution is unclear — the right side shows a defined armrest surface and vertical frame panel, but the left side of the chair (where the asymmetric backrest edge is most prominent) does not clearly show a corresponding armrest, raising questions about bilateral ergonomic symmetry.",
+    "No cushion or upholstery provision is visible — it is uncertain whether the designer intends the lattice surface to be used as-is, or whether a removable cushion system is anticipated but not shown."
+  ],
+  "recommendations": [
+    "Urgently address the comfort provision for extended sitting: introduce a cushion strategy — whether a removable loose cushion, a fitted upholstered pad, or a woven textile insert within the lattice frame — that responds to the 1–3 hour sitting duration requirement. This is the most critical human-centred design gap in the current concept.",
+    "Develop a clear conceptual narrative for the 'Tumpuan' name and its relationship to the asymmetric backrest edge — if the fragmented edge is intentional and meaningful (e.g., representing focus, support, or the gathering of knowledge), make this legible through a brief written statement and ensure the formal gesture reads as resolved rather than incomplete.",
+    "Produce orthographic drawings (plan, front elevation, side elevation) with approximate dimensions to establish ergonomic validity — seat height, seat depth, backrest angle, and armrest height should all be checked against standard ergonomic references for the 18–65 age range.",
+    "Detail the joinery system for the lattice members — a single exploded axonometric or joinery detail drawing would significantly strengthen the feasibility argument and demonstrate craft understanding appropriate to the FSRD ITB context.",
+    "Clarify and resolve the bilateral symmetry of the armrests — both sides should provide equivalent functional support for users holding microphones, laptops, or books, as specified in the brief. If asymmetry is intentional, provide a rationale.",
+    "Consider introducing a subtle lumbar support zone within the backrest lattice — for example, a denser or slightly curved section at lumbar height — to differentiate the backrest ergonomically without abandoning the lattice design language.",
+    "Test the seat width against anthropometric data for the intended user range — if the chair is intended as a single-seat easy chair, ensure the width is generous enough for diverse postures (crossed legs, wide leg positioning) without being so wide that armrests become unreachable for smaller users."
+  ]
+}
+```

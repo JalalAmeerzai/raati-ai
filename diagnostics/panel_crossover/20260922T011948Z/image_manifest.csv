@@ -1,0 +1,14 @@
+source_filename,basename,design_index,canonical_name,sha256,byte_length,mime_type,width,height,color_mode
+design_1.png,design_1,1,Tumpuan Chair,9e5a0228c98a2037d28cecb5544f4d93e81a091e0f7e4625247e2ed4838ce304,1091455,image/png,1766,1002,RGBA
+design_2.png,design_2,2,Shizuku Chair,f5f1973889edbb1aaf3494dd45f24f72d66c733a5ef1ded0912f758b40199375,946719,image/png,2025,1251,RGBA
+design_3.png,design_3,3,Cayi Chair,04979bd43eb5ba08109d7d1551209ff0a3d17d8af9b8e2f9d78a6f5e61da92f8,2610192,image/png,2019,1258,RGBA
+design_4.png,design_4,4,Sluma Chair,6c17aeb5574e33fa230f8f8c137cc9251e1555337c49b4335f1ddb37068b6859,523247,image/png,1685,845,RGBA
+design_5.png,design_5,5,Gee Chair,b9eae68395177e1deeec31b6f194bfe622398742edbc8dda4af63f968079c617,1141940,image/png,1327,850,RGBA
+design_6.png,design_6,6,Molten Chair,dc807b9435a0941cf9576f0204158dc6e45513a51d55c15b77caae01c067fb51,681144,image/png,1658,826,RGBA
+design_7.png,design_7,7,Para Chair,2a74d4ac2ac650ee87b280d5796a6f5452ee4a9ecc4852e576447d19400b5ea7,1304344,image/png,1743,1199,RGBA
+design_8.png,design_8,8,Crescent Chair,0467237ba673391199ea67d79a08dd6d201c110c3335d342c494900b413df317,747527,image/png,1814,1086,RGBA
+design_9.png,design_9,9,LikaLiku Chair,8f12ff37399a4a5cfc8b9b3b2e0b1061c242d1e1b7556ea249b4df9bd89e85a8,628915,image/png,1495,983,RGBA
+design_10.png,design_10,10,Fingie Chair,b42a67b6e104496650ba916a0bf91799c92cf7e991a53420626917616e05371c,999012,image/png,1540,1073,RGBA
+design_11.png,design_11,11,Levica Chair,722d95e95ac6d33e431df0d87a4411781a8a7ec0788af3b564ce72e65a78498e,930347,image/png,1516,1071,RGBA
+design_12.png,design_12,12,PariPari Chair,d0adfe829e6a1f10df728face990b4782bad7efce0dfd927ffb3281f181b51e7,1489843,image/png,1729,1013,RGBA
+design_13.png,design_13,13,Lipat Chair,35653e7756cfc3b8b9aef6b10e1003a5b8001e55a73a03acefe49a831ad4b8d3,767264,image/png,1415,1135,RGBA

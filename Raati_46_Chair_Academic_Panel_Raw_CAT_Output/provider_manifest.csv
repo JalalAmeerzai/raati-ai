@@ -1,0 +1,4 @@
+provider,requested_model,returned_model,temperature,top_p,image_detail_setting,maximum_output_tokens,response_schema_version,provider_adapter_version
+OpenAI,gpt-4o,gpt-4o,0.1,1.0,high,2048,v3_evidence_gated_schema,v3_openai_adapter
+Anthropic,claude-sonnet-4-6,claude-sonnet-4-6,0.1,1.0,high,4096,v3_evidence_gated_schema,v3_anthropic_adapter
+xAI,grok-4-1-fast-reasoning,grok-4-1-fast-reasoning,0.1,1.0,high,2048,v3_evidence_gated_schema,v3_xai_adapter
